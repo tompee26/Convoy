@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">Convoy</string>
+    <string name="app_subtitle">Explore the world together</string>
+    <string name="content_description" translatable="false">Content Description</string>
+
+    <string name="facebook_app_id">167254463898044</string>
+    <string name="fb_login_protocol_scheme">fb167254463898044</string>
+    <string name="google_client_id" translatable="false">798931815594-8kqb8uqgr6079jjvura3h71l843mra01.apps.googleusercontent.com</string>
+
+    <string name="rationale_location">This app needs access to your location to know where you are.</string>
+
+    <!-- Login screen -->
+    <string name="label_login_name">Email</string>
+    <string name="label_login_pass">Password</string>
+    <string name="label_login_button">Login</string>
+    <string name="label_login_sign_up">Sign up</string>
+    <string name="label_login_new_account">Create a new account</string>
+    <string name="label_login_registered">Login now</string>
+    <string name="label_login_option">or login with</string>
+    <string name="error_login_required">This field is required</string>
+    <string name="error_login_invalid_email">Invalid email format</string>
+    <string name="error_login_pass_min">Must be at least 6 characters</string>
+    <string name="progress_login_register">Registering account…</string>
+    <string name="progress_login_authenticate">Authenticating…</string>
+
+</resources>

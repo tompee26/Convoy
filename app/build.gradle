@@ -1,0 +1,90 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'realm-android'
+
+android {
+    compileSdkVersion 26
+    defaultConfig {
+        applicationId "com.tompee.convoy"
+        minSdkVersion 20
+        targetSdkVersion 26
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        vectorDrawables {
+            useSupportLibrary = true
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    dataBinding {
+        enabled = true
+    }
+
+    androidExtensions {
+        experimental = true
+    }
+}
+
+realm {
+    syncEnabled = true
+}
+
+project.ext {
+    supportLibraryVersion = "26.1.0"
+    constraintLayoutVersion = "1.0.2"
+    facebookVersion = "4.30.0"
+    googlePlayVersion = "11.8.0"
+    rxJavaVersion = "2.1.0"
+    rxAndroidVersion = "2.0.1"
+    daggerVersion = "2.14.1"
+    easyPermission = "1.2.0"
+    ankoVersion = "0.10.4"
+    timber = "4.6.1"
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+
+    // Support libraries
+    implementation "com.android.support:appcompat-v7:$project.supportLibraryVersion"
+    implementation "com.android.support.constraint:constraint-layout:$project.constraintLayoutVersion"
+
+    // Authentication libraries
+    implementation "com.facebook.android:facebook-login:$project.facebookVersion"
+    implementation "com.google.android.gms:play-services-auth:$project.googlePlayVersion"
+
+    // Maps
+    implementation "com.google.android.gms:play-services-maps:$project.googlePlayVersion"
+    implementation "com.google.android.gms:play-services-location:$project.googlePlayVersion"
+    implementation "com.google.android.gms:play-services-places:$project.googlePlayVersion"
+
+    // RX libraries
+    implementation "io.reactivex.rxjava2:rxjava:$project.rxJavaVersion"
+    implementation "io.reactivex.rxjava2:rxandroid:$project.rxAndroidVersion"
+
+    // Dependency injection libraries
+    implementation "com.google.dagger:dagger:$project.daggerVersion"
+    implementation "com.google.dagger:dagger-android:$project.daggerVersion"
+    implementation "com.google.dagger:dagger-android-support:$project.daggerVersion"
+    kapt "com.google.dagger:dagger-compiler:$project.daggerVersion"
+    kapt "com.google.dagger:dagger-android-processor:$project.daggerVersion"
+    kapt "com.google.dagger:dagger-android-support:$project.daggerVersion"
+
+    // Easy permission
+    implementation "pub.devrel:easypermissions:$project.easyPermission"
+
+    // Timber
+    implementation "com.jakewharton.timber:timber:$project.timber"
+
+    // Reactive location
+    implementation 'pl.charmas.android:android-reactive-location2:2.1@aar'
+}
