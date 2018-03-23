@@ -5,11 +5,12 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'realm-android'
 
 android {
-    compileSdkVersion 26
+    compileSdkVersion 27
     defaultConfig {
+        multiDexEnabled true
         applicationId "com.tompee.convoy"
         minSdkVersion 20
-        targetSdkVersion 26
+        targetSdkVersion 27
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -24,12 +25,12 @@ android {
         }
     }
 
-    dataBinding {
-        enabled = true
-    }
-
     androidExtensions {
         experimental = true
+    }
+
+    dexOptions {
+        preDexLibraries = false
     }
 }
 
@@ -38,16 +39,17 @@ realm {
 }
 
 project.ext {
-    supportLibraryVersion = "26.1.0"
+    supportLibraryVersion = "27.1.0"
     constraintLayoutVersion = "1.0.2"
     facebookVersion = "4.30.0"
-    googlePlayVersion = "11.8.0"
+    googlePlayVersion = "12.0.0"
     rxJavaVersion = "2.1.0"
     rxAndroidVersion = "2.0.1"
     daggerVersion = "2.14.1"
     easyPermission = "1.2.0"
     ankoVersion = "0.10.4"
     timber = "4.6.1"
+    multidex = "1.0.3"
 }
 
 dependencies {
@@ -55,7 +57,10 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
 
     // Support libraries
+    implementation "com.android.support:cardview-v7:$project.supportLibraryVersion"
+    implementation "com.android.support:customtabs:$project.supportLibraryVersion"
     implementation "com.android.support:appcompat-v7:$project.supportLibraryVersion"
+    implementation "com.android.support:design:$project.supportLibraryVersion"
     implementation "com.android.support.constraint:constraint-layout:$project.constraintLayoutVersion"
 
     // Authentication libraries
@@ -66,6 +71,9 @@ dependencies {
     implementation "com.google.android.gms:play-services-maps:$project.googlePlayVersion"
     implementation "com.google.android.gms:play-services-location:$project.googlePlayVersion"
     implementation "com.google.android.gms:play-services-places:$project.googlePlayVersion"
+
+    // Firebase
+    implementation "com.google.firebase:firebase-auth:$project.googlePlayVersion"
 
     // RX libraries
     implementation "io.reactivex.rxjava2:rxjava:$project.rxJavaVersion"
@@ -87,4 +95,9 @@ dependencies {
 
     // Reactive location
     implementation 'pl.charmas.android:android-reactive-location2:2.1@aar'
+
+    // Multidex support
+    compile "com.android.support:multidex:$project.multidex"
 }
+
+apply plugin: 'com.google.gms.google-services'

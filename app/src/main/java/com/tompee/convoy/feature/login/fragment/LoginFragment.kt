@@ -1,20 +1,24 @@
-package com.tompee.convoy.feature.login
+package com.tompee.convoy.feature.login.fragment
 
 import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.support.design.widget.Snackbar
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import com.tompee.convoy.R
 import com.tompee.convoy.base.BaseFragment
+import com.tompee.convoy.dependency.component.DaggerAuthComponent
 import com.tompee.convoy.dependency.component.DaggerLoginComponent
+import com.tompee.convoy.dependency.module.AuthModule
 import com.tompee.convoy.dependency.module.LoginModule
 import kotlinx.android.synthetic.main.fragment_login.*
 import javax.inject.Inject
 
-class LoginFragment : BaseFragment(), LoginMvpView, View.OnClickListener {
+class LoginFragment : BaseFragment(), LoginFragmentMvpView, View.OnClickListener {
     @Inject
-    lateinit var loginPresenter: LoginPresenter
+    lateinit var loginFragmentPresenter: LoginFragmentPresenter
 
     private lateinit var listener: LoginFragmentListener
     private lateinit var progressDialog: ProgressDialog
@@ -36,13 +40,16 @@ class LoginFragment : BaseFragment(), LoginMvpView, View.OnClickListener {
     override fun layoutId(): Int = R.layout.fragment_login
 
     override fun setupComponent() {
-        val loginComponent = DaggerLoginComponent.builder().loginModule(LoginModule(activity!!)).build()
+        val loginComponent = DaggerLoginComponent.builder()
+                .loginModule(LoginModule(activity!!))
+                .authComponent(DaggerAuthComponent.builder().authModule(AuthModule(activity!!)).build())
+                .build()
         loginComponent.inject(this)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        loginPresenter.attachView(this)
+        loginFragmentPresenter.attachView(this)
         val type = arguments?.getInt(TYPE_TAG)
         switchButton.setOnClickListener { listener.onSwitchPage(type!!) }
         if (type == LOGIN) {
@@ -65,14 +72,14 @@ class LoginFragment : BaseFragment(), LoginMvpView, View.OnClickListener {
         commandButton.setOnClickListener(this)
 
         if (type == LOGIN) {
-            loginPresenter.configureFacebookLogin(facebookButton)
-            loginPresenter.configureGoogleLogin(googleButton)
+            loginFragmentPresenter.configureFacebookLogin(facebookButton)
+            loginFragmentPresenter.configureGoogleLogin(googleButton)
         }
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        loginPresenter.detachView()
+        loginFragmentPresenter.detachView()
     }
 
     override fun onClick(v: View?) {
@@ -81,9 +88,9 @@ class LoginFragment : BaseFragment(), LoginMvpView, View.OnClickListener {
         passView.error = null
 
         if (type == SIGN_UP) {
-            loginPresenter.startSignUp(userView.text.toString(), passView.text.toString())
+            loginFragmentPresenter.startSignUp(userView.text.toString(), passView.text.toString())
         } else {
-            loginPresenter.startLogin(userView.text.toString(), passView.text.toString())
+            loginFragmentPresenter.startLogin(userView.text.toString(), passView.text.toString())
         }
     }
 
@@ -94,7 +101,13 @@ class LoginFragment : BaseFragment(), LoginMvpView, View.OnClickListener {
         } else {
             progressDialog.setMessage(getString(R.string.progress_login_authenticate))
         }
+        val imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(view?.windowToken, 0)
         progressDialog.show()
+    }
+
+    override fun hideProgressDialog() {
+        progressDialog.hide()
     }
 
     override fun showEmailEmptyError() {
@@ -117,6 +130,11 @@ class LoginFragment : BaseFragment(), LoginMvpView, View.OnClickListener {
         passView.requestFocus()
     }
 
+    override fun showRegistrationFailedError(message: String) {
+        Snackbar.make(activity?.findViewById(android.R.id.content)!!,
+                message, Snackbar.LENGTH_LONG).show()
+    }
+
     interface LoginFragmentListener {
         fun onSwitchPage(type: Int)
     }
@@ -130,7 +148,7 @@ class LoginFragment : BaseFragment(), LoginMvpView, View.OnClickListener {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        loginPresenter.onActivityResult(requestCode, resultCode, data!!)
+        loginFragmentPresenter.onActivityResult(requestCode, resultCode, data!!)
     }
 
     private fun moveToMainActivity() {

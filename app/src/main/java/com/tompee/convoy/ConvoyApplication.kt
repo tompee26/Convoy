@@ -1,14 +1,16 @@
 package com.tompee.convoy
 
-import android.app.Application
 import android.content.Context
+import android.support.multidex.MultiDex
+import android.support.multidex.MultiDexApplication
 import com.tompee.convoy.dependency.component.AppComponent
+import com.tompee.convoy.dependency.component.AuthComponent
 import com.tompee.convoy.dependency.component.DaggerAppComponent
 import com.tompee.convoy.dependency.module.AppModule
 import io.realm.Realm
 import timber.log.Timber
 
-class ConvoyApplication : Application() {
+class ConvoyApplication : MultiDexApplication() {
 
     private var appComponent: AppComponent? = null
 
@@ -22,6 +24,11 @@ class ConvoyApplication : Application() {
         super.onCreate()
         Timber.plant(Timber.DebugTree())
         Realm.init(this)
+    }
+
+    override fun attachBaseContext(base: Context?) {
+        super.attachBaseContext(base)
+        MultiDex.install(this)
     }
 
     var component: AppComponent

@@ -6,20 +6,25 @@ import android.support.v4.view.ViewPager
 import android.view.View
 import com.tompee.convoy.R
 import com.tompee.convoy.base.BaseActivity
+import com.tompee.convoy.dependency.component.DaggerAuthComponent
 import com.tompee.convoy.dependency.component.DaggerLoginComponent
+import com.tompee.convoy.dependency.module.AuthModule
 import com.tompee.convoy.dependency.module.LoginModule
 import kotlinx.android.synthetic.main.activity_login.*
 import javax.inject.Inject
 
-class LoginActivity : BaseActivity(), ViewPager.PageTransformer,
+class LoginActivity : BaseActivity(), LoginActivityMvpView, ViewPager.PageTransformer,
         ViewPager.OnPageChangeListener {
 
     @Inject
     lateinit var loginPagerAdapter: LoginPagerAdapter
 
+    @Inject
+    lateinit var loginActivityPresenter: LoginActivityPresenter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewpager.overScrollMode = View.OVER_SCROLL_NEVER
+        loginActivityPresenter.attachView(this)
         viewpager.setPageTransformer(false, this)
         viewpager.addOnPageChangeListener(this)
         viewpager.adapter = loginPagerAdapter
@@ -28,8 +33,24 @@ class LoginActivity : BaseActivity(), ViewPager.PageTransformer,
     override fun layoutId(): Int = R.layout.activity_login
 
     override fun setupComponent() {
-        val loginComponent = DaggerLoginComponent.builder().loginModule(LoginModule(this)).build()
+        val loginComponent = DaggerLoginComponent.builder()
+                .loginModule(LoginModule(this))
+                .authComponent(DaggerAuthComponent.builder().authModule(AuthModule(this)).build())
+                .build()
         loginComponent.inject(this)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        loginActivityPresenter.checkIfUserLoggedIn()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        loginActivityPresenter.detachView()
+    }
+
+    override fun moveToMainActivity() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
