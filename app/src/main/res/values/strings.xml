@@ -19,12 +19,21 @@
     <string name="label_login_new_account">Create a new account</string>
     <string name="label_login_registered">Login now</string>
     <string name="label_login_option">or login with</string>
-    <string name="error_login_required">This field is required</string>
-    <string name="error_login_invalid_email">Invalid email format</string>
-    <string name="error_login_pass_min">Must be at least 6 characters</string>
     <string name="progress_login_register">Registering account…</string>
     <string name="progress_login_authenticate">Authenticating…</string>
     <string name="email_successful_title">Registration successful</string>
     <string name="email_rationale">A message was sent to your email. Please verify and login afterwards.</string>
+
+    <!-- Profile -->
+    <string name="profile_label_setup">Setup your profile!</string>
+    <string name="profile_label_first_name">First Name</string>
+    <string name="profile_label_last_name">Last Name</string>
+    <string name="profile_label_display_name">Display Name</string>
+    <string name="profile_label_save">Save</string>
+
+    <!-- Error -->
+    <string name="error_field_required">This field is required</string>
+    <string name="error_invalid_email">Invalid email format</string>
+    <string name="error_pass_min">Must be at least 6 characters</string>
 
 </resources>

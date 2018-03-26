@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.support.annotation.LayoutRes
 import android.support.v4.app.FragmentActivity
 import android.support.v4.util.LongSparseArray
+import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
 import com.tompee.convoy.ConvoyApplication
 import com.tompee.convoy.dependency.component.ActivityComponent
@@ -12,7 +13,7 @@ import com.tompee.convoy.dependency.component.DaggerConfigPersistentComponent
 import com.tompee.convoy.dependency.module.ActivityModule
 import java.util.concurrent.atomic.AtomicLong
 
-abstract class BaseActivity : FragmentActivity() {
+abstract class BaseActivity : AppCompatActivity() {
 
     private var activityComponent: ActivityComponent? = null
     private var activityId = 0L

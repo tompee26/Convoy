@@ -12,6 +12,6 @@ interface LoginFragmentMvpView : MvpView {
     fun showPasswordTooShortError()
     fun showGenericError(message: String)
     fun showRegistrationSuccessMessage()
-    fun moveToMainActivity()
+    fun moveToNextActivity(email: String)
     fun startSignInWithIntent(intent: Intent)
 }

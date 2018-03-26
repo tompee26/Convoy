@@ -10,6 +10,7 @@ import com.tompee.convoy.dependency.component.DaggerAuthComponent
 import com.tompee.convoy.dependency.component.DaggerLoginComponent
 import com.tompee.convoy.dependency.module.AuthModule
 import com.tompee.convoy.dependency.module.LoginModule
+import com.tompee.convoy.feature.profile.ProfileActivity
 import kotlinx.android.synthetic.main.activity_login.*
 import javax.inject.Inject
 
@@ -50,7 +51,12 @@ class LoginActivity : BaseActivity(), LoginActivityMvpView, ViewPager.PageTransf
         loginActivityPresenter.detachView()
     }
 
-    override fun moveToMainActivity() {
+    override fun moveToNextActivity(email: String) {
+        val intent = Intent(this, ProfileActivity::class.java)
+        intent.putExtra(ProfileActivity.EMAIL, email)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+        startActivity(intent)
+        finish()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {

@@ -65,15 +65,17 @@ dependencies {
     implementation "com.android.support.constraint:constraint-layout:$project.constraintLayoutVersion"
     implementation "com.android.support:multidex:$project.multidex"
 
-    // Authentication libraries
+    // Google libraries
     implementation "com.facebook.android:facebook-login:$project.facebookVersion"
     implementation "com.google.android.gms:play-services-auth:$project.googlePlayVersion"
     implementation "com.google.firebase:firebase-auth:$project.googlePlayVersion"
-
-    // Maps
+    implementation "com.google.firebase:firebase-messaging:$project.googlePlayVersion"
+    implementation "com.google.firebase:firebase-database:$project.googlePlayVersion"
     implementation "com.google.android.gms:play-services-maps:$project.googlePlayVersion"
     implementation "com.google.android.gms:play-services-location:$project.googlePlayVersion"
     implementation "com.google.android.gms:play-services-places:$project.googlePlayVersion"
+
+    // Maps
     implementation 'pl.charmas.android:android-reactive-location2:2.1@aar'
 
     // RX libraries

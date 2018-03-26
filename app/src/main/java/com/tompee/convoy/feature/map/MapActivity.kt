@@ -2,6 +2,8 @@ package com.tompee.convoy.feature.map
 
 import android.Manifest
 import android.os.Bundle
+import android.support.v4.view.GravityCompat
+import android.view.MenuItem
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
@@ -9,6 +11,8 @@ import com.tompee.convoy.R
 import com.tompee.convoy.base.BaseActivity
 import com.tompee.convoy.dependency.component.DaggerMapComponent
 import com.tompee.convoy.dependency.module.MapModule
+import kotlinx.android.synthetic.main.activity_map.*
+import kotlinx.android.synthetic.main.toolbar.*
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions
@@ -24,6 +28,10 @@ class MapActivity : BaseActivity(), MapMvpView, OnMapReadyCallback, EasyPermissi
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_menu)
+
         presenter.attachView(this)
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
@@ -32,6 +40,14 @@ class MapActivity : BaseActivity(), MapMvpView, OnMapReadyCallback, EasyPermissi
     override fun onMapReady(googleMap: GoogleMap) {
         presenter.configure(googleMap)
         checkAndRequestPermission()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == android.R.id.home) {
+            drawerLayout.openDrawer(GravityCompat.START)
+            return true
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     override fun layoutId(): Int = R.layout.activity_map

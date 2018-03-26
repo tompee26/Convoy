@@ -4,7 +4,6 @@ import android.content.Intent
 import com.facebook.login.widget.LoginButton
 import com.tompee.convoy.base.BasePresenter
 import com.tompee.convoy.interactor.auth.*
-import com.tompee.convoy.interactor.model.User
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
@@ -55,8 +54,8 @@ class LoginFragmentPresenter(private val authInteractor: AuthInteractor) : BaseP
         }
     }
 
-    private fun onUserCreated(user: User) {
-        Timber.i("Created user: " + user.email)
+    private fun onUserCreated(email: String) {
+        Timber.i("New email: $email")
         view?.hideProgressDialog()
         view?.showRegistrationSuccessMessage()
     }
@@ -75,10 +74,10 @@ class LoginFragmentPresenter(private val authInteractor: AuthInteractor) : BaseP
         }
     }
 
-    private fun onLoginSuccessful(user: User) {
-        Timber.i("Login user: " + user.email)
+    private fun onLoginSuccessful(email: String) {
+        Timber.i("Login email: $email")
         view?.hideProgressDialog()
-        view?.moveToMainActivity()
+        view?.moveToNextActivity(email)
     }
 
     private fun onLoginError(e: Throwable) {
@@ -87,9 +86,9 @@ class LoginFragmentPresenter(private val authInteractor: AuthInteractor) : BaseP
         Timber.e(e.message)
     }
 
-    private fun onFacebookLoginSuccessful(user: User) {
-        Timber.i("Login user: " + user.email)
-        view?.moveToMainActivity()
+    private fun onFacebookLoginSuccessful(email: String) {
+        Timber.i("Login user: $email")
+        view?.moveToNextActivity(email)
     }
 
     private fun onFacebookLoginError(e: Throwable) {

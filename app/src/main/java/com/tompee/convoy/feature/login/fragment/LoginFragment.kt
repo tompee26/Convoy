@@ -15,7 +15,7 @@ import com.tompee.convoy.dependency.component.DaggerAuthComponent
 import com.tompee.convoy.dependency.component.DaggerLoginComponent
 import com.tompee.convoy.dependency.module.AuthModule
 import com.tompee.convoy.dependency.module.LoginModule
-import com.tompee.convoy.feature.map.MapActivity
+import com.tompee.convoy.feature.profile.ProfileActivity
 import kotlinx.android.synthetic.main.fragment_login.*
 import javax.inject.Inject
 
@@ -119,22 +119,22 @@ class LoginFragment : BaseFragment(), LoginFragmentMvpView, View.OnClickListener
     }
 
     override fun showEmailEmptyError() {
-        userView.error = getString(R.string.error_login_required)
+        userView.error = getString(R.string.error_field_required)
         userView.requestFocus()
     }
 
     override fun showEmailInvalidError() {
-        userView.error = getString(R.string.error_login_invalid_email)
+        userView.error = getString(R.string.error_invalid_email)
         userView.requestFocus()
     }
 
     override fun showPasswordEmptyError() {
-        passView.error = getString(R.string.error_login_required)
+        passView.error = getString(R.string.error_field_required)
         passView.requestFocus()
     }
 
     override fun showPasswordTooShortError() {
-        passView.error = getString(R.string.error_login_pass_min)
+        passView.error = getString(R.string.error_pass_min)
         passView.requestFocus()
     }
 
@@ -167,10 +167,12 @@ class LoginFragment : BaseFragment(), LoginFragmentMvpView, View.OnClickListener
                 .show()
     }
 
-    override fun moveToMainActivity() {
-        val intent = Intent(activity, MapActivity::class.java)
+    override fun moveToNextActivity(email: String) {
+        val intent = Intent(activity, ProfileActivity::class.java)
+        intent.putExtra(ProfileActivity.EMAIL, email)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
         startActivity(intent)
+        activity?.finish()
     }
 
     override fun startSignInWithIntent(intent: Intent) {

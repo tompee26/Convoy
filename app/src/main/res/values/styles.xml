@@ -1,2 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Base Toolbar Style -->
+    <style name="ToolBarStyle">
+        <item name="android:layout_height">?attr/actionBarSize</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:minHeight">?attr/actionBarSize</item>
+    </style>
+
+    <!-- Base toolbar title text style -->
+    <style name="ToolbarTitleTextStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
+        <item name="android:layout_gravity">left</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:textColor">@color/colorLight</item>
+        <item name="android:paddingLeft">@dimen/toolbar_print_title_left_padding</item>
+        <item name="android:paddingRight">@dimen/toolbar_print_title_right_padding</item>
+        <item name="android:paddingTop">@dimen/toolbar_print_title_top_padding</item>
+        <item name="android:paddingBottom">@dimen/toolbar_print_title_bottom_padding</item>
+    </style>
 </resources>
