@@ -6,16 +6,16 @@ import io.reactivex.disposables.Disposable
 open class BasePresenter<T : MvpView> {
 
     private val compositeDisposable = CompositeDisposable()
-    var mvpView: T? = null
+    var view: T? = null
         private set
 
     fun attachView(mvpView: T) {
-        this.mvpView = mvpView
+        this.view = mvpView
     }
 
     fun detachView() {
         compositeDisposable.clear()
-        mvpView = null
+        view = null
     }
 
     fun addSubscription(disposable: Disposable) {

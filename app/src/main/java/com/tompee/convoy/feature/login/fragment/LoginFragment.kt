@@ -1,20 +1,27 @@
-package com.tompee.convoy.feature.login
+package com.tompee.convoy.feature.login.fragment
 
 import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.support.design.widget.Snackbar
+import android.support.v7.app.AlertDialog
 import android.view.View
+import android.view.inputmethod.InputMethodManager
+import com.google.android.gms.common.SignInButton
 import com.tompee.convoy.R
 import com.tompee.convoy.base.BaseFragment
+import com.tompee.convoy.dependency.component.DaggerAuthComponent
 import com.tompee.convoy.dependency.component.DaggerLoginComponent
+import com.tompee.convoy.dependency.module.AuthModule
 import com.tompee.convoy.dependency.module.LoginModule
+import com.tompee.convoy.feature.map.MapActivity
 import kotlinx.android.synthetic.main.fragment_login.*
 import javax.inject.Inject
 
-class LoginFragment : BaseFragment(), LoginMvpView, View.OnClickListener {
+class LoginFragment : BaseFragment(), LoginFragmentMvpView, View.OnClickListener {
     @Inject
-    lateinit var loginPresenter: LoginPresenter
+    lateinit var loginFragmentPresenter: LoginFragmentPresenter
 
     private lateinit var listener: LoginFragmentListener
     private lateinit var progressDialog: ProgressDialog
@@ -23,6 +30,7 @@ class LoginFragment : BaseFragment(), LoginMvpView, View.OnClickListener {
         const val LOGIN = 0
         const val SIGN_UP = 1
         private const val TYPE_TAG = "type"
+        private const val RC_SIGN_IN = 10
 
         fun newInstance(type: Int): LoginFragment {
             val loginFragment = LoginFragment()
@@ -36,13 +44,16 @@ class LoginFragment : BaseFragment(), LoginMvpView, View.OnClickListener {
     override fun layoutId(): Int = R.layout.fragment_login
 
     override fun setupComponent() {
-        val loginComponent = DaggerLoginComponent.builder().loginModule(LoginModule(activity!!)).build()
+        val loginComponent = DaggerLoginComponent.builder()
+                .loginModule(LoginModule(activity!!))
+                .authComponent(DaggerAuthComponent.builder().authModule(AuthModule(activity!!)).build())
+                .build()
         loginComponent.inject(this)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        loginPresenter.attachView(this)
+        loginFragmentPresenter.attachView(this)
         val type = arguments?.getInt(TYPE_TAG)
         switchButton.setOnClickListener { listener.onSwitchPage(type!!) }
         if (type == LOGIN) {
@@ -50,6 +61,7 @@ class LoginFragment : BaseFragment(), LoginMvpView, View.OnClickListener {
             switchButton.text = getString(R.string.label_login_new_account)
             commandButton.text = getString(R.string.label_login_button)
             commandButton.setBackgroundResource(R.drawable.ripple_login)
+            googleButton.setOnClickListener(this)
         } else {
             progressDialog = ProgressDialog(context, R.style.AppTheme_SignUp_Dialog)
             switchButton.text = getString(R.string.label_login_registered)
@@ -65,14 +77,13 @@ class LoginFragment : BaseFragment(), LoginMvpView, View.OnClickListener {
         commandButton.setOnClickListener(this)
 
         if (type == LOGIN) {
-            loginPresenter.configureFacebookLogin(facebookButton)
-            loginPresenter.configureGoogleLogin(googleButton)
+            loginFragmentPresenter.configureFacebookLogin(facebookButton)
         }
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        loginPresenter.detachView()
+        loginFragmentPresenter.detachView()
     }
 
     override fun onClick(v: View?) {
@@ -81,9 +92,13 @@ class LoginFragment : BaseFragment(), LoginMvpView, View.OnClickListener {
         passView.error = null
 
         if (type == SIGN_UP) {
-            loginPresenter.startSignUp(userView.text.toString(), passView.text.toString())
+            loginFragmentPresenter.startSignUp(userView.text.toString(), passView.text.toString())
         } else {
-            loginPresenter.startLogin(userView.text.toString(), passView.text.toString())
+            if (v is SignInButton) {
+                loginFragmentPresenter.startGoogleLogin()
+            } else {
+                loginFragmentPresenter.startLogin(userView.text.toString(), passView.text.toString())
+            }
         }
     }
 
@@ -94,7 +109,13 @@ class LoginFragment : BaseFragment(), LoginMvpView, View.OnClickListener {
         } else {
             progressDialog.setMessage(getString(R.string.progress_login_authenticate))
         }
+        val imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(view?.windowToken, 0)
         progressDialog.show()
+    }
+
+    override fun hideProgressDialog() {
+        progressDialog.hide()
     }
 
     override fun showEmailEmptyError() {
@@ -117,6 +138,11 @@ class LoginFragment : BaseFragment(), LoginMvpView, View.OnClickListener {
         passView.requestFocus()
     }
 
+    override fun showGenericError(message: String) {
+        Snackbar.make(activity?.findViewById(android.R.id.content)!!,
+                message, Snackbar.LENGTH_LONG).show()
+    }
+
     interface LoginFragmentListener {
         fun onSwitchPage(type: Int)
     }
@@ -130,9 +156,24 @@ class LoginFragment : BaseFragment(), LoginMvpView, View.OnClickListener {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        loginPresenter.onActivityResult(requestCode, resultCode, data!!)
+        loginFragmentPresenter.onActivityResult(requestCode, resultCode, data!!, RC_SIGN_IN == requestCode)
     }
 
-    private fun moveToMainActivity() {
+    override fun showRegistrationSuccessMessage() {
+        AlertDialog.Builder(activity!!)
+                .setTitle(R.string.email_successful_title)
+                .setMessage(R.string.email_rationale)
+                .setPositiveButton(R.string.label_positive_button, null)
+                .show()
+    }
+
+    override fun moveToMainActivity() {
+        val intent = Intent(activity, MapActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+        startActivity(intent)
+    }
+
+    override fun startSignInWithIntent(intent: Intent) {
+        startActivityForResult(intent, RC_SIGN_IN)
     }
 }

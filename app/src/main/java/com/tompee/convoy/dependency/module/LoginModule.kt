@@ -2,9 +2,13 @@ package com.tompee.convoy.dependency.module
 
 import android.support.v4.app.FragmentActivity
 import android.support.v4.app.FragmentManager
-import com.facebook.CallbackManager
-import com.tompee.convoy.feature.login.LoginFragment
-import com.tompee.convoy.interactor.auth.*
+import com.google.android.gms.auth.api.Auth
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.GoogleApiClient
+import com.tompee.convoy.feature.login.LoginActivityPresenter
+import com.tompee.convoy.feature.login.fragment.LoginFragment
+import com.tompee.convoy.feature.login.fragment.LoginFragmentPresenter
+import com.tompee.convoy.interactor.auth.AuthInteractor
 import dagger.Module
 import dagger.Provides
 import javax.inject.Named
@@ -34,34 +38,12 @@ class LoginModule(private val fragmentActivity: FragmentActivity) {
     }
 
     @Provides
-    fun provideAuthInteractor(authInteractorImpl: AuthInteractorImpl): AuthInteractor {
-        return authInteractorImpl
+    fun provideLoginActivityPresenter(authInteractor: AuthInteractor): LoginActivityPresenter {
+        return LoginActivityPresenter(authInteractor)
     }
 
     @Provides
-    fun provideAuthInteractorImpl(userPasswordAuth: UserPasswordAuth,
-                                  facebookAuth: FacebookAuth,
-                                  googleAuth: GoogleAuth): AuthInteractorImpl {
-        return AuthInteractorImpl(userPasswordAuth, facebookAuth, googleAuth)
-    }
-
-    @Provides
-    fun provideUserPasswordAuth(): UserPasswordAuth {
-        return UserPasswordAuth()
-    }
-
-    @Provides
-    fun provideFacebookAuth(callbackManager: CallbackManager): FacebookAuth {
-        return FacebookAuth(callbackManager)
-    }
-
-    @Provides
-    fun provideFacebookCallbackManager(): CallbackManager {
-        return CallbackManager.Factory.create()
-    }
-
-    @Provides
-    fun provideGoogleAuth(): GoogleAuth {
-        return GoogleAuth(fragmentActivity)
+    fun provideLoginFragmentPresenter(authInteractor: AuthInteractor): LoginFragmentPresenter {
+        return LoginFragmentPresenter(authInteractor)
     }
 }

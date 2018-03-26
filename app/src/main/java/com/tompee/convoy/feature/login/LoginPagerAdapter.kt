@@ -3,6 +3,7 @@ package com.tompee.convoy.feature.login
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentStatePagerAdapter
+import com.tompee.convoy.feature.login.fragment.LoginFragment
 import javax.inject.Inject
 
 class LoginPagerAdapter @Inject constructor(fragmentManager: FragmentManager,
