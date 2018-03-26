@@ -2,8 +2,12 @@ package com.tompee.convoy.dependency.module
 
 import android.support.v4.app.FragmentActivity
 import android.support.v4.app.FragmentManager
+import com.google.android.gms.auth.api.Auth
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.GoogleApiClient
 import com.tompee.convoy.feature.login.LoginActivityPresenter
 import com.tompee.convoy.feature.login.fragment.LoginFragment
+import com.tompee.convoy.feature.login.fragment.LoginFragmentPresenter
 import com.tompee.convoy.interactor.auth.AuthInteractor
 import dagger.Module
 import dagger.Provides
@@ -36,5 +40,10 @@ class LoginModule(private val fragmentActivity: FragmentActivity) {
     @Provides
     fun provideLoginActivityPresenter(authInteractor: AuthInteractor): LoginActivityPresenter {
         return LoginActivityPresenter(authInteractor)
+    }
+
+    @Provides
+    fun provideLoginFragmentPresenter(authInteractor: AuthInteractor): LoginFragmentPresenter {
+        return LoginFragmentPresenter(authInteractor)
     }
 }

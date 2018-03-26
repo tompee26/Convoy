@@ -5,14 +5,17 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.Snackbar
+import android.support.v7.app.AlertDialog
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import com.google.android.gms.common.SignInButton
 import com.tompee.convoy.R
 import com.tompee.convoy.base.BaseFragment
 import com.tompee.convoy.dependency.component.DaggerAuthComponent
 import com.tompee.convoy.dependency.component.DaggerLoginComponent
 import com.tompee.convoy.dependency.module.AuthModule
 import com.tompee.convoy.dependency.module.LoginModule
+import com.tompee.convoy.feature.map.MapActivity
 import kotlinx.android.synthetic.main.fragment_login.*
 import javax.inject.Inject
 
@@ -27,6 +30,7 @@ class LoginFragment : BaseFragment(), LoginFragmentMvpView, View.OnClickListener
         const val LOGIN = 0
         const val SIGN_UP = 1
         private const val TYPE_TAG = "type"
+        private const val RC_SIGN_IN = 10
 
         fun newInstance(type: Int): LoginFragment {
             val loginFragment = LoginFragment()
@@ -57,6 +61,7 @@ class LoginFragment : BaseFragment(), LoginFragmentMvpView, View.OnClickListener
             switchButton.text = getString(R.string.label_login_new_account)
             commandButton.text = getString(R.string.label_login_button)
             commandButton.setBackgroundResource(R.drawable.ripple_login)
+            googleButton.setOnClickListener(this)
         } else {
             progressDialog = ProgressDialog(context, R.style.AppTheme_SignUp_Dialog)
             switchButton.text = getString(R.string.label_login_registered)
@@ -73,7 +78,6 @@ class LoginFragment : BaseFragment(), LoginFragmentMvpView, View.OnClickListener
 
         if (type == LOGIN) {
             loginFragmentPresenter.configureFacebookLogin(facebookButton)
-            loginFragmentPresenter.configureGoogleLogin(googleButton)
         }
     }
 
@@ -90,7 +94,11 @@ class LoginFragment : BaseFragment(), LoginFragmentMvpView, View.OnClickListener
         if (type == SIGN_UP) {
             loginFragmentPresenter.startSignUp(userView.text.toString(), passView.text.toString())
         } else {
-            loginFragmentPresenter.startLogin(userView.text.toString(), passView.text.toString())
+            if (v is SignInButton) {
+                loginFragmentPresenter.startGoogleLogin()
+            } else {
+                loginFragmentPresenter.startLogin(userView.text.toString(), passView.text.toString())
+            }
         }
     }
 
@@ -130,7 +138,7 @@ class LoginFragment : BaseFragment(), LoginFragmentMvpView, View.OnClickListener
         passView.requestFocus()
     }
 
-    override fun showRegistrationFailedError(message: String) {
+    override fun showGenericError(message: String) {
         Snackbar.make(activity?.findViewById(android.R.id.content)!!,
                 message, Snackbar.LENGTH_LONG).show()
     }
@@ -148,9 +156,24 @@ class LoginFragment : BaseFragment(), LoginFragmentMvpView, View.OnClickListener
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        loginFragmentPresenter.onActivityResult(requestCode, resultCode, data!!)
+        loginFragmentPresenter.onActivityResult(requestCode, resultCode, data!!, RC_SIGN_IN == requestCode)
     }
 
-    private fun moveToMainActivity() {
+    override fun showRegistrationSuccessMessage() {
+        AlertDialog.Builder(activity!!)
+                .setTitle(R.string.email_successful_title)
+                .setMessage(R.string.email_rationale)
+                .setPositiveButton(R.string.label_positive_button, null)
+                .show()
+    }
+
+    override fun moveToMainActivity() {
+        val intent = Intent(activity, MapActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+        startActivity(intent)
+    }
+
+    override fun startSignInWithIntent(intent: Intent) {
+        startActivityForResult(intent, RC_SIGN_IN)
     }
 }

@@ -1,5 +1,6 @@
 package com.tompee.convoy.feature.login.fragment
 
+import android.content.Intent
 import com.tompee.convoy.base.MvpView
 
 interface LoginFragmentMvpView : MvpView {
@@ -9,5 +10,8 @@ interface LoginFragmentMvpView : MvpView {
     fun showEmailInvalidError()
     fun showPasswordEmptyError()
     fun showPasswordTooShortError()
-    fun showRegistrationFailedError(message: String)
+    fun showGenericError(message: String)
+    fun showRegistrationSuccessMessage()
+    fun moveToMainActivity()
+    fun startSignInWithIntent(intent: Intent)
 }

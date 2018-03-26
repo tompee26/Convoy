@@ -5,9 +5,11 @@
 
     <string name="facebook_app_id">167254463898044</string>
     <string name="fb_login_protocol_scheme">fb167254463898044</string>
-    <string name="google_client_id" translatable="false">798931815594-8kqb8uqgr6079jjvura3h71l843mra01.apps.googleusercontent.com</string>
+    <string name="google_client_id" translatable="false">100581148505-rh8qrbokce4mtrgnoshroc1ursntvovh.apps.googleusercontent.com</string>
 
     <string name="rationale_location">This app needs access to your location to know where you are.</string>
+
+    <string name="label_positive_button">OK</string>
 
     <!-- Login screen -->
     <string name="label_login_name">Email</string>
@@ -22,5 +24,7 @@
     <string name="error_login_pass_min">Must be at least 6 characters</string>
     <string name="progress_login_register">Registering account…</string>
     <string name="progress_login_authenticate">Authenticating…</string>
+    <string name="email_successful_title">Registration successful</string>
+    <string name="email_rationale">A message was sent to your email. Please verify and login afterwards.</string>
 
 </resources>
