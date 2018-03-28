@@ -10,15 +10,14 @@ import timber.log.Timber
 
 class LoginActivityPresenter(private val authInteractor: AuthInteractor) :
         BasePresenter<LoginActivityMvpView>() {
-
-    fun checkIfUserLoggedIn() {
+    override fun onAttachView(view: LoginActivityMvpView) {
         authInteractor.getUser()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(object : SingleObserver<String> {
                     override fun onSuccess(email: String) {
                         Timber.i("User is logged in")
-                        view?.moveToNextActivity(email)
+                        view.moveToNextActivity(email)
                     }
 
                     override fun onSubscribe(d: Disposable) {
@@ -28,5 +27,8 @@ class LoginActivityPresenter(private val authInteractor: AuthInteractor) :
                         Timber.i("No logged in user")
                     }
                 })
+    }
+
+    override fun onDetachView() {
     }
 }

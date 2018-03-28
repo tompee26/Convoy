@@ -16,6 +16,12 @@ import io.reactivex.schedulers.Schedulers
 class MapPresenter(private val locationInteractor: LocationInteractor,
                    private val userInteractor: UserInteractor,
                    private val context: Context) : BasePresenter<MapMvpView>() {
+    override fun onAttachView(view: MapMvpView) {
+    }
+
+    override fun onDetachView() {
+    }
+
     private lateinit var googleMap: GoogleMap
     private var locationSubscription: Disposable? = null
 

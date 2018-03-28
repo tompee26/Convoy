@@ -8,7 +8,9 @@ import android.support.design.widget.Snackbar
 import android.support.v7.app.AlertDialog
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import com.google.android.gms.common.SignInButton
+import com.facebook.login.widget.LoginButton
+import com.jakewharton.rxbinding2.view.RxView
+import com.jakewharton.rxbinding2.widget.RxTextView
 import com.tompee.convoy.R
 import com.tompee.convoy.base.BaseFragment
 import com.tompee.convoy.dependency.component.DaggerAuthComponent
@@ -16,15 +18,20 @@ import com.tompee.convoy.dependency.component.DaggerLoginComponent
 import com.tompee.convoy.dependency.module.AuthModule
 import com.tompee.convoy.dependency.module.LoginModule
 import com.tompee.convoy.feature.profile.ProfileActivity
+import io.reactivex.Observable
+import io.reactivex.subjects.BehaviorSubject
 import kotlinx.android.synthetic.main.fragment_login.*
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
-class LoginFragment : BaseFragment(), LoginFragmentMvpView, View.OnClickListener {
+class LoginFragment : BaseFragment(), LoginFragmentMvpView {
     @Inject
     lateinit var loginFragmentPresenter: LoginFragmentPresenter
 
     private lateinit var listener: LoginFragmentListener
     private lateinit var progressDialog: ProgressDialog
+    private var facebookResultSubject: BehaviorSubject<Triple<Int, Int, Intent>> = BehaviorSubject.create()
+    private var googleResultSubject: BehaviorSubject<Intent> = BehaviorSubject.create()
 
     companion object {
         const val LOGIN = 0
@@ -41,6 +48,7 @@ class LoginFragment : BaseFragment(), LoginFragmentMvpView, View.OnClickListener
         }
     }
 
+    // region View/Presenter initialization
     override fun layoutId(): Int = R.layout.fragment_login
 
     override fun setupComponent() {
@@ -61,7 +69,6 @@ class LoginFragment : BaseFragment(), LoginFragmentMvpView, View.OnClickListener
             switchButton.text = getString(R.string.label_login_new_account)
             commandButton.text = getString(R.string.label_login_button)
             commandButton.setBackgroundResource(R.drawable.ripple_login)
-            googleButton.setOnClickListener(this)
         } else {
             progressDialog = ProgressDialog(context, R.style.AppTheme_SignUp_Dialog)
             switchButton.text = getString(R.string.label_login_registered)
@@ -74,11 +81,6 @@ class LoginFragment : BaseFragment(), LoginFragmentMvpView, View.OnClickListener
             rightLineView.visibility = View.GONE
         }
         progressDialog.isIndeterminate = true
-        commandButton.setOnClickListener(this)
-
-        if (type == LOGIN) {
-            loginFragmentPresenter.configureFacebookLogin(facebookButton)
-        }
     }
 
     override fun onDestroy() {
@@ -86,38 +88,61 @@ class LoginFragment : BaseFragment(), LoginFragmentMvpView, View.OnClickListener
         loginFragmentPresenter.detachView()
     }
 
-    override fun onClick(v: View?) {
-        val type = arguments?.getInt(TYPE_TAG)
-        userView.error = null
-        passView.error = null
-
-        if (type == SIGN_UP) {
-            loginFragmentPresenter.startSignUp(userView.text.toString(), passView.text.toString())
-        } else {
-            if (v is SignInButton) {
-                loginFragmentPresenter.startGoogleLogin()
-            } else {
-                loginFragmentPresenter.startLogin(userView.text.toString(), passView.text.toString())
-            }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        facebookResultSubject.onNext(Triple(requestCode, resultCode, data!!))
+        if (RC_SIGN_IN == requestCode) {
+            googleResultSubject.onNext(data!!)
         }
     }
+    //endregion
 
-    override fun showProgressDialog() {
-        val type = arguments?.getInt(TYPE_TAG)
-        if (type == SIGN_UP) {
-            progressDialog.setMessage(getString(R.string.progress_login_register))
-        } else {
-            progressDialog.setMessage(getString(R.string.progress_login_authenticate))
-        }
-        val imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(view?.windowToken, 0)
-        progressDialog.show()
+    // region Observables
+    override fun getType(): Int {
+        return arguments?.getInt(TYPE_TAG)!!
     }
 
-    override fun hideProgressDialog() {
-        progressDialog.hide()
+    override fun signUpRequest(): Observable<Any> {
+        return RxView.clicks(commandButton)
     }
 
+    override fun loginRequest(): Observable<Any> {
+        return RxView.clicks(commandButton)
+    }
+
+    override fun getEmail(): Observable<String> {
+        return RxTextView.textChanges(userView)
+                .skipInitialValue()
+                .debounce(1, TimeUnit.SECONDS)
+                .map { charSequence -> charSequence.toString() }
+    }
+
+    override fun getPassword(): Observable<String> {
+        return RxTextView.textChanges(passView)
+                .skipInitialValue()
+                .debounce(1, TimeUnit.SECONDS)
+                .map { charSequence -> charSequence.toString() }
+    }
+
+    override fun getFacebookLogin(): Observable<LoginButton> {
+        return Observable.just(facebookButton)
+    }
+
+    override fun googleSignInRequest(): Observable<Any> {
+        return RxView.clicks(googleButton)
+    }
+
+    override fun facebookResult(): Observable<Triple<Int, Int, Intent>> {
+        return facebookResultSubject
+    }
+
+    override fun googleResult(): Observable<Intent> {
+        return googleResultSubject
+    }
+
+    // endregion
+
+    // region Error handling
     override fun showEmailEmptyError() {
         userView.error = getString(R.string.error_field_required)
         userView.requestFocus()
@@ -142,6 +167,24 @@ class LoginFragment : BaseFragment(), LoginFragmentMvpView, View.OnClickListener
         Snackbar.make(activity?.findViewById(android.R.id.content)!!,
                 message, Snackbar.LENGTH_LONG).show()
     }
+    // endregion
+
+    // region Exposed APIs
+    override fun showProgressDialog() {
+        val type = arguments?.getInt(TYPE_TAG)
+        if (type == SIGN_UP) {
+            progressDialog.setMessage(getString(R.string.progress_login_register))
+        } else {
+            progressDialog.setMessage(getString(R.string.progress_login_authenticate))
+        }
+        val imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(view?.windowToken, 0)
+        progressDialog.show()
+    }
+
+    override fun hideProgressDialog() {
+        progressDialog.hide()
+    }
 
     interface LoginFragmentListener {
         fun onSwitchPage(type: Int)
@@ -152,11 +195,6 @@ class LoginFragment : BaseFragment(), LoginFragmentMvpView, View.OnClickListener
         if (context is LoginFragmentListener) {
             listener = context
         }
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        loginFragmentPresenter.onActivityResult(requestCode, resultCode, data!!, RC_SIGN_IN == requestCode)
     }
 
     override fun showRegistrationSuccessMessage() {
@@ -178,4 +216,9 @@ class LoginFragment : BaseFragment(), LoginFragmentMvpView, View.OnClickListener
     override fun startSignInWithIntent(intent: Intent) {
         startActivityForResult(intent, RC_SIGN_IN)
     }
+
+    override fun enableCommand(state: Boolean) {
+        commandButton.isEnabled = state
+    }
+    //endregion
 }

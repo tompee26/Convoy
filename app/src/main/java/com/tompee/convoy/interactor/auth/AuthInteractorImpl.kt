@@ -1,7 +1,6 @@
 package com.tompee.convoy.interactor.auth
 
 import android.content.Intent
-import android.text.TextUtils
 import com.facebook.AccessToken
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
@@ -14,11 +13,9 @@ import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
-import com.tompee.convoy.Constants
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
-import java.util.regex.Pattern
 
 class AuthInteractorImpl(private val firebaseAuth: FirebaseAuth,
                          private val callbackManager: CallbackManager,
@@ -34,16 +31,12 @@ class AuthInteractorImpl(private val firebaseAuth: FirebaseAuth,
     }
 
     override fun signUp(email: String, password: String): Single<String> {
-        return validateEmail(email)
-                .andThen(validatePass(password))
-                .andThen(processSignUp(email, password))
+        return processSignUp(email, password)
                 .andThen(sendEmailVerificationEmail())
     }
 
     override fun login(email: String, password: String): Single<String> {
-        return validateEmail(email)
-                .andThen(validatePass(password))
-                .andThen(processSignIn(email, password))
+        return processSignIn(email, password)
     }
 
     override fun configureFacebookLogin(loginButton: LoginButton): Single<String> {
@@ -128,35 +121,6 @@ class AuthInteractorImpl(private val firebaseAuth: FirebaseAuth,
                     e.onError(Throwable(task.exception?.message))
                 }
             })
-        })
-    }
-
-    private fun validateEmail(email: String): Completable {
-        return Completable.create({ e ->
-            if (TextUtils.isEmpty(email)) {
-                e.onError(EmailEmptyException())
-                return@create
-            }
-            val ptn = Pattern.compile(Constants.EMAIL_PATTERN)
-            val mc = ptn.matcher(email)
-            if (!mc.matches()) {
-                e.onError(InvalidEmailFormatException())
-                return@create
-            }
-            e.onComplete()
-        })
-    }
-
-    private fun validatePass(password: String): Completable {
-        return Completable.create({ e ->
-            if (TextUtils.isEmpty(password)) {
-                e.onError(PasswordEmptyException())
-                return@create
-            } else if (password.length < Constants.MIN_PASS_CHAR) {
-                e.onError(PasswordTooShortException())
-                return@create
-            }
-            e.onComplete()
         })
     }
 }

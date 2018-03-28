@@ -1,16 +1,21 @@
 package com.tompee.convoy.feature.profile
 
 import com.tompee.convoy.base.BasePresenter
-import com.tompee.convoy.interactor.user.UserInteractor
+import com.tompee.convoy.interactor.model.User
 import com.tompee.convoy.interactor.user.EmptyDisplayNameException
 import com.tompee.convoy.interactor.user.EmptyFirstNameException
 import com.tompee.convoy.interactor.user.EmptyLastNameException
-import com.tompee.convoy.interactor.model.User
+import com.tompee.convoy.interactor.user.UserInteractor
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
 
 class ProfilePresenter(private val userInteractor: UserInteractor) : BasePresenter<ProfileMvpView>() {
+    override fun onAttachView(view: ProfileMvpView) {
+    }
+
+    override fun onDetachView() {
+    }
 
     fun start(email: String) {
         view?.setEmail(email)

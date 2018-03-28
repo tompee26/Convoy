@@ -41,11 +41,6 @@ class LoginActivity : BaseActivity(), LoginActivityMvpView, ViewPager.PageTransf
         loginComponent.inject(this)
     }
 
-    override fun onStart() {
-        super.onStart()
-        loginActivityPresenter.checkIfUserLoggedIn()
-    }
-
     override fun onDestroy() {
         super.onDestroy()
         loginActivityPresenter.detachView()

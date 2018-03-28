@@ -4,10 +4,8 @@ import android.content.Context
 import android.support.multidex.MultiDex
 import android.support.multidex.MultiDexApplication
 import com.tompee.convoy.dependency.component.AppComponent
-import com.tompee.convoy.dependency.component.AuthComponent
 import com.tompee.convoy.dependency.component.DaggerAppComponent
 import com.tompee.convoy.dependency.module.AppModule
-import io.realm.Realm
 import timber.log.Timber
 
 class ConvoyApplication : MultiDexApplication() {
@@ -23,7 +21,6 @@ class ConvoyApplication : MultiDexApplication() {
     override fun onCreate() {
         super.onCreate()
         Timber.plant(Timber.DebugTree())
-        Realm.init(this)
     }
 
     override fun attachBaseContext(base: Context?) {
