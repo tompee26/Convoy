@@ -5,9 +5,9 @@ import android.os.Bundle
 import android.view.View
 import com.tompee.convoy.R
 import com.tompee.convoy.base.BaseActivity
-import com.tompee.convoy.dependency.component.DaggerDataComponent
+import com.tompee.convoy.dependency.component.DaggerUserComponent
 import com.tompee.convoy.dependency.component.DaggerProfileComponent
-import com.tompee.convoy.dependency.module.DataModule
+import com.tompee.convoy.dependency.module.UserModule
 import com.tompee.convoy.dependency.module.ProfileModule
 import com.tompee.convoy.feature.map.MapActivity
 import kotlinx.android.synthetic.main.activity_profile.*
@@ -32,14 +32,15 @@ class ProfileActivity : BaseActivity(), ProfileMvpView, View.OnClickListener {
 
     override fun setupComponent() {
         val component = DaggerProfileComponent.builder()
-                .dataComponent(DaggerDataComponent.builder().dataModule(DataModule()).build())
+                .userComponent(DaggerUserComponent.builder().userModule(UserModule()).build())
                 .profileModule(ProfileModule())
                 .build()
         component.inject(this)
     }
 
-    override fun moveToNextActivity() {
+    override fun moveToNextActivity(email : String) {
         val intent = Intent(this, MapActivity::class.java)
+        intent.putExtra(MapActivity.EMAIL, email)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
         startActivity(intent)
         finish()
@@ -70,4 +71,9 @@ class ProfileActivity : BaseActivity(), ProfileMvpView, View.OnClickListener {
         displayName.error = getString(R.string.error_field_required)
         displayName.requestFocus()
     }
+
+    override fun setEmail(email: String) {
+        emailView.text = email
+    }
+
 }

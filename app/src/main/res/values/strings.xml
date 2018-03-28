@@ -29,11 +29,15 @@
     <string name="profile_label_first_name">First Name</string>
     <string name="profile_label_last_name">Last Name</string>
     <string name="profile_label_display_name">Display Name</string>
-    <string name="profile_label_save">Save</string>
+    <string name="profile_label_save">Create Profile</string>
 
     <!-- Error -->
     <string name="error_field_required">This field is required</string>
     <string name="error_invalid_email">Invalid email format</string>
     <string name="error_pass_min">Must be at least 6 characters</string>
 
+    <!-- Drawer menu -->
+    <string name="menu_friends_list">Friends</string>
+    <string name="menu_profile">Profile</string>
+    <string name="menu_log_out">Log out</string>
 </resources>

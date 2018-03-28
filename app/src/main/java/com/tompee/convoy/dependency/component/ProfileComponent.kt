@@ -6,7 +6,7 @@ import com.tompee.convoy.feature.profile.ProfileActivity
 import dagger.Component
 
 @ProfileScope
-@Component(dependencies = [DataComponent::class],
+@Component(dependencies = [UserComponent::class],
         modules = [ProfileModule::class])
 interface ProfileComponent {
     fun inject(profileActivity: ProfileActivity)

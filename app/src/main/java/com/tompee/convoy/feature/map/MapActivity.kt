@@ -10,9 +10,13 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.tompee.convoy.R
 import com.tompee.convoy.base.BaseActivity
 import com.tompee.convoy.dependency.component.DaggerMapComponent
+import com.tompee.convoy.dependency.component.DaggerUserComponent
 import com.tompee.convoy.dependency.module.MapModule
+import com.tompee.convoy.dependency.module.UserModule
+import com.tompee.convoy.interactor.model.User
 import kotlinx.android.synthetic.main.activity_map.*
-import kotlinx.android.synthetic.main.toolbar.*
+import kotlinx.android.synthetic.main.drawer_header.*
+import kotlinx.android.synthetic.main.toolbar_main.*
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions
@@ -20,6 +24,7 @@ import javax.inject.Inject
 
 class MapActivity : BaseActivity(), MapMvpView, OnMapReadyCallback, EasyPermissions.PermissionCallbacks {
     companion object {
+        const val EMAIL = "email"
         private const val RC_LOCATION_PERM = 124
     }
 
@@ -31,10 +36,16 @@ class MapActivity : BaseActivity(), MapMvpView, OnMapReadyCallback, EasyPermissi
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_menu)
-
+        supportActionBar?.setDisplayShowTitleEnabled(false)
         presenter.attachView(this)
+        presenter.start(intent.getStringExtra(EMAIL))
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
+    }
+
+    override fun setupProfile(user: User) {
+        emailView.text = user.email
+        displayNameView.text = user.displayName
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
@@ -53,7 +64,9 @@ class MapActivity : BaseActivity(), MapMvpView, OnMapReadyCallback, EasyPermissi
     override fun layoutId(): Int = R.layout.activity_map
 
     override fun setupComponent() {
-        val mapComponent = DaggerMapComponent.builder().mapModule(MapModule(this)).build()
+        val mapComponent = DaggerMapComponent.builder()
+                .userComponent(DaggerUserComponent.builder().userModule(UserModule()).build())
+                .mapModule(MapModule(this)).build()
         mapComponent.inject(this)
     }
 

@@ -109,7 +109,9 @@ class AuthInteractorImpl(private val firebaseAuth: FirebaseAuth,
         return Single.create({ e ->
             firebaseAuth.currentUser?.sendEmailVerification()?.addOnCompleteListener({ task ->
                 if (task.isSuccessful) {
-                    e.onSuccess(firebaseAuth.currentUser?.email!!)
+                    val email = firebaseAuth.currentUser?.email!!
+                    firebaseAuth.signOut()
+                    e.onSuccess(email)
                 } else {
                     e.onError(Throwable(task.exception?.message))
                 }

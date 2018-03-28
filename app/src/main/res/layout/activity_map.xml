@@ -4,15 +4,14 @@
     xmlns:map="http://schemas.android.com/apk/res-auto"
     android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fitsSystemWindows="true">
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <include layout="@layout/toolbar" />
+        <include layout="@layout/toolbar_main" />
 
         <fragment
             android:id="@+id/map"
@@ -20,7 +19,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             map:cameraZoom="10" />
-
     </LinearLayout>
 
     <android.support.design.widget.NavigationView
@@ -28,7 +26,8 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:fitsSystemWindows="true"
-        app:headerLayout="@layout/drawer_header" />
+        app:headerLayout="@layout/drawer_header"
+        app:itemIconTint="@color/colorPrimary"
+        app:menu="@menu/drawer" />
 
 </android.support.v4.widget.DrawerLayout>

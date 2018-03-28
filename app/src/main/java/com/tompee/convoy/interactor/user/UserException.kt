@@ -1,4 +1,4 @@
-package com.tompee.convoy.interactor.data
+package com.tompee.convoy.interactor.user
 
 open class DataException : Exception()
 

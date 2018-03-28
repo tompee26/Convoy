@@ -33,29 +33,42 @@
         android:text="@string/profile_label_setup"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@color/colorLight"
-        app:layout_constraintBottom_toTopOf="@+id/iv_user_icon"
+        app:layout_constraintBottom_toTopOf="@id/iv_user_icon"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/emailView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/colorLight"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_user_icon" />
 
     <TextView
         android:id="@+id/firstNameLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="24dp"
         android:labelFor="@id/firstName"
         android:text="@string/profile_label_first_name"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="@color/colorLight"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/iv_user_icon" />
+        app:layout_constraintTop_toBottomOf="@+id/emailView" />
 
     <AutoCompleteTextView
         android:id="@+id/firstName"
         android:layout_width="0dp"
         android:layout_height="28dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
         android:background="@android:color/transparent"
         android:inputType="textPersonName"
@@ -79,28 +92,25 @@
         android:id="@+id/lastNameLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:labelFor="@id/lastName"
         android:text="@string/profile_label_last_name"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="@color/colorLight"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/firstNameLabel"
         app:layout_constraintTop_toBottomOf="@+id/firstNameLine" />
 
     <AutoCompleteTextView
         android:id="@+id/lastName"
         android:layout_width="0dp"
         android:layout_height="28dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:background="@android:color/transparent"
         android:inputType="textPersonName"
         android:textColor="@color/colorLight"
         android:textCursorDrawable="@null"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/firstName"
+        app:layout_constraintStart_toStartOf="@+id/firstName"
         app:layout_constraintTop_toBottomOf="@+id/lastNameLabel" />
 
     <View
@@ -117,28 +127,25 @@
         android:id="@+id/displayNameLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:labelFor="@id/displayName"
         android:text="@string/profile_label_display_name"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="@color/colorLight"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/lastNameLabel"
         app:layout_constraintTop_toBottomOf="@+id/lastNameLine" />
 
     <AutoCompleteTextView
         android:id="@+id/displayName"
         android:layout_width="0dp"
         android:layout_height="28dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:background="@android:color/transparent"
         android:inputType="textPersonName"
         android:textColor="@color/colorLight"
         android:textCursorDrawable="@null"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/lastName"
+        app:layout_constraintStart_toStartOf="@+id/lastName"
         app:layout_constraintTop_toBottomOf="@+id/displayNameLabel" />
 
     <View
@@ -154,11 +161,12 @@
     <Button
         android:id="@+id/saveButton"
         android:layout_width="wrap_content"
-        android:layout_height="48dp"
+        android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="32dp"
-        android:background="@color/colorLoginButton"
+        android:background="@drawable/background_create_profile"
+        android:padding="16dp"
         android:text="@string/profile_label_save"
         android:textAllCaps="true"
         android:textColor="@color/colorLight"

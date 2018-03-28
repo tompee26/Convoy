@@ -1,4 +1,4 @@
-package com.tompee.convoy.interactor.data
+package com.tompee.convoy.interactor.user
 
 import android.text.TextUtils
 import com.google.firebase.database.DataSnapshot
@@ -10,7 +10,7 @@ import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.SingleSource
 
-class DataInteractorImpl(private val databaseReference: DatabaseReference) : DataInteractor {
+class UserInteractorImpl(private val databaseReference: DatabaseReference) : UserInteractor {
     companion object {
         private const val PROFILE = "profile"
     }
@@ -18,19 +18,20 @@ class DataInteractorImpl(private val databaseReference: DatabaseReference) : Dat
     override fun getUser(email: String): Single<User> {
         return Single.create<User>({ e ->
             val reference = databaseReference.child(PROFILE)
-            val query = reference.equalTo(email)
-            query.addListenerForSingleValueEvent(object : ValueEventListener {
+            reference.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onCancelled(error: DatabaseError) {
                     e.onError(error.toException())
                 }
 
-                override fun onDataChange(data: DataSnapshot) {
-                    val user = data.getValue(User::class.java)
-                    if (user != null) {
-                        e.onSuccess(user)
-                    } else {
-                        e.onError(Throwable("User does not exist"))
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    dataSnapshot.children.forEach {it ->
+                        val user = it.getValue(User::class.java)
+                        if (user != null && user.email == email) {
+                            e.onSuccess(user)
+                            return
+                        }
                     }
+                    e.onError(Throwable("User does not exist"))
                 }
             })
         })
