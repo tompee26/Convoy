@@ -24,14 +24,14 @@ class UserInteractorImpl(private val databaseReference: DatabaseReference) : Use
                 }
 
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    dataSnapshot.children.forEach {it ->
+                    dataSnapshot.children.forEach { it ->
                         val user = it.getValue(User::class.java)
                         if (user != null && user.email == email) {
                             e.onSuccess(user)
                             return
                         }
                     }
-                    e.onError(Throwable("User does not exist"))
+                    e.onError(Throwable(email))
                 }
             })
         })

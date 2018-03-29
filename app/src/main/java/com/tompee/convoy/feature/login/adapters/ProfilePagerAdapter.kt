@@ -1,13 +1,12 @@
-package com.tompee.convoy.feature.login
+package com.tompee.convoy.feature.login.adapters
 
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentStatePagerAdapter
-import com.tompee.convoy.feature.login.fragment.LoginFragment
-import javax.inject.Inject
+import com.tompee.convoy.feature.login.profile.ProfileFragment
 
-class LoginPagerAdapter @Inject constructor(fragmentManager: FragmentManager,
-                                            private val fragmentList: List<LoginFragment>) :
+class ProfilePagerAdapter(fragmentManager: FragmentManager,
+                          private val fragmentList: List<ProfileFragment>) :
         FragmentStatePagerAdapter(fragmentManager) {
 
     override fun getCount(): Int = fragmentList.size

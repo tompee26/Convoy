@@ -7,12 +7,11 @@ import android.view.MenuItem
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.tompee.convoy.ConvoyApplication
 import com.tompee.convoy.R
 import com.tompee.convoy.base.BaseActivity
 import com.tompee.convoy.dependency.component.DaggerMapComponent
-import com.tompee.convoy.dependency.component.DaggerUserComponent
 import com.tompee.convoy.dependency.module.MapModule
-import com.tompee.convoy.dependency.module.UserModule
 import com.tompee.convoy.interactor.model.User
 import kotlinx.android.synthetic.main.activity_map.*
 import kotlinx.android.synthetic.main.drawer_header.*
@@ -65,7 +64,7 @@ class MapActivity : BaseActivity(), MapMvpView, OnMapReadyCallback, EasyPermissi
 
     override fun setupComponent() {
         val mapComponent = DaggerMapComponent.builder()
-                .userComponent(DaggerUserComponent.builder().userModule(UserModule()).build())
+                .appComponent(ConvoyApplication[this].component)
                 .mapModule(MapModule(this)).build()
         mapComponent.inject(this)
     }

@@ -1,4 +1,4 @@
-package com.tompee.convoy.feature.login.fragment
+package com.tompee.convoy.feature.login.login
 
 import android.content.Intent
 import com.facebook.login.widget.LoginButton
@@ -25,7 +25,7 @@ interface LoginFragmentMvpView : MvpView {
     fun showProgressDialog()
     fun hideProgressDialog()
     fun showRegistrationSuccessMessage()
-    fun moveToNextActivity(email: String)
+    fun loginFinished(email: String)
     fun startSignInWithIntent(intent: Intent)
     fun enableCommand(state: Boolean)
 }

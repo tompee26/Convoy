@@ -15,7 +15,7 @@ import javax.inject.Singleton
 
 @Singleton
 @Module
-class AuthModule(private val context: Context) {
+class AuthModule {
     @Provides
     @Singleton
     fun provideAuthInteractor(authInteractorImpl: AuthInteractorImpl): AuthInteractor {
@@ -41,7 +41,7 @@ class AuthModule(private val context: Context) {
     }
 
     @Provides
-    fun provideGoogleApiClient(gso: GoogleSignInOptions): GoogleApiClient {
+    fun provideGoogleApiClient(context: Context, gso: GoogleSignInOptions): GoogleApiClient {
         return GoogleApiClient.Builder(context)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build()
@@ -49,7 +49,7 @@ class AuthModule(private val context: Context) {
 
     @Provides
     @Singleton
-    fun provideGoogleSignInOptions(): GoogleSignInOptions {
+    fun provideGoogleSignInOptions(context: Context): GoogleSignInOptions {
         return GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .requestIdToken(context.getString(R.string.default_web_client_id))

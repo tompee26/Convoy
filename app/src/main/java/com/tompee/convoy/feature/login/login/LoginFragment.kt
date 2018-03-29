@@ -1,4 +1,4 @@
-package com.tompee.convoy.feature.login.fragment
+package com.tompee.convoy.feature.login.login
 
 import android.app.ProgressDialog
 import android.content.Context
@@ -11,13 +11,11 @@ import android.view.inputmethod.InputMethodManager
 import com.facebook.login.widget.LoginButton
 import com.jakewharton.rxbinding2.view.RxView
 import com.jakewharton.rxbinding2.widget.RxTextView
+import com.tompee.convoy.ConvoyApplication
 import com.tompee.convoy.R
 import com.tompee.convoy.base.BaseFragment
-import com.tompee.convoy.dependency.component.DaggerAuthComponent
 import com.tompee.convoy.dependency.component.DaggerLoginComponent
-import com.tompee.convoy.dependency.module.AuthModule
 import com.tompee.convoy.dependency.module.LoginModule
-import com.tompee.convoy.feature.profile.ProfileActivity
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
 import kotlinx.android.synthetic.main.fragment_login.*
@@ -54,7 +52,7 @@ class LoginFragment : BaseFragment(), LoginFragmentMvpView {
     override fun setupComponent() {
         val loginComponent = DaggerLoginComponent.builder()
                 .loginModule(LoginModule(activity!!))
-                .authComponent(DaggerAuthComponent.builder().authModule(AuthModule(activity!!)).build())
+                .appComponent(ConvoyApplication[activity as Context].component)
                 .build()
         loginComponent.inject(this)
     }
@@ -169,7 +167,7 @@ class LoginFragment : BaseFragment(), LoginFragmentMvpView {
     }
     // endregion
 
-    // region Exposed APIs
+    // region Interface methods
     override fun showProgressDialog() {
         val type = arguments?.getInt(TYPE_TAG)
         if (type == SIGN_UP) {
@@ -187,6 +185,7 @@ class LoginFragment : BaseFragment(), LoginFragmentMvpView {
     }
 
     interface LoginFragmentListener {
+        fun onLoginFinished(email: String)
         fun onSwitchPage(type: Int)
     }
 
@@ -205,12 +204,8 @@ class LoginFragment : BaseFragment(), LoginFragmentMvpView {
                 .show()
     }
 
-    override fun moveToNextActivity(email: String) {
-        val intent = Intent(activity, ProfileActivity::class.java)
-        intent.putExtra(ProfileActivity.EMAIL, email)
-        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-        startActivity(intent)
-        activity?.finish()
+    override fun loginFinished(email: String) {
+        listener.onLoginFinished(email)
     }
 
     override fun startSignInWithIntent(intent: Intent) {

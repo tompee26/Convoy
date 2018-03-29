@@ -27,11 +27,6 @@
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation" />
 
         <activity
-            android:name=".feature.profile.ProfileActivity"
-            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-            android:windowSoftInputMode="stateHidden|adjustResize" />
-
-        <activity
             android:name=".feature.login.LoginActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation">
             <intent-filter>

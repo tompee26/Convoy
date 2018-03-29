@@ -6,6 +6,9 @@ import android.support.multidex.MultiDexApplication
 import com.tompee.convoy.dependency.component.AppComponent
 import com.tompee.convoy.dependency.component.DaggerAppComponent
 import com.tompee.convoy.dependency.module.AppModule
+import com.tompee.convoy.dependency.module.AuthModule
+import com.tompee.convoy.dependency.module.SchedulerModule
+import com.tompee.convoy.dependency.module.UserModule
 import timber.log.Timber
 
 class ConvoyApplication : MultiDexApplication() {
@@ -33,6 +36,9 @@ class ConvoyApplication : MultiDexApplication() {
             if (appComponent == null) {
                 appComponent = DaggerAppComponent.builder()
                         .appModule(AppModule(this))
+                        .authModule(AuthModule())
+                        .userModule(UserModule())
+                        .schedulerModule(SchedulerModule())
                         .build()
             }
             return appComponent as AppComponent

@@ -1,18 +1,18 @@
-package com.tompee.convoy.feature.login.fragment
+package com.tompee.convoy.feature.login.login
 
-import android.content.Intent
 import android.util.Patterns
 import com.facebook.login.widget.LoginButton
 import com.tompee.convoy.Constants
 import com.tompee.convoy.base.BasePresenter
 import com.tompee.convoy.interactor.auth.AuthInteractor
 import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.Scheduler
 import io.reactivex.functions.BiFunction
-import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
 
-class LoginFragmentPresenter(private val authInteractor: AuthInteractor) : BasePresenter<LoginFragmentMvpView>() {
+class LoginFragmentPresenter(private val authInteractor: AuthInteractor,
+                             private val io: Scheduler,
+                             private val ui: Scheduler) : BasePresenter<LoginFragmentMvpView>() {
     companion object {
         private const val EMAIL_EMPTY = 1
         private const val EMAIL_INVALID = 2
@@ -22,7 +22,7 @@ class LoginFragmentPresenter(private val authInteractor: AuthInteractor) : BaseP
 
     override fun onAttachView(view: LoginFragmentMvpView) {
         addSubscription(getEmailValidation(view.getEmail())
-                .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(ui)
                 .subscribe({ result ->
                     Timber.i("Email validation result: $result")
                     when (result) {
@@ -31,7 +31,7 @@ class LoginFragmentPresenter(private val authInteractor: AuthInteractor) : BaseP
                     }
                 }))
         addSubscription(getPasswordValidation(view.getPassword())
-                .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(ui)
                 .subscribe({ result ->
                     Timber.i("Password validation result: $result")
                     when (result) {
@@ -41,7 +41,7 @@ class LoginFragmentPresenter(private val authInteractor: AuthInteractor) : BaseP
                 })
         )
         addSubscription(getInputValidation(view.getEmail(), view.getPassword())
-                .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(ui)
                 .subscribe({ result ->
                     view.enableCommand(result)
                 }))
@@ -50,8 +50,8 @@ class LoginFragmentPresenter(private val authInteractor: AuthInteractor) : BaseP
             addSubscription(view.loginRequest()
                     .withLatestFrom(getLoginObservable(view.getEmail(), view.getPassword()),
                             BiFunction<Any, Pair<String, String>, Pair<String, String>> { _, loginPair -> loginPair })
-                    .subscribeOn(AndroidSchedulers.mainThread())
-                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeOn(ui)
+                    .observeOn(ui)
                     .subscribe({ pair ->
                         startLogin(pair.first, pair.second)
                     })
@@ -74,16 +74,16 @@ class LoginFragmentPresenter(private val authInteractor: AuthInteractor) : BaseP
             addSubscription(view.googleResult()
                     .subscribe({ data ->
                         authInteractor.signInGoogle(data)
-                                .subscribeOn(Schedulers.io())
-                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribeOn(io)
+                                .observeOn(ui)
                                 .subscribe(this::onFacebookLoginSuccessful, this::onFacebookLoginError)
                     }))
         } else {
             addSubscription(view.signUpRequest()
                     .withLatestFrom(getSignUpObservable(view.getEmail(), view.getPassword()),
                             BiFunction<Any, Pair<String, String>, Pair<String, String>> { _, signUpPair -> signUpPair })
-                    .subscribeOn(AndroidSchedulers.mainThread())
-                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeOn(ui)
+                    .observeOn(ui)
                     .subscribe({ pair ->
                         startSignUp(pair.first, pair.second)
                     })
@@ -144,15 +144,15 @@ class LoginFragmentPresenter(private val authInteractor: AuthInteractor) : BaseP
     private fun startLogin(email: String, password: String) {
         view?.showProgressDialog()
         authInteractor.login(email, password)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(io)
+                .observeOn(ui)
                 .subscribe(this::onLoginSuccessful, this::onLoginError)
     }
 
     private fun onLoginSuccessful(email: String) {
         Timber.i("Login email: $email")
         view?.hideProgressDialog()
-        view?.moveToNextActivity(email)
+        view?.loginFinished(email)
     }
 
     private fun onLoginError(e: Throwable) {
@@ -173,8 +173,8 @@ class LoginFragmentPresenter(private val authInteractor: AuthInteractor) : BaseP
     private fun startSignUp(email: String, password: String) {
         view?.showProgressDialog()
         authInteractor.signUp(email, password)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(io)
+                .observeOn(ui)
                 .subscribe(this::onUserCreated, this::onSignUpError)
     }
 
@@ -193,15 +193,15 @@ class LoginFragmentPresenter(private val authInteractor: AuthInteractor) : BaseP
     // region Facebook configuration
     private fun configureFacebookLogin(loginButton: LoginButton) {
         val disposable = authInteractor.configureFacebookLogin(loginButton)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(io)
+                .observeOn(ui)
                 .subscribe(this::onFacebookLoginSuccessful, this::onFacebookLoginError)
         addSubscription(disposable)
     }
 
     private fun onFacebookLoginSuccessful(email: String) {
         Timber.i("Login user: $email")
-        view?.moveToNextActivity(email)
+        view?.loginFinished(email)
     }
 
     private fun onFacebookLoginError(e: Throwable) {
@@ -213,19 +213,11 @@ class LoginFragmentPresenter(private val authInteractor: AuthInteractor) : BaseP
     // region Google configuration
     private fun startGoogleLogin() {
         authInteractor.startGoogleLogin()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(io)
+                .observeOn(ui)
                 .subscribe({ intent ->
                     view?.startSignInWithIntent(intent)
                 })
-    }
-
-    fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent, isGoogle: Boolean) {
-        if (isGoogle) {
-
-        } else {
-            authInteractor.onActivityResult(requestCode, resultCode, data)
-        }
     }
     // endregion
 }

@@ -6,7 +6,7 @@ import com.tompee.convoy.feature.map.MapActivity
 import dagger.Component
 
 @MapScope
-@Component(dependencies = [UserComponent::class],
+@Component(dependencies = [AppComponent::class],
         modules = [MapModule::class])
 interface MapComponent {
     fun inject(mapActivity: MapActivity)

@@ -4,31 +4,43 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v4.view.ViewPager
 import android.view.View
+import com.tompee.convoy.ConvoyApplication
 import com.tompee.convoy.R
 import com.tompee.convoy.base.BaseActivity
-import com.tompee.convoy.dependency.component.DaggerAuthComponent
 import com.tompee.convoy.dependency.component.DaggerLoginComponent
-import com.tompee.convoy.dependency.module.AuthModule
 import com.tompee.convoy.dependency.module.LoginModule
-import com.tompee.convoy.feature.profile.ProfileActivity
+import com.tompee.convoy.feature.login.adapters.LoginPagerAdapter
+import com.tompee.convoy.feature.login.adapters.ProfilePagerAdapter
+import com.tompee.convoy.feature.login.adapters.ProgressPagerAdapter
+import com.tompee.convoy.feature.login.login.LoginFragment
+import com.tompee.convoy.feature.login.profile.ProfileFragment
+import com.tompee.convoy.feature.map.MapActivity
+import com.tompee.convoy.interactor.model.User
+import io.reactivex.Observable
+import io.reactivex.subjects.BehaviorSubject
 import kotlinx.android.synthetic.main.activity_login.*
 import javax.inject.Inject
 
 class LoginActivity : BaseActivity(), LoginActivityMvpView, ViewPager.PageTransformer,
-        ViewPager.OnPageChangeListener {
-
+        ViewPager.OnPageChangeListener, LoginFragment.LoginFragmentListener,
+        ProfileFragment.ProfileFragmentListener {
     @Inject
     lateinit var loginPagerAdapter: LoginPagerAdapter
-
+    @Inject
+    lateinit var progressAdapter: ProgressPagerAdapter
+    @Inject
+    lateinit var profileAdapter: ProfilePagerAdapter
     @Inject
     lateinit var loginActivityPresenter: LoginActivityPresenter
 
+    private val loginFinishedSubject = BehaviorSubject.create<String>()
+    private val saveFinishedSubject = BehaviorSubject.create<User>()
+
+    // region View/Presenter setup
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         loginActivityPresenter.attachView(this)
-        viewpager.setPageTransformer(false, this)
-        viewpager.addOnPageChangeListener(this)
-        viewpager.adapter = loginPagerAdapter
+        viewpager.adapter = progressAdapter
     }
 
     override fun layoutId(): Int = R.layout.activity_login
@@ -36,7 +48,7 @@ class LoginActivity : BaseActivity(), LoginActivityMvpView, ViewPager.PageTransf
     override fun setupComponent() {
         val loginComponent = DaggerLoginComponent.builder()
                 .loginModule(LoginModule(this))
-                .authComponent(DaggerAuthComponent.builder().authModule(AuthModule(this)).build())
+                .appComponent(ConvoyApplication[this].component)
                 .build()
         loginComponent.inject(this)
     }
@@ -44,14 +56,6 @@ class LoginActivity : BaseActivity(), LoginActivityMvpView, ViewPager.PageTransf
     override fun onDestroy() {
         super.onDestroy()
         loginActivityPresenter.detachView()
-    }
-
-    override fun moveToNextActivity(email: String) {
-        val intent = Intent(this, ProfileActivity::class.java)
-        intent.putExtra(ProfileActivity.EMAIL, email)
-        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-        startActivity(intent)
-        finish()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
@@ -95,9 +99,60 @@ class LoginActivity : BaseActivity(), LoginActivityMvpView, ViewPager.PageTransf
     override fun onPageSelected(position: Int) {
     }
 
+    override fun onSwitchPage(type: Int) {
+        if (type == LoginFragment.LOGIN) {
+            viewpager.currentItem = 1
+        } else {
+            viewpager.currentItem = 0
+        }
+    }
+
+    override fun onLoginFinished(email: String) {
+        loginFinishedSubject.onNext(email)
+    }
+
+    override fun onSaveSuccessful(user: User) {
+        saveFinishedSubject.onNext(user)
+    }
+
     private fun computeFactor(): Float {
         return (imageView.width / 2 - viewpager.width) / (viewpager.width *
                 loginPagerAdapter.count - 1).toFloat()
     }
+    // endregion
 
+    // region Observables
+    override fun loginEmail(): Observable<String> {
+        return loginFinishedSubject
+    }
+
+    override fun saveUser(): Observable<User> {
+        return saveFinishedSubject
+    }
+    // endregion
+
+    // region Interface methods
+    override fun showLoginScreen() {
+        viewpager.setPageTransformer(false, this)
+        viewpager.addOnPageChangeListener(this)
+        viewpager.adapter = loginPagerAdapter
+    }
+
+    override fun showProfileSetupScreen(email: String) {
+        viewpager.setPageTransformer(false, null)
+        viewpager.removeOnPageChangeListener(this)
+        val bundle = Bundle()
+        bundle.putString(ProfileFragment.EMAIL, email)
+        profileAdapter.getItem(0).arguments = bundle
+        viewpager.adapter = profileAdapter
+    }
+
+    override fun moveToNextActivity(email: String) {
+        val intent = Intent(this, MapActivity::class.java)
+        intent.putExtra(MapActivity.EMAIL, email)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+        startActivity(intent)
+        finish()
+    }
+    // endregion
 }

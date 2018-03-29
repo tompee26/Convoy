@@ -21,4 +21,8 @@
         <item name="android:textColorPrimary">@color/colorLight</item>
         <item name="android:background">@color/colorSignUpButton</item>
     </style>
+
+    <style name="AppTheme.ProgressDialog">
+        <item name="colorAccent">@color/colorLight</item>
+    </style>
 </resources>
