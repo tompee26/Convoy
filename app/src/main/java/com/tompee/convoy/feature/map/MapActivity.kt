@@ -44,7 +44,7 @@ class MapActivity : BaseActivity(), MapMvpView, OnMapReadyCallback, EasyPermissi
 
     override fun setupProfile(user: User) {
         emailView.text = user.email
-        displayNameView.text = user.displayName
+        displayNameView.text = user.display
     }
 
     override fun onMapReady(googleMap: GoogleMap) {

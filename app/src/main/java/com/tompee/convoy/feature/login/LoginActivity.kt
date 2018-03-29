@@ -108,10 +108,14 @@ class LoginActivity : BaseActivity(), LoginActivityMvpView, ViewPager.PageTransf
     }
 
     override fun onLoginFinished(email: String) {
+        viewpager.setPageTransformer(false, null)
+        viewpager.removeOnPageChangeListener(this)
+        viewpager.adapter = progressAdapter
         loginFinishedSubject.onNext(email)
     }
 
     override fun onSaveSuccessful(user: User) {
+        viewpager.adapter = progressAdapter
         saveFinishedSubject.onNext(user)
     }
 

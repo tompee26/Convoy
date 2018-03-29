@@ -44,7 +44,7 @@ class UserInteractorImpl(private val databaseReference: DatabaseReference) : Use
                 .andThen(SingleSource<User> { e ->
                     val user = User(email, displayName, firstName, lastName)
                     val key = databaseReference.child(PROFILE).push().key
-                    user.uuid = key
+                    user.id = key
                     databaseReference.child(PROFILE).child(key).setValue(user)
                     e.onSuccess(user)
                 })

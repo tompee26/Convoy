@@ -26,6 +26,8 @@ class UserModule {
     @Provides
     @Singleton
     fun provideDatabaseReference(): DatabaseReference {
-        return FirebaseDatabase.getInstance().reference
+        val reference = FirebaseDatabase.getInstance()
+        reference.setPersistenceEnabled(true)
+        return reference.reference
     }
 }
