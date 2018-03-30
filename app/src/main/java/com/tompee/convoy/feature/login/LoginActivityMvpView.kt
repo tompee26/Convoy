@@ -9,6 +9,6 @@ interface LoginActivityMvpView : MvpView {
     fun saveUser(): Observable<User>
 
     fun showLoginScreen()
-    fun moveToNextActivity(email: String)
+    fun moveToNextActivity(userId: String)
     fun showProfileSetupScreen(email: String)
 }

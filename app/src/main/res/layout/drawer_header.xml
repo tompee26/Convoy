@@ -5,7 +5,7 @@
     android:layout_height="180dp"
     android:background="@drawable/background_drawer_header">
 
-    <android.support.v7.widget.AppCompatImageView
+    <com.tompee.convoy.feature.widget.CircularImageView
         android:id="@+id/portrait"
         android:layout_width="70dp"
         android:layout_height="70dp"
@@ -13,11 +13,11 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:contentDescription="@string/content_description"
-        android:tint="@color/colorLight"
+        app:civ_border_width="2dp"
         app:layout_constraintBottom_toTopOf="@+id/displayNameView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_account_circle" />
+        app:srcCompat="@drawable/ic_account_circle_white" />
 
     <TextView
         android:id="@+id/displayNameView"
@@ -25,7 +25,6 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="4dp"
         android:layout_marginStart="16dp"
-        android:labelFor="@id/passView"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="@color/colorLight"
         app:layout_constraintBottom_toTopOf="@+id/emailView"
@@ -37,7 +36,6 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:layout_marginStart="16dp"
-        android:labelFor="@id/passView"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="@color/colorLightAlpha"
         app:layout_constraintBottom_toBottomOf="parent"

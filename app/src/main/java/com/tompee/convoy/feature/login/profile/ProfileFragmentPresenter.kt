@@ -123,8 +123,8 @@ class ProfileFragmentPresenter(private val context: Context,
         userInteractor.saveUser(user)
                 .subscribeOn(io)
                 .observeOn(ui)
-                .subscribe({ user ->
-                    view?.saveSuccessful(user)
+                .subscribe({ it ->
+                    view?.saveSuccessful(it)
                 }, {
                     Timber.e(it.message)
                 })

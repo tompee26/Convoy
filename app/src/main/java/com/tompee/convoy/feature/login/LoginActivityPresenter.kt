@@ -34,7 +34,7 @@ class LoginActivityPresenter(private val authInteractor: AuthInteractor,
                 .subscribeOn(io)
                 .observeOn(ui)
                 .subscribe({ user ->
-                    view?.moveToNextActivity(user.email)
+                    view?.moveToNextActivity(user.id)
                 }, {
                     view?.showProfileSetupScreen(it.message!!)
                 })
@@ -44,8 +44,8 @@ class LoginActivityPresenter(private val authInteractor: AuthInteractor,
         return user
                 .subscribeOn(io)
                 .observeOn(ui)
-                .subscribe({ user ->
-                    view?.moveToNextActivity(user.email)
+                .subscribe({ it ->
+                    view?.moveToNextActivity(it.id)
                 })
     }
 

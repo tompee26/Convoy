@@ -4,19 +4,23 @@ import android.content.Context
 import com.google.android.gms.location.LocationRequest
 import com.tompee.convoy.Constants
 import com.tompee.convoy.feature.map.MapPresenter
-import com.tompee.convoy.interactor.user.UserInteractor
 import com.tompee.convoy.interactor.location.LocationInteractor
 import com.tompee.convoy.interactor.location.LocationInteractorImpl
+import com.tompee.convoy.interactor.user.UserInteractor
 import dagger.Module
 import dagger.Provides
+import io.reactivex.Scheduler
 import pl.charmas.android.reactivelocation2.ReactiveLocationProvider
+import javax.inject.Named
 
 @Module
-class MapModule(private val context: Context) {
+class MapModule {
     @Provides
     fun provideMapPresenter(locationInteractor: LocationInteractor,
-                            userInteractor: UserInteractor): MapPresenter {
-        return MapPresenter(locationInteractor, userInteractor, context)
+                            userInteractor: UserInteractor,
+                            @Named("io") io: Scheduler,
+                            @Named("ui") ui: Scheduler): MapPresenter {
+        return MapPresenter(locationInteractor, userInteractor, io, ui)
     }
 
     @Provides
@@ -31,7 +35,7 @@ class MapModule(private val context: Context) {
     }
 
     @Provides
-    fun provideLocationProvider(): ReactiveLocationProvider {
+    fun provideLocationProvider(context: Context): ReactiveLocationProvider {
         return ReactiveLocationProvider(context)
     }
 

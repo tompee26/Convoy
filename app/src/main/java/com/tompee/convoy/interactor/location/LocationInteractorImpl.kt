@@ -9,6 +9,10 @@ import pl.charmas.android.reactivelocation2.ReactiveLocationProvider
 class LocationInteractorImpl(private val locationProvider: ReactiveLocationProvider,
                              private val locationRequest: LocationRequest) : LocationInteractor {
 
+    companion object {
+        private var locationObservable: Observable<Location>? = null
+    }
+
     @SuppressLint("MissingPermission")
     override fun getLastKnownLocation(): Observable<Location> {
         return locationProvider.lastKnownLocation
@@ -16,6 +20,11 @@ class LocationInteractorImpl(private val locationProvider: ReactiveLocationProvi
 
     @SuppressLint("MissingPermission")
     override fun getLocationUpdates(): Observable<Location> {
-        return locationProvider.getUpdatedLocation(locationRequest)
+        if (locationObservable == null) {
+            synchronized(locationProvider) {
+                locationObservable = locationProvider.getUpdatedLocation(locationRequest)
+            }
+        }
+        return locationObservable!!
     }
 }

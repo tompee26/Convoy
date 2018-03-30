@@ -176,9 +176,9 @@ class LoginActivity : BaseActivity(), LoginActivityMvpView, ViewPager.PageTransf
         checkAndRequestPermission()
     }
 
-    override fun moveToNextActivity(email: String) {
+    override fun moveToNextActivity(userId: String) {
         val intent = Intent(this, MapActivity::class.java)
-        intent.putExtra(MapActivity.EMAIL, email)
+        intent.putExtra(MapActivity.USER_ID, userId)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
         startActivity(intent)
         finish()

@@ -54,7 +54,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/userView"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="@+id/userView"
-        app:srcCompat="@drawable/ic_account_circle" />
+        app:srcCompat="@drawable/ic_account_circle_white" />
 
     <View
         android:id="@+id/view_user_underline"

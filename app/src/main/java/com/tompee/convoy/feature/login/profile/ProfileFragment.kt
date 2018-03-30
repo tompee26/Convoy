@@ -58,7 +58,7 @@ class ProfileFragment : BaseFragment(), ProfileFragmentMvpView {
     private fun startImageCrop() {
         CropImage.activity()
                 .setGuidelines(CropImageView.Guidelines.ON)
-                //.setCropShape(CropImageView.CropShape.OVAL)
+                .setCropShape(CropImageView.CropShape.OVAL)
                 .setMinCropResultSize(Constants.IMAGE_SIZE, Constants.IMAGE_SIZE)
                 .setRequestedSize(Constants.IMAGE_SIZE, Constants.IMAGE_SIZE,
                         CropImageView.RequestSizeOptions.RESIZE_INSIDE)

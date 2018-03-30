@@ -1,18 +1,25 @@
 package com.tompee.convoy.feature.map
 
 import android.Manifest
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.support.v4.view.GravityCompat
 import android.view.MenuItem
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.MapStyleOptions
+import com.jakewharton.rxbinding2.view.RxView
 import com.tompee.convoy.ConvoyApplication
 import com.tompee.convoy.R
 import com.tompee.convoy.base.BaseActivity
 import com.tompee.convoy.dependency.component.DaggerMapComponent
 import com.tompee.convoy.dependency.module.MapModule
 import com.tompee.convoy.interactor.model.User
+import io.reactivex.Completable
+import io.reactivex.Observable
+import io.reactivex.subjects.BehaviorSubject
+import io.reactivex.subjects.CompletableSubject
 import kotlinx.android.synthetic.main.activity_map.*
 import kotlinx.android.synthetic.main.drawer_header.*
 import kotlinx.android.synthetic.main.toolbar_main.*
@@ -23,13 +30,16 @@ import javax.inject.Inject
 
 class MapActivity : BaseActivity(), MapMvpView, OnMapReadyCallback, EasyPermissions.PermissionCallbacks {
     companion object {
-        const val EMAIL = "email"
+        const val USER_ID = "uid"
         private const val RC_LOCATION_PERM = 124
     }
 
     @Inject
     lateinit var presenter: MapPresenter
+    private val mapSubject = BehaviorSubject.create<GoogleMap>()
+    private val permissionSubject = CompletableSubject.create()
 
+    // region View/Presenter setup
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setSupportActionBar(toolbar)
@@ -37,18 +47,13 @@ class MapActivity : BaseActivity(), MapMvpView, OnMapReadyCallback, EasyPermissi
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_menu)
         supportActionBar?.setDisplayShowTitleEnabled(false)
         presenter.attachView(this)
-        presenter.start(intent.getStringExtra(EMAIL))
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
     }
 
-    override fun setupProfile(user: User) {
-        emailView.text = user.email
-        displayNameView.text = user.display
-    }
-
     override fun onMapReady(googleMap: GoogleMap) {
-        presenter.configure(googleMap)
+        googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.style_json))
+        mapSubject.onNext(googleMap)
         checkAndRequestPermission()
     }
 
@@ -65,7 +70,7 @@ class MapActivity : BaseActivity(), MapMvpView, OnMapReadyCallback, EasyPermissi
     override fun setupComponent() {
         val mapComponent = DaggerMapComponent.builder()
                 .appComponent(ConvoyApplication[this].component)
-                .mapModule(MapModule(this)).build()
+                .mapModule(MapModule()).build()
         mapComponent.inject(this)
     }
 
@@ -85,7 +90,7 @@ class MapActivity : BaseActivity(), MapMvpView, OnMapReadyCallback, EasyPermissi
             EasyPermissions.requestPermissions(this, getString(R.string.rationale_location),
                     RC_LOCATION_PERM, Manifest.permission.ACCESS_FINE_LOCATION)
         } else {
-            presenter.startLocationSubscription()
+            permissionSubject.onComplete()
         }
     }
 
@@ -97,5 +102,30 @@ class MapActivity : BaseActivity(), MapMvpView, OnMapReadyCallback, EasyPermissi
     }
 
     override fun onPermissionsGranted(requestCode: Int, perms: MutableList<String>) {
+    }
+    // endregion
+
+    // region Observables
+    override fun getUserId(): String {
+        return intent.getStringExtra(USER_ID)
+    }
+
+    override fun getGoogleMap(): Observable<GoogleMap> {
+        return mapSubject
+    }
+
+    override fun goToMyLocationRequest(): Observable<Any> {
+        return RxView.clicks(myLocation)
+    }
+
+    override fun permissionChange(): Completable {
+        return permissionSubject
+    }
+    // endregion
+
+    override fun setupProfile(user: User, bitmap: Bitmap) {
+        emailView.text = user.email
+        displayNameView.text = user.display
+        portrait.setImageBitmap(bitmap)
     }
 }
