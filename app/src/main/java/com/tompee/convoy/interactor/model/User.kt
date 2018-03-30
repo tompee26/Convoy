@@ -4,4 +4,5 @@ data class User(var email: String = "",
                 var display: String = "",
                 var first: String = "",
                 var last: String = "",
-                var id: String = "")
+                var id: String = "",
+                var image: String = "")

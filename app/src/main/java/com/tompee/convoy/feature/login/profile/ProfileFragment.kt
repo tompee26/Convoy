@@ -1,10 +1,17 @@
 package com.tompee.convoy.feature.login.profile
 
+import android.app.Activity.RESULT_OK
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.support.v4.content.ContextCompat
 import android.view.View
 import com.jakewharton.rxbinding2.view.RxView
 import com.jakewharton.rxbinding2.widget.RxTextView
+import com.theartofdev.edmodo.cropper.CropImage
+import com.theartofdev.edmodo.cropper.CropImageView
+import com.tompee.convoy.Constants
 import com.tompee.convoy.ConvoyApplication
 import com.tompee.convoy.R
 import com.tompee.convoy.base.BaseFragment
@@ -12,6 +19,7 @@ import com.tompee.convoy.dependency.component.DaggerLoginComponent
 import com.tompee.convoy.dependency.module.LoginModule
 import com.tompee.convoy.interactor.model.User
 import io.reactivex.Observable
+import io.reactivex.subjects.BehaviorSubject
 import kotlinx.android.synthetic.main.fragment_profile.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -19,7 +27,9 @@ import javax.inject.Inject
 class ProfileFragment : BaseFragment(), ProfileFragmentMvpView {
     @Inject
     lateinit var presenter: ProfileFragmentPresenter
+
     private lateinit var listener: ProfileFragment.ProfileFragmentListener
+    private val imageSubject = BehaviorSubject.create<Uri>()
 
     companion object {
         const val EMAIL = "email"
@@ -40,6 +50,23 @@ class ProfileFragment : BaseFragment(), ProfileFragmentMvpView {
         super.onViewCreated(view, savedInstanceState)
         presenter.attachView(this)
         emailView.text = arguments?.getString(EMAIL)
+        RxView.clicks(profileImage).subscribe({
+            startImageCrop()
+        })
+    }
+
+    private fun startImageCrop() {
+        CropImage.activity()
+                .setGuidelines(CropImageView.Guidelines.ON)
+                //.setCropShape(CropImageView.CropShape.OVAL)
+                .setMinCropResultSize(Constants.IMAGE_SIZE, Constants.IMAGE_SIZE)
+                .setRequestedSize(Constants.IMAGE_SIZE, Constants.IMAGE_SIZE,
+                        CropImageView.RequestSizeOptions.RESIZE_INSIDE)
+                .setAspectRatio(1, 1)
+                .setActivityMenuIconColor(ContextCompat.getColor(context!!, R.color.colorLight))
+                .setAllowFlipping(false)
+                .setActivityTitle(getString(R.string.profile_label_picture))
+                .start(context!!, this)
     }
 
     override fun onDestroy() {
@@ -59,6 +86,18 @@ class ProfileFragment : BaseFragment(), ProfileFragmentMvpView {
 
     interface ProfileFragmentListener {
         fun onSaveSuccessful(user: User)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            val result = CropImage.getActivityResult(data)
+            if (resultCode == RESULT_OK) {
+                val resultUri = result.uri
+                profileImage.setImageURI(resultUri)
+                imageSubject.onNext(resultUri)
+            }
+        }
     }
 
     // endregion
@@ -91,6 +130,10 @@ class ProfileFragment : BaseFragment(), ProfileFragmentMvpView {
 
     override fun saveRequest(): Observable<Any> {
         return RxView.clicks(saveButton)
+    }
+
+    override fun getImage(): Observable<Uri> {
+        return imageSubject
     }
     // endregion
 

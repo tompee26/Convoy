@@ -46,6 +46,8 @@ project.ext {
     ankoVersion = "0.10.4"
     timber = "4.6.1"
     multidex = "1.0.3"
+    imageCropper = "2.6.0"
+    picasso = "2.71828"
 }
 
 dependencies {
@@ -77,8 +79,6 @@ dependencies {
     // RX libraries
     implementation "io.reactivex.rxjava2:rxjava:$project.rxJavaVersion"
     implementation "io.reactivex.rxjava2:rxandroid:$project.rxAndroidVersion"
-
-    // RX bindings
     implementation "com.jakewharton.rxbinding2:rxbinding-kotlin:$project.rxBinding"
 
     // Dependency injection libraries
@@ -94,6 +94,10 @@ dependencies {
 
     // Timber
     implementation "com.jakewharton.timber:timber:$project.timber"
+
+    // Image helpers
+    implementation "com.theartofdev.edmodo:android-image-cropper:$project.imageCropper"
+    implementation "com.squareup.picasso:picasso:$project.picasso"
 }
 
 apply plugin: 'com.google.gms.google-services'

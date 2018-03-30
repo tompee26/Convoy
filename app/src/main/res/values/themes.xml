@@ -25,4 +25,11 @@
     <style name="AppTheme.ProgressDialog">
         <item name="colorAccent">@color/colorLight</item>
     </style>
+
+    <style name="ImageCropTheme" parent="@style/Theme.AppCompat">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="titleTextColor">@color/colorLight</item>
+        <item name="actionMenuTextColor">@color/colorLight</item>
+        <item name="android:textColorPrimary">@color/colorLight</item>
+    </style>
 </resources>

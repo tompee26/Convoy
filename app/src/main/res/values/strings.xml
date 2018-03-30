@@ -30,6 +30,7 @@
     <string name="profile_label_last_name">Last Name</string>
     <string name="profile_label_display_name">Display Name</string>
     <string name="profile_label_save">Create Profile</string>
+    <string name="profile_label_picture">Profile Image</string>
 
     <!-- Error -->
     <string name="error_field_required">This field is required</string>

@@ -1,5 +1,6 @@
 package com.tompee.convoy.dependency.module
 
+import android.content.Context
 import android.support.v4.app.FragmentActivity
 import android.support.v4.app.FragmentManager
 import com.tompee.convoy.feature.login.LoginActivityPresenter
@@ -103,10 +104,11 @@ class LoginModule(private val fragmentActivity: FragmentActivity) {
     }
 
     @Provides
-    fun provideProfileFragmentPresenter(userInteractor: UserInteractor,
+    fun provideProfileFragmentPresenter(context: Context,
+                                        userInteractor: UserInteractor,
                                         @Named("io") io: Scheduler,
                                         @Named("ui") ui: Scheduler): ProfileFragmentPresenter {
-        return ProfileFragmentPresenter(userInteractor, io, ui)
+        return ProfileFragmentPresenter(context, userInteractor, io, ui)
     }
     // endregion
 }

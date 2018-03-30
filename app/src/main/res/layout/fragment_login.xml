@@ -41,11 +41,11 @@
         android:textCursorDrawable="@null"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="@+id/tv_user_label"
-        app:layout_constraintRight_toLeftOf="@+id/iv_user_icon"
+        app:layout_constraintRight_toLeftOf="@+id/profileImage"
         app:layout_constraintTop_toBottomOf="@+id/tv_user_label" />
 
     <android.support.v7.widget.AppCompatImageView
-        android:id="@+id/iv_user_icon"
+        android:id="@+id/profileImage"
         android:layout_width="28dp"
         android:layout_height="28dp"
         android:layout_marginEnd="16dp"
@@ -63,7 +63,7 @@
         android:layout_marginTop="4dp"
         android:background="@color/colorLight"
         app:layout_constraintLeft_toLeftOf="@+id/userView"
-        app:layout_constraintRight_toRightOf="@+id/iv_user_icon"
+        app:layout_constraintRight_toRightOf="@+id/profileImage"
         app:layout_constraintTop_toBottomOf="@+id/userView" />
 
     <TextView

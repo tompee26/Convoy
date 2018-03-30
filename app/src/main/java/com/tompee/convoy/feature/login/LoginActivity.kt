@@ -1,5 +1,6 @@
 package com.tompee.convoy.feature.login
 
+import android.Manifest
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.view.ViewPager
@@ -19,11 +20,17 @@ import com.tompee.convoy.interactor.model.User
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
 import kotlinx.android.synthetic.main.activity_login.*
+import pub.devrel.easypermissions.AfterPermissionGranted
+import pub.devrel.easypermissions.EasyPermissions
 import javax.inject.Inject
 
 class LoginActivity : BaseActivity(), LoginActivityMvpView, ViewPager.PageTransformer,
         ViewPager.OnPageChangeListener, LoginFragment.LoginFragmentListener,
         ProfileFragment.ProfileFragmentListener {
+    companion object {
+        private const val CAMERA_DISK_PERMISSION = 123
+    }
+
     @Inject
     lateinit var loginPagerAdapter: LoginPagerAdapter
     @Inject
@@ -58,7 +65,25 @@ class LoginActivity : BaseActivity(), LoginActivityMvpView, ViewPager.PageTransf
         loginActivityPresenter.detachView()
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+    @AfterPermissionGranted(CAMERA_DISK_PERMISSION)
+    private fun checkAndRequestPermission() {
+        val perms = arrayOf(Manifest.permission.CAMERA,
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        if (!EasyPermissions.hasPermissions(this, *perms)) {
+            EasyPermissions.requestPermissions(this, getString(R.string.rationale_location),
+                    CAMERA_DISK_PERMISSION, *perms)
+        } else {
+            viewpager.adapter = profileAdapter
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         val fragment = loginPagerAdapter.getItem(viewpager.currentItem)
         fragment.onActivityResult(requestCode, resultCode, data)
@@ -75,7 +100,7 @@ class LoginActivity : BaseActivity(), LoginActivityMvpView, ViewPager.PageTransf
                 view.findViewById<View>(R.id.userView).translationX = pageWidth * position
                 view.findViewById<View>(R.id.tv_user_label).translationX = pageWidth * position
                 view.findViewById<View>(R.id.view_user_underline).translationX = pageWidth * position
-                view.findViewById<View>(R.id.iv_user_icon).translationX = pageWidth * position
+                view.findViewById<View>(R.id.profileImage).translationX = pageWidth * position
 
                 view.findViewById<View>(R.id.passView).translationX = pageWidth * position
                 view.findViewById<View>(R.id.tv_pass_label).translationX = pageWidth * position
@@ -148,7 +173,7 @@ class LoginActivity : BaseActivity(), LoginActivityMvpView, ViewPager.PageTransf
         val bundle = Bundle()
         bundle.putString(ProfileFragment.EMAIL, email)
         profileAdapter.getItem(0).arguments = bundle
-        viewpager.adapter = profileAdapter
+        checkAndRequestPermission()
     }
 
     override fun moveToNextActivity(email: String) {

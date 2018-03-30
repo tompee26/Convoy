@@ -88,7 +88,9 @@ class LoginFragment : BaseFragment(), LoginFragmentMvpView {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        facebookResultSubject.onNext(Triple(requestCode, resultCode, data!!))
+        if (data != null) {
+            facebookResultSubject.onNext(Triple(requestCode, resultCode, data))
+        }
         if (RC_SIGN_IN == requestCode) {
             googleResultSubject.onNext(data!!)
         }
