@@ -10,6 +10,7 @@
     <color name="colorLightAlpha">#A0FFFFFF</color>
     <color name="colorLightSecondary">#70FFFFFF</color>
     <color name="colorDark">#000000</color>
+    <color name="colorDarkAlpha">#40000000</color>
 
     <color name="colorLoginButton">#42A5F5</color>
     <color name="colorSignUpButton">#EF5350</color>

@@ -41,4 +41,13 @@
     <string name="menu_friends_list">Friends</string>
     <string name="menu_profile">Profile</string>
     <string name="menu_log_out">Log out</string>
+
+    <!-- Map -->
+    <string name="map_label_search">Search</string>
+
+    <!-- Friends -->
+    <string name="friends_label">Friends</string>
+
+    <!-- Search -->
+    <string name="search_empty">No users found.</string>
 </resources>

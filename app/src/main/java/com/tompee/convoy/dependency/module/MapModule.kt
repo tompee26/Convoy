@@ -16,11 +16,12 @@ import javax.inject.Named
 @Module
 class MapModule {
     @Provides
-    fun provideMapPresenter(locationInteractor: LocationInteractor,
+    fun provideMapPresenter(context: Context,
+                            locationInteractor: LocationInteractor,
                             userInteractor: UserInteractor,
                             @Named("io") io: Scheduler,
                             @Named("ui") ui: Scheduler): MapPresenter {
-        return MapPresenter(locationInteractor, userInteractor, io, ui)
+        return MapPresenter(context, locationInteractor, userInteractor, io, ui)
     }
 
     @Provides

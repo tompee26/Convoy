@@ -11,7 +11,7 @@ import io.reactivex.Single
 class UserInteractorImpl(private val databaseReference: DatabaseReference) : UserInteractor {
     companion object {
         private const val PROFILE = "profile"
-        private var userChangeObservable: Observable<User>? = null
+        private const val DISPLAY_NAME = "display"
     }
 
     override fun getUser(email: String): Single<User> {
@@ -61,5 +61,28 @@ class UserInteractorImpl(private val databaseReference: DatabaseReference) : Use
             databaseReference.child(PROFILE).child(key).setValue(user)
             e.onSuccess(user)
         }
+    }
+
+    override fun searchUser(user: String): Single<List<User>> {
+        return Single.create({ e ->
+            val reference = databaseReference.child(PROFILE).orderByChild(DISPLAY_NAME).startAt(user)
+                    .endAt(user + "\uf8ff")
+            reference.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onCancelled(error: DatabaseError) {
+                    e.onError(error.toException())
+                }
+
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    val userList = mutableListOf<User>()
+                    dataSnapshot.children.forEach { it ->
+                        val childUser = it.getValue(User::class.java)
+                        if (childUser != null) {
+                            userList.add(childUser)
+                        }
+                    }
+                    e.onSuccess(userList)
+                }
+            })
+        })
     }
 }

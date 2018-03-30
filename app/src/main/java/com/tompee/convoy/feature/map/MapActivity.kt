@@ -1,6 +1,7 @@
 package com.tompee.convoy.feature.map
 
 import android.Manifest
+import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.support.v4.view.GravityCompat
@@ -8,13 +9,14 @@ import android.view.MenuItem
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.MapStyleOptions
 import com.jakewharton.rxbinding2.view.RxView
 import com.tompee.convoy.ConvoyApplication
 import com.tompee.convoy.R
 import com.tompee.convoy.base.BaseActivity
 import com.tompee.convoy.dependency.component.DaggerMapComponent
 import com.tompee.convoy.dependency.module.MapModule
+import com.tompee.convoy.feature.friend.FriendListActivity
+import com.tompee.convoy.feature.search.SearchActivity
 import com.tompee.convoy.interactor.model.User
 import io.reactivex.Completable
 import io.reactivex.Observable
@@ -47,12 +49,31 @@ class MapActivity : BaseActivity(), MapMvpView, OnMapReadyCallback, EasyPermissi
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_menu)
         supportActionBar?.setDisplayShowTitleEnabled(false)
         presenter.attachView(this)
+        RxView.clicks(search).subscribe({
+            val intent = Intent(this, SearchActivity::class.java)
+            intent.putExtra(SearchActivity.USER_ID, intent.getStringExtra(USER_ID))
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+            startActivity(intent)
+        })
+        navigationView.setNavigationItemSelectedListener { handleNavigationItemClick(it) }
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
     }
 
+    private fun handleNavigationItemClick(item: MenuItem): Boolean {
+        drawerLayout.closeDrawers()
+        when (item.itemId) {
+            R.id.friend_list -> {
+                val intent = Intent(this, FriendListActivity::class.java)
+                intent.putExtra(FriendListActivity.USER_ID, intent.getStringExtra(USER_ID))
+                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+                startActivity(intent)
+            }
+        }
+        return true
+    }
+
     override fun onMapReady(googleMap: GoogleMap) {
-        googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.style_json))
         mapSubject.onNext(googleMap)
         checkAndRequestPermission()
     }

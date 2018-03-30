@@ -3,14 +3,17 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/friend_list"
+            android:checkable="false"
             android:icon="@drawable/ic_friend"
             android:title="@string/menu_friends_list" />
         <item
             android:id="@+id/profile"
+            android:checkable="false"
             android:icon="@drawable/ic_profile"
             android:title="@string/menu_profile" />
         <item
             android:id="@+id/logout"
+            android:checkable="false"
             android:icon="@drawable/ic_logout"
             android:title="@string/menu_log_out" />
     </group>

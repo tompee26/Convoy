@@ -8,4 +8,5 @@ interface UserInteractor {
     fun getUser(email: String): Single<User>
     fun getUserChanges(userId: String): Observable<User>
     fun saveUser(user: User): Single<User>
+    fun searchUser(user: String): Single<List<User>>
 }
