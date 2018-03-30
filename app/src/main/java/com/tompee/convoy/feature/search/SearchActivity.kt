@@ -62,7 +62,7 @@ class SearchActivity : BaseActivity(), SearchMvpView {
     override fun getSearchString(): Observable<String> {
         return RxTextView.textChanges(searchView)
                 .skipInitialValue()
-                .debounce(1, TimeUnit.SECONDS)
+                .debounce(300, TimeUnit.MILLISECONDS)
                 .map { it.toString() }
     }
 

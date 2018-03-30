@@ -17,8 +17,7 @@ class SearchPresenter(private val userInteractor: UserInteractor,
     }
 
     private fun setupSearchField(field: Observable<String>) {
-        field.filter { it.isNotEmpty() }
-                .flatMapSingle { userInteractor.searchUser(it) }
+        field.flatMapSingle { userInteractor.searchUser(it) }
                 .observeOn(ui)
                 .subscribe({
                     if (it.isEmpty()) {

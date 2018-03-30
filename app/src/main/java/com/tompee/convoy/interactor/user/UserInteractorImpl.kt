@@ -12,25 +12,27 @@ class UserInteractorImpl(private val databaseReference: DatabaseReference) : Use
     companion object {
         private const val PROFILE = "profile"
         private const val DISPLAY_NAME = "display"
+        private const val EMAIL = "email"
     }
 
     override fun getUser(email: String): Single<User> {
         return Single.create<User>({ e ->
-            val reference = databaseReference.child(PROFILE)
+            val reference = databaseReference.child(PROFILE).orderByChild(EMAIL).equalTo(email)
             reference.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onCancelled(error: DatabaseError) {
                     e.onError(error.toException())
                 }
 
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    dataSnapshot.children.forEach { it ->
+                    dataSnapshot.children.forEach {
                         val user = it.getValue(User::class.java)
-                        if (user != null && user.email == email) {
+                        if (user != null) {
                             e.onSuccess(user)
                             return
                         }
+                        e.onError(Throwable(email))
+                        return
                     }
-                    e.onError(Throwable(email))
                 }
             })
         })
@@ -65,6 +67,10 @@ class UserInteractorImpl(private val databaseReference: DatabaseReference) : Use
 
     override fun searchUser(user: String): Single<List<User>> {
         return Single.create({ e ->
+            if (user.isEmpty()) {
+                e.onSuccess(emptyList())
+                return@create
+            }
             val reference = databaseReference.child(PROFILE).orderByChild(DISPLAY_NAME).startAt(user)
                     .endAt(user + "\uf8ff")
             reference.addListenerForSingleValueEvent(object : ValueEventListener {
