@@ -2,6 +2,7 @@
   <dictionary name="prnsoft">
     <words>
       <w>firebase</w>
+      <w>firestore</w>
       <w>interactor</w>
       <w>interactors</w>
     </words>

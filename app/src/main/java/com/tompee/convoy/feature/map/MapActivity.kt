@@ -32,7 +32,7 @@ import javax.inject.Inject
 
 class MapActivity : BaseActivity(), MapMvpView, OnMapReadyCallback, EasyPermissions.PermissionCallbacks {
     companion object {
-        const val USER_ID = "uid"
+        const val EMAIL = "email"
         private const val RC_LOCATION_PERM = 124
     }
 
@@ -51,7 +51,7 @@ class MapActivity : BaseActivity(), MapMvpView, OnMapReadyCallback, EasyPermissi
         presenter.attachView(this)
         RxView.clicks(search).subscribe({
             val intent = Intent(this, SearchActivity::class.java)
-            intent.putExtra(SearchActivity.USER_ID, intent.getStringExtra(USER_ID))
+            intent.putExtra(SearchActivity.EMAIL, this@MapActivity.intent.getStringExtra(EMAIL))
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
             startActivity(intent)
         })
@@ -65,7 +65,7 @@ class MapActivity : BaseActivity(), MapMvpView, OnMapReadyCallback, EasyPermissi
         when (item.itemId) {
             R.id.friend_list -> {
                 val intent = Intent(this, FriendListActivity::class.java)
-                intent.putExtra(FriendListActivity.USER_ID, intent.getStringExtra(USER_ID))
+                intent.putExtra(FriendListActivity.EMAIL, this@MapActivity.intent.getStringExtra(EMAIL))
                 intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
                 startActivity(intent)
             }
@@ -127,8 +127,8 @@ class MapActivity : BaseActivity(), MapMvpView, OnMapReadyCallback, EasyPermissi
     // endregion
 
     // region Observables
-    override fun getUserId(): String {
-        return intent.getStringExtra(USER_ID)
+    override fun getEmail(): String {
+        return intent.getStringExtra(EMAIL)
     }
 
     override fun getGoogleMap(): Observable<GoogleMap> {

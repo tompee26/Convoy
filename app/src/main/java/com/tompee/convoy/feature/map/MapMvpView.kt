@@ -8,7 +8,7 @@ import io.reactivex.Completable
 import io.reactivex.Observable
 
 interface MapMvpView : MvpView {
-    fun getUserId(): String
+    fun getEmail(): String
     fun getGoogleMap(): Observable<GoogleMap>
     fun goToMyLocationRequest(): Observable<Any>
     fun permissionChange(): Completable

@@ -10,8 +10,10 @@ import android.widget.TextView
 import com.tompee.convoy.R
 import com.tompee.convoy.feature.widget.CircularImageView
 import com.tompee.convoy.interactor.model.User
+import io.reactivex.subjects.PublishSubject
 
 class UserListAdapter(private val userList: List<User>) : RecyclerView.Adapter<UserListAdapter.UserViewHolder>() {
+    val clickObservable: PublishSubject<String> = PublishSubject.create<String>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
         return UserViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.row_user, parent, false))
@@ -32,6 +34,10 @@ class UserListAdapter(private val userList: List<User>) : RecyclerView.Adapter<U
             view.findViewById<TextView>(R.id.fullName).text = "${user.first} ${user.last}"
             view.findViewById<TextView>(R.id.displayName).text = user.display
             view.findViewById<TextView>(R.id.status).text = user.email
+
+            view.setOnClickListener({ _ ->
+                clickObservable.onNext(user.email)
+            })
         }
     }
 }

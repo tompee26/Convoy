@@ -30,7 +30,7 @@ class MapPresenter(private val context: Context,
         view.permissionChange()
                 .subscribe({
                     setupMap(view.getGoogleMap())
-                    subscribeToUserChanges(view.getUserId())
+                    subscribeToUserChanges(view.getEmail())
                     subscribeToLocationChanges()
                     setupMyLocation(view.getGoogleMap(), view.goToMyLocationRequest())
                 })
@@ -49,8 +49,8 @@ class MapPresenter(private val context: Context,
         )
     }
 
-    private fun subscribeToUserChanges(userId: String) {
-        addSubscription(userInteractor.getUserChanges(userId)
+    private fun subscribeToUserChanges(email: String) {
+        addSubscription(userInteractor.getUserChanges(email)
                 .compose { observable ->
                     observable.map { user ->
                         val decoded = Base64.decode(user.image, Base64.DEFAULT)

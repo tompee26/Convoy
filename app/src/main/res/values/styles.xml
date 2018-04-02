@@ -21,4 +21,9 @@
         <item name="android:paddingTop">@dimen/toolbar_print_title_top_padding</item>
         <item name="android:paddingBottom">@dimen/toolbar_print_title_bottom_padding</item>
     </style>
+
+    <style name="FragmentDialog" parent="Base.Theme.AppCompat.Light.Dialog.Alert">
+        <item name="windowFixedWidthMajor">90%</item>
+        <item name="windowFixedWidthMinor">90%</item>
+    </style>
 </resources>

@@ -8,7 +8,7 @@ android {
     defaultConfig {
         multiDexEnabled true
         applicationId "com.tompee.convoy"
-        minSdkVersion 20
+        minSdkVersion 21
         targetSdkVersion 27
         versionCode 1
         versionName "1.0"
@@ -68,7 +68,7 @@ dependencies {
     implementation "com.google.android.gms:play-services-auth:$project.googlePlayVersion"
     implementation "com.google.firebase:firebase-auth:$project.googlePlayVersion"
     implementation "com.google.firebase:firebase-messaging:$project.googlePlayVersion"
-    implementation "com.google.firebase:firebase-database:$project.googlePlayVersion"
+    implementation "com.google.firebase:firebase-firestore:$project.googlePlayVersion"
     implementation "com.google.android.gms:play-services-maps:$project.googlePlayVersion"
     implementation "com.google.android.gms:play-services-location:$project.googlePlayVersion"
     implementation "com.google.android.gms:play-services-places:$project.googlePlayVersion"

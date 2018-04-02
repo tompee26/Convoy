@@ -7,7 +7,7 @@ import kotlinx.android.synthetic.main.toolbar_friends.*
 
 class FriendListActivity : BaseActivity(), FriendListMvpView {
     companion object {
-        const val USER_ID = "uid"
+        const val EMAIL = "email"
     }
 
     // region View/Presenter setup
@@ -27,8 +27,8 @@ class FriendListActivity : BaseActivity(), FriendListMvpView {
     // endregion
 
     // region Observables
-    override fun getUserId(): String {
-        return intent.getStringExtra(USER_ID)
+    override fun getEmail(): String {
+        return intent.getStringExtra(EMAIL)
     }
     // endregion
 }

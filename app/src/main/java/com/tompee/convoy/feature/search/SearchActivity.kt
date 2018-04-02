@@ -11,6 +11,7 @@ import com.tompee.convoy.base.BaseActivity
 import com.tompee.convoy.dependency.component.DaggerSearchComponent
 import com.tompee.convoy.dependency.module.SearchModule
 import com.tompee.convoy.feature.search.adapter.UserListAdapter
+import com.tompee.convoy.feature.search.profile.ProfileDialog
 import io.reactivex.Observable
 import kotlinx.android.synthetic.main.activity_search.*
 import kotlinx.android.synthetic.main.toolbar_search.*
@@ -19,7 +20,7 @@ import javax.inject.Inject
 
 class SearchActivity : BaseActivity(), SearchMvpView {
     companion object {
-        const val USER_ID = "uid"
+        const val EMAIL = "email"
     }
 
     @Inject
@@ -66,6 +67,9 @@ class SearchActivity : BaseActivity(), SearchMvpView {
                 .map { it.toString() }
     }
 
+    override fun getEmail(): String {
+        return intent.getStringExtra(EMAIL)
+    }
     // endregion
 
     // region Interface methods
@@ -78,6 +82,11 @@ class SearchActivity : BaseActivity(), SearchMvpView {
         recyclerView.adapter = adapter
         emptyView.visibility = View.GONE
         recyclerView.visibility = View.VISIBLE
+    }
+
+    override fun showUserProfile(email: String) {
+        val dialog = ProfileDialog.newInstance(intent.getStringExtra(EMAIL), email)
+        dialog.show(supportFragmentManager, "profile")
     }
 
     // endregion

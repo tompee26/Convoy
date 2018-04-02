@@ -26,6 +26,10 @@
         <item name="colorAccent">@color/colorLight</item>
     </style>
 
+    <style name="AddUserDialog">
+        <item name="colorAccent">@color/colorPrimary</item>
+    </style>
+
     <style name="ImageCropTheme" parent="@style/Theme.AppCompat">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="titleTextColor">@color/colorLight</item>

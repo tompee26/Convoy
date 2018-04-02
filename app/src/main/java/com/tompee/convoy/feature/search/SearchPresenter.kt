@@ -10,20 +10,24 @@ class SearchPresenter(private val userInteractor: UserInteractor,
                       private val io: Scheduler,
                       private val ui: Scheduler) : BasePresenter<SearchMvpView>() {
     override fun onAttachView(view: SearchMvpView) {
-        setupSearchField(view.getSearchString())
+        setupSearchField(view.getSearchString(), view.getEmail())
     }
 
     override fun onDetachView() {
     }
 
-    private fun setupSearchField(field: Observable<String>) {
-        field.flatMapSingle { userInteractor.searchUser(it) }
+    private fun setupSearchField(field: Observable<String>, email: String) {
+        field.flatMapSingle { userInteractor.searchUser(it, email) }
                 .observeOn(ui)
                 .subscribe({
                     if (it.isEmpty()) {
                         view?.showEmptyView()
                     } else {
-                        view?.showUserList(UserListAdapter(it))
+                        val adapter = UserListAdapter(it)
+                        addSubscription(adapter.clickObservable.subscribe({
+                            view?.showUserProfile(it)
+                        }))
+                        view?.showUserList(adapter)
                     }
                 })
     }
