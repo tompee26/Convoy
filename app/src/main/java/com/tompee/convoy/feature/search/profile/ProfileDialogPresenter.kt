@@ -17,7 +17,23 @@ class ProfileDialogPresenter(private val context: Context,
         setupUser(view.getTargetEmail())
         setupAddFriend(view)
         setupAcceptRequest(view)
-        setupFromOutgoing(view.getUserEmail(), view.getTargetEmail())
+        setupFromFriends(view.getUserEmail(), view.getTargetEmail())
+    }
+
+    private fun setupFromFriends(own: String, target: String) {
+        userInteractor.findUserInFriendsList(own, target)
+                .doOnComplete {
+                    view?.showCustomMessage(context.getString(R.string.profile_label_friends))
+                }
+                .doOnError {
+                    setupFromOutgoing(own, target)
+                }
+                .onErrorResumeNext {
+                    return@onErrorResumeNext Completable.complete()
+                }
+                .subscribeOn(io)
+                .observeOn(ui)
+                .subscribe()
     }
 
     private fun setupFromOutgoing(own: String, target: String) {

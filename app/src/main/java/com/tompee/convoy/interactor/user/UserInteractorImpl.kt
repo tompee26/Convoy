@@ -118,6 +118,21 @@ class UserInteractorImpl(private val db: FirebaseFirestore) : UserInteractor {
         })
     }
 
+    override fun findUserInFriendsList(own: String, target: String): Completable {
+        return Completable.create({ e ->
+            db.collection(PROFILE).document(own).collection(FRIENDS).whereEqualTo(EMAIL, target)
+                    .get().addOnCompleteListener({ task ->
+                        if (task.isSuccessful) {
+                            task.result.forEach {
+                                e.onComplete()
+                                return@addOnCompleteListener
+                            }
+                        }
+                        e.onError(Throwable())
+                    })
+        })
+    }
+
     override fun acceptFriendRequest(own: String, target: String): Completable {
         /* add to friends list first */
         return Completable.create({ e ->

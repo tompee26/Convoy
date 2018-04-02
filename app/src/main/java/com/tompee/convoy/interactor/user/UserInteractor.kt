@@ -13,5 +13,6 @@ interface UserInteractor {
     fun addFriendRequest(own: String, target: String): Completable
     fun findUserInOutgoingFriendRequest(own: String, target: String): Completable
     fun findUserInIncomingFriendRequest(own: String, target: String): Completable
+    fun findUserInFriendsList(own: String, target: String): Completable
     fun acceptFriendRequest(own: String, target: String): Completable
 }

@@ -35,6 +35,7 @@
     <string name="profile_label_sent">Friend Request Sent!</string>
     <string name="profile_label_accepted">Friend Request Accepted</string>
     <string name="profile_label_accept">Accept Friend Request</string>
+    <string name="profile_label_friends">Already Friends!</string>
 
     <!-- Error -->
     <string name="error_field_required">This field is required</string>
