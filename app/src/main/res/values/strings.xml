@@ -52,6 +52,8 @@
 
     <!-- Friends -->
     <string name="friends_label">Friends</string>
+    <string name="friends_pending_sent">Friend request sent</string>
+    <string name="friends_pending_received">Friend request received</string>
 
     <!-- Search -->
     <string name="search_empty">No users found.</string>

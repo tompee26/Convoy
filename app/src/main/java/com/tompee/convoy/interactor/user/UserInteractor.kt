@@ -16,4 +16,7 @@ interface UserInteractor {
     fun findUserInFriendsList(own: String, target: String): Completable
     fun acceptFriendRequest(own: String, target: String): Completable
     fun rejectFriendRequest(own: String, target: String): Completable
+    fun getFriendsListPersistent(email: String): Observable<List<User>>
+    fun getIncomingRequestPersistent(email: String): Observable<List<User>>
+    fun getOutgoingRequestPersistent(email: String): Observable<List<User>>
 }

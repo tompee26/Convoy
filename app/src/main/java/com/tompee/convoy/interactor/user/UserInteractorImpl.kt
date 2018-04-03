@@ -192,4 +192,72 @@ class UserInteractorImpl(private val db: FirebaseFirestore) : UserInteractor {
         })
     }
 
+    override fun getFriendsListPersistent(email: String): Observable<List<User>> {
+        return Observable.create<List<String>>({ e ->
+            db.collection(PROFILE).document(email).collection(FRIENDS)
+                    .addSnapshotListener({ snapshot, error ->
+                        if (error != null) {
+                            e.onNext(emptyList())
+                            return@addSnapshotListener
+                        }
+
+                        val list = mutableListOf<String>()
+                        snapshot?.forEach {
+                            list.add(it.data[EMAIL].toString())
+                        }
+                        e.onNext(list)
+                    })
+        }).flatMap { list ->
+            Observable.fromIterable(list)
+                    .flatMapSingle { getUser(it) }
+                    .toList()
+                    .toObservable()
+        }
+    }
+
+    override fun getOutgoingRequestPersistent(email: String): Observable<List<User>> {
+        return Observable.create<List<String>>({ e ->
+            db.collection(PROFILE).document(email).collection(OUTGOING_REQUEST)
+                    .addSnapshotListener({ snapshot, error ->
+                        if (error != null) {
+                            e.onNext(emptyList())
+                            return@addSnapshotListener
+                        }
+
+                        val list = mutableListOf<String>()
+                        snapshot?.forEach {
+                            list.add(it.data[EMAIL].toString())
+                        }
+                        e.onNext(list)
+                    })
+        }).flatMap { list ->
+            Observable.fromIterable(list)
+                    .flatMapSingle { getUser(it) }
+                    .toList()
+                    .toObservable()
+        }
+    }
+
+    override fun getIncomingRequestPersistent(email: String): Observable<List<User>> {
+        return Observable.create<List<String>>({ e ->
+            db.collection(PROFILE).document(email).collection(INCOMING_REQUEST)
+                    .addSnapshotListener({ snapshot, error ->
+                        if (error != null) {
+                            e.onNext(emptyList())
+                            return@addSnapshotListener
+                        }
+
+                        val list = mutableListOf<String>()
+                        snapshot?.forEach {
+                            list.add(it.data[EMAIL].toString())
+                        }
+                        e.onNext(list)
+                    })
+        }).flatMap { list ->
+            Observable.fromIterable(list)
+                    .flatMapSingle { getUser(it) }
+                    .toList()
+                    .toObservable()
+        }
+    }
 }

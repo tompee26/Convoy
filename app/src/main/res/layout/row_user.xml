@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="80dp"
     android:background="?attr/selectableItemBackground"
@@ -30,29 +31,30 @@
         android:textStyle="italic"
         app:layout_constraintBottom_toBottomOf="@+id/fullName"
         app:layout_constraintStart_toEndOf="@+id/fullName"
-        app:layout_constraintTop_toTopOf="@+id/fullName" />
+        app:layout_constraintTop_toTopOf="@+id/fullName"
+        tools:text="display" />
 
     <TextView
         android:id="@+id/fullName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="12dp"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/colorPrimary"
         app:layout_constraintStart_toEndOf="@+id/rowImage"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="full name" />
 
     <TextView
         android:id="@+id/status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="4dp"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="@color/colorPrimary"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/rowImage"
-        app:layout_constraintTop_toBottomOf="@+id/fullName" />
+        app:layout_constraintTop_toBottomOf="@+id/fullName"
+        tools:text="status" />
 </android.support.constraint.ConstraintLayout>
