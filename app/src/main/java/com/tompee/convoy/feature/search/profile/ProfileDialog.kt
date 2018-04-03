@@ -12,6 +12,7 @@ import com.tompee.convoy.dependency.component.DaggerSearchComponent
 import com.tompee.convoy.dependency.module.SearchModule
 import com.tompee.convoy.interactor.model.User
 import io.reactivex.Observable
+import kotlinx.android.synthetic.main.view_accept_request.*
 import kotlinx.android.synthetic.main.view_profile.*
 import javax.inject.Inject
 
@@ -72,7 +73,13 @@ class ProfileDialog : BaseDialogFragment(), ProfileDialogMvpView {
     }
 
     override fun acceptRequest(): Observable<Pair<String, String>> {
-        return RxView.clicks(acceptRequest).compose { observable ->
+        return RxView.clicks(accept).compose { observable ->
+            observable.map { Pair(arguments?.getString(USER_EMAIL)!!, arguments?.getString(EMAIL)!!) }
+        }
+    }
+
+    override fun rejectRequest(): Observable<Pair<String, String>> {
+        return RxView.clicks(reject).compose { observable ->
             observable.map { Pair(arguments?.getString(USER_EMAIL)!!, arguments?.getString(EMAIL)!!) }
         }
     }

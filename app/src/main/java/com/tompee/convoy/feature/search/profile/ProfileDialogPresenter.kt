@@ -17,6 +17,7 @@ class ProfileDialogPresenter(private val context: Context,
         setupUser(view.getTargetEmail())
         setupAddFriend(view)
         setupAcceptRequest(view)
+        setupRejectRequest(view)
         setupFromFriends(view.getUserEmail(), view.getTargetEmail())
     }
 
@@ -106,6 +107,16 @@ class ProfileDialogPresenter(private val context: Context,
                 }))
     }
 
+    private fun setupRejectRequest(view: ProfileDialogMvpView) {
+        addSubscription(view.rejectRequest()
+                .subscribeOn(ui)
+                .observeOn(ui)
+                .subscribe({ pair ->
+                    view.showProgress()
+                    startRejectRequest(pair.first, pair.second)
+                }))
+    }
+
     private fun startAddRequest(own: String, target: String) {
         userInteractor.addFriendRequest(own, target)
                 .subscribeOn(io)
@@ -121,6 +132,15 @@ class ProfileDialogPresenter(private val context: Context,
                 .observeOn(ui)
                 .subscribe({
                     view?.showCustomMessage(context.getString(R.string.profile_label_accepted))
+                })
+    }
+
+    private fun startRejectRequest(own: String, target: String) {
+        userInteractor.rejectFriendRequest(own, target)
+                .subscribeOn(io)
+                .observeOn(ui)
+                .subscribe({
+                    view?.showAddFriend()
                 })
     }
 

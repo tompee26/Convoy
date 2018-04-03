@@ -10,6 +10,7 @@ interface ProfileDialogMvpView : MvpView {
     fun getTargetEmail(): String
     fun addFriendRequest(): Observable<Pair<String, String>>
     fun acceptRequest(): Observable<Pair<String, String>>
+    fun rejectRequest(): Observable<Pair<String, String>>
 
     fun setProfile(user: User, bitmap: Bitmap)
     fun showAddFriend()

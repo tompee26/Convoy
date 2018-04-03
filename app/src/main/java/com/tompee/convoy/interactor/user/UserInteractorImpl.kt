@@ -167,4 +167,29 @@ class UserInteractorImpl(private val db: FirebaseFirestore) : UserInteractor {
             e.onComplete()
         }
     }
+
+    override fun rejectFriendRequest(own: String, target: String): Completable {
+        return Completable.create({ e ->
+            db.collection(PROFILE).document(own).collection(INCOMING_REQUEST).whereEqualTo(EMAIL, target)
+                    .get().addOnCompleteListener({ task ->
+                        if (task.isSuccessful) {
+                            task.result.forEach { snapshot ->
+                                snapshot.reference.delete()
+                                return@addOnCompleteListener
+                            }
+                        }
+                    })
+            db.collection(PROFILE).document(target).collection(OUTGOING_REQUEST).whereEqualTo(EMAIL, own)
+                    .get().addOnCompleteListener({ task ->
+                        if (task.isSuccessful) {
+                            task.result.forEach { snapshot ->
+                                snapshot.reference.delete()
+                                return@addOnCompleteListener
+                            }
+                        }
+                    })
+            e.onComplete()
+        })
+    }
+
 }
