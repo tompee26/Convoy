@@ -3,6 +3,7 @@ package com.tompee.convoy
 import android.content.Context
 import android.support.multidex.MultiDex
 import android.support.multidex.MultiDexApplication
+import android.support.v7.app.AppCompatDelegate
 import com.tompee.convoy.dependency.component.AppComponent
 import com.tompee.convoy.dependency.component.DaggerAppComponent
 import com.tompee.convoy.dependency.module.AppModule
@@ -13,7 +14,14 @@ import timber.log.Timber
 
 class ConvoyApplication : MultiDexApplication() {
 
-    private var appComponent: AppComponent? = null
+    val component: AppComponent by lazy {
+        DaggerAppComponent.builder()
+                .appModule(AppModule(this))
+                .authModule(AuthModule())
+                .userModule(UserModule())
+                .schedulerModule(SchedulerModule())
+                .build()
+    }
 
     companion object {
         operator fun get(context: Context): ConvoyApplication {
@@ -23,6 +31,7 @@ class ConvoyApplication : MultiDexApplication() {
 
     override fun onCreate() {
         super.onCreate()
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
         Timber.plant(Timber.DebugTree())
     }
 
@@ -30,20 +39,4 @@ class ConvoyApplication : MultiDexApplication() {
         super.attachBaseContext(base)
         MultiDex.install(this)
     }
-
-    var component: AppComponent
-        get() {
-            if (appComponent == null) {
-                appComponent = DaggerAppComponent.builder()
-                        .appModule(AppModule(this))
-                        .authModule(AuthModule())
-                        .userModule(UserModule())
-                        .schedulerModule(SchedulerModule())
-                        .build()
-            }
-            return appComponent as AppComponent
-        }
-        set(appComponent) {
-            this.appComponent = appComponent
-        }
 }

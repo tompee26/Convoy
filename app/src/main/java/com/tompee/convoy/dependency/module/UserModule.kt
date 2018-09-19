@@ -2,6 +2,8 @@ package com.tompee.convoy.dependency.module
 
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
+import com.tompee.convoy.core.repo.UserRepository
+import com.tompee.convoy.core.repo.firebase.FirebaseUserRepository
 import com.tompee.convoy.interactor.user.UserInteractor
 import com.tompee.convoy.interactor.user.UserInteractorImpl
 import dagger.Module
@@ -11,7 +13,15 @@ import javax.inject.Singleton
 @Singleton
 @Module
 class UserModule {
+    @Provides
+    @Singleton
+    fun provideUserRepository(firebaseUserRepository: FirebaseUserRepository): UserRepository = firebaseUserRepository
 
+    @Provides
+    @Singleton
+    fun provideFirebaseUserRepository(): FirebaseUserRepository = FirebaseUserRepository(FirebaseFirestore.getInstance())
+
+    // old
     @Provides
     @Singleton
     fun provideDataInteractor(dataInteractorImpl: UserInteractorImpl): UserInteractor {

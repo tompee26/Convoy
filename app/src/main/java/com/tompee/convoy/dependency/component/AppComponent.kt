@@ -2,12 +2,16 @@ package com.tompee.convoy.dependency.component
 
 import android.content.Context
 import com.tompee.convoy.ConvoyApplication
+import com.tompee.convoy.core.auth.Authenticator
+import com.tompee.convoy.core.model.MutableAccount
+import com.tompee.convoy.core.repo.UserRepository
 import com.tompee.convoy.dependency.module.AppModule
 import com.tompee.convoy.dependency.module.AuthModule
 import com.tompee.convoy.dependency.module.SchedulerModule
 import com.tompee.convoy.dependency.module.UserModule
 import com.tompee.convoy.interactor.auth.AuthInteractor
 import com.tompee.convoy.interactor.user.UserInteractor
+import com.tompee.convoy.model.SchedulerPool
 import dagger.Component
 import io.reactivex.Scheduler
 import javax.inject.Named
@@ -19,11 +23,13 @@ import javax.inject.Singleton
     UserModule::class,
     SchedulerModule::class])
 interface AppComponent {
-    // region Application
     fun context(): Context
-
     fun convoyApplication(): ConvoyApplication
-    // endregion
+    fun schedulerPool(): SchedulerPool
+    fun loggedInAccount(): MutableAccount
+
+    fun authenticator(): Authenticator
+    fun userRepository(): UserRepository
 
     // region Interactors
     fun authInteractor(): AuthInteractor

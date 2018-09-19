@@ -65,6 +65,9 @@ dependencies {
     def play_service_places = "15.0.1"
     implementation "com.google.android.gms:play-services-places:$play_service_places"
 
+    def firebase_core = "16.0.3"
+    implementation "com.google.firebase:firebase-core:$firebase_core"
+
     def firebase_auth = "16.0.3"
     implementation "com.google.firebase:firebase-auth:$firebase_auth"
 

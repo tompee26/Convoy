@@ -8,12 +8,13 @@ import io.reactivex.Observable
 import io.reactivex.Scheduler
 import io.reactivex.disposables.Disposable
 
-class LoginActivityPresenter(private val authInteractor: AuthInteractor,
-                             private val userInteractor: UserInteractor,
-                             private val io: Scheduler,
-                             private val ui: Scheduler) :
-        BasePresenter<LoginActivityMvpView>() {
-    override fun onAttachView(view: LoginActivityMvpView) {
+class LoginPresenter(private val authInteractor: AuthInteractor,
+                     private val userInteractor: UserInteractor,
+                     private val io: Scheduler,
+                     private val ui: Scheduler) : BasePresenter<LoginView>() {
+
+
+    override fun onAttachView(view: LoginView) {
         addSubscription(authInteractor.getUser()
                 .subscribeOn(io)
                 .observeOn(ui)

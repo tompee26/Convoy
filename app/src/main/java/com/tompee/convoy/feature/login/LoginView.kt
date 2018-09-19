@@ -4,7 +4,7 @@ import com.tompee.convoy.base.BaseView
 import com.tompee.convoy.interactor.model.User
 import io.reactivex.Observable
 
-interface LoginActivityMvpView : BaseView {
+interface LoginView : BaseView {
     fun loginEmail(): Observable<String>
     fun saveUser(): Observable<User>
 

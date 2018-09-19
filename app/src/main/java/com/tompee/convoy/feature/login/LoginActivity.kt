@@ -24,7 +24,7 @@ import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.EasyPermissions
 import javax.inject.Inject
 
-class LoginActivity : BaseActivity(), LoginActivityMvpView, ViewPager.PageTransformer,
+class LoginActivity : BaseActivity(), LoginView, ViewPager.PageTransformer,
         ViewPager.OnPageChangeListener, LoginFragment.LoginFragmentListener,
         ProfileFragment.ProfileFragmentListener {
     companion object {
@@ -38,7 +38,7 @@ class LoginActivity : BaseActivity(), LoginActivityMvpView, ViewPager.PageTransf
     @Inject
     lateinit var profileAdapter: ProfilePagerAdapter
     @Inject
-    lateinit var loginActivityPresenter: LoginActivityPresenter
+    lateinit var loginPresenter: LoginPresenter
 
     private val loginFinishedSubject = BehaviorSubject.create<String>()
     private val saveFinishedSubject = BehaviorSubject.create<User>()
@@ -46,8 +46,7 @@ class LoginActivity : BaseActivity(), LoginActivityMvpView, ViewPager.PageTransf
     // region View/Presenter setup
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        loginActivityPresenter.attachView(this)
-        viewpager.adapter = progressAdapter
+        loginPresenter.attachView(this)
     }
 
     override fun layoutId(): Int = R.layout.activity_login
@@ -62,7 +61,7 @@ class LoginActivity : BaseActivity(), LoginActivityMvpView, ViewPager.PageTransf
 
     override fun onDestroy() {
         super.onDestroy()
-        loginActivityPresenter.detachView()
+        loginPresenter.detachView()
     }
 
     @AfterPermissionGranted(CAMERA_DISK_PERMISSION)

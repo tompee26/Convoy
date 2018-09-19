@@ -7,15 +7,26 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.firebase.auth.FirebaseAuth
 import com.tompee.convoy.R
+import com.tompee.convoy.core.auth.Authenticator
+import com.tompee.convoy.core.auth.firebase.FirebaseAuthenticator
 import com.tompee.convoy.interactor.auth.AuthInteractor
 import com.tompee.convoy.interactor.auth.AuthInteractorImpl
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
 
-@Singleton
 @Module
 class AuthModule {
+
+    @Provides
+    @Singleton
+    fun provideAuthenticator(firebaseAuthenticator: FirebaseAuthenticator): Authenticator = firebaseAuthenticator
+
+    @Provides
+    @Singleton
+    fun provideFirebaseAuthenticator(): FirebaseAuthenticator = FirebaseAuthenticator(FirebaseAuth.getInstance())
+
+    //old
     @Provides
     @Singleton
     fun provideAuthInteractor(authInteractorImpl: AuthInteractorImpl): AuthInteractor {

@@ -21,7 +21,7 @@ class UserInteractorImpl(private val db: FirebaseFirestore) : UserInteractor {
             val docRef = db.collection(PROFILE).document(email)
             docRef.get().addOnSuccessListener { snapshot ->
                 if (snapshot != null && snapshot.exists()) {
-                    e.onSuccess(snapshot.toObject(User::class.java))
+                    e.onSuccess(snapshot.toObject(User::class.java)!!)
                 } else {
                     e.onError(Throwable(email))
                 }
@@ -39,7 +39,7 @@ class UserInteractorImpl(private val db: FirebaseFirestore) : UserInteractor {
                     return@addSnapshotListener
                 }
                 if (snapshot != null && snapshot.exists()) {
-                    e.onNext(snapshot.toObject(User::class.java))
+                    e.onNext(snapshot.toObject(User::class.java)!!)
                 } else {
                     e.onError(Throwable("Document does not exist"))
                 }

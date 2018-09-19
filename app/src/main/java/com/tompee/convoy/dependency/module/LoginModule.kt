@@ -3,7 +3,7 @@ package com.tompee.convoy.dependency.module
 import android.content.Context
 import android.support.v4.app.FragmentActivity
 import android.support.v4.app.FragmentManager
-import com.tompee.convoy.feature.login.LoginActivityPresenter
+import com.tompee.convoy.feature.login.LoginPresenter
 import com.tompee.convoy.feature.login.adapters.LoginPagerAdapter
 import com.tompee.convoy.feature.login.adapters.ProfilePagerAdapter
 import com.tompee.convoy.feature.login.adapters.ProgressPagerAdapter
@@ -92,8 +92,8 @@ class LoginModule(private val fragmentActivity: FragmentActivity) {
     fun provideLoginActivityPresenter(authInteractor: AuthInteractor,
                                       userInteractor: UserInteractor,
                                       @Named("io") io: Scheduler,
-                                      @Named("ui") ui: Scheduler): LoginActivityPresenter {
-        return LoginActivityPresenter(authInteractor, userInteractor, io, ui)
+                                      @Named("ui") ui: Scheduler): LoginPresenter {
+        return LoginPresenter(authInteractor, userInteractor, io, ui)
     }
 
     @Provides
