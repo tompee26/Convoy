@@ -2,10 +2,10 @@ package com.tompee.convoy.feature.login.login
 
 import android.content.Intent
 import com.facebook.login.widget.LoginButton
-import com.tompee.convoy.base.MvpView
+import com.tompee.convoy.base.BaseView
 import io.reactivex.Observable
 
-interface LoginFragmentMvpView : MvpView {
+interface LoginFragmentMvpView : BaseView {
     fun getType(): Int
     fun signUpRequest(): Observable<Any>
     fun loginRequest(): Observable<Any>

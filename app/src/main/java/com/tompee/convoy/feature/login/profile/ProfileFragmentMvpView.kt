@@ -1,11 +1,11 @@
 package com.tompee.convoy.feature.login.profile
 
 import android.net.Uri
-import com.tompee.convoy.base.MvpView
+import com.tompee.convoy.base.BaseView
 import com.tompee.convoy.interactor.model.User
 import io.reactivex.Observable
 
-interface ProfileFragmentMvpView : MvpView {
+interface ProfileFragmentMvpView : BaseView {
     fun getFirstName(): Observable<String>
     fun getLastName(): Observable<String>
     fun getDisplayName(): Observable<String>

@@ -1,11 +1,11 @@
 package com.tompee.convoy.feature.search.profile
 
 import android.graphics.Bitmap
-import com.tompee.convoy.base.MvpView
+import com.tompee.convoy.base.BaseView
 import com.tompee.convoy.interactor.model.User
 import io.reactivex.Observable
 
-interface ProfileDialogMvpView : MvpView {
+interface ProfileDialogMvpView : BaseView {
     fun getUserEmail(): String
     fun getTargetEmail(): String
     fun addFriendRequest(): Observable<Pair<String, String>>

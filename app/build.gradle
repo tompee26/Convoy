@@ -8,7 +8,7 @@ android {
     defaultConfig {
         multiDexEnabled true
         applicationId "com.tompee.convoy"
-        minSdkVersion 21
+        minSdkVersion 17
         targetSdkVersion 27
         versionCode 1
         versionName "1.0"
@@ -33,71 +33,78 @@ android {
     }
 }
 
-project.ext {
-    supportLibraryVersion = "27.1.0"
-    constraintLayoutVersion = "1.0.2"
-    facebookVersion = "4.30.0"
-    googlePlayVersion = "12.0.0"
-    rxJavaVersion = "2.1.0"
-    rxAndroidVersion = "2.0.1"
-    rxBinding = "2.1.1"
-    daggerVersion = "2.14.1"
-    easyPermission = "1.2.0"
-    ankoVersion = "0.10.4"
-    timber = "4.6.1"
-    multidex = "1.0.3"
-    imageCropper = "2.6.0"
-    picasso = "2.71828"
-}
-
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    // Kotlin specific
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
-    // Support libraries
-    implementation "com.android.support:cardview-v7:$project.supportLibraryVersion"
-    implementation "com.android.support:customtabs:$project.supportLibraryVersion"
-    implementation "com.android.support:appcompat-v7:$project.supportLibraryVersion"
-    implementation "com.android.support:design:$project.supportLibraryVersion"
-    implementation "com.android.support.constraint:constraint-layout:$project.constraintLayoutVersion"
-    implementation "com.android.support:multidex:$project.multidex"
+    def support_library_version = "27.1.1"
+    implementation "com.android.support:cardview-v7:$support_library_version"
+    implementation "com.android.support:animated-vector-drawable:$support_library_version"
+    implementation "com.android.support:customtabs:$support_library_version"
+    implementation "com.android.support:appcompat-v7:$support_library_version"
+    implementation "com.android.support:design:$support_library_version"
 
-    // Google libraries
-    implementation "com.facebook.android:facebook-login:$project.facebookVersion"
-    implementation "com.google.android.gms:play-services-auth:$project.googlePlayVersion"
-    implementation "com.google.firebase:firebase-auth:$project.googlePlayVersion"
-    implementation "com.google.firebase:firebase-messaging:$project.googlePlayVersion"
-    implementation "com.google.firebase:firebase-firestore:$project.googlePlayVersion"
-    implementation "com.google.android.gms:play-services-maps:$project.googlePlayVersion"
-    implementation "com.google.android.gms:play-services-location:$project.googlePlayVersion"
-    implementation "com.google.android.gms:play-services-places:$project.googlePlayVersion"
+    def constraint_layout_version = "1.1.3"
+    implementation "com.android.support.constraint:constraint-layout:$constraint_layout_version"
 
-    // Maps
-    implementation 'pl.charmas.android:android-reactive-location2:2.1@aar'
+    def multidex_version = "1.0.3"
+    implementation "com.android.support:multidex:$multidex_version"
 
-    // RX libraries
-    implementation "io.reactivex.rxjava2:rxjava:$project.rxJavaVersion"
-    implementation "io.reactivex.rxjava2:rxandroid:$project.rxAndroidVersion"
-    implementation "com.jakewharton.rxbinding2:rxbinding-kotlin:$project.rxBinding"
+    def facebook_version = "4.30.0"
+    implementation "com.facebook.android:facebook-login:$facebook_version"
 
-    // Dependency injection libraries
-    implementation "com.google.dagger:dagger:$project.daggerVersion"
-    implementation "com.google.dagger:dagger-android:$project.daggerVersion"
-    implementation "com.google.dagger:dagger-android-support:$project.daggerVersion"
-    kapt "com.google.dagger:dagger-compiler:$project.daggerVersion"
-    kapt "com.google.dagger:dagger-android-processor:$project.daggerVersion"
-    kapt "com.google.dagger:dagger-android-support:$project.daggerVersion"
+    def play_service_auth = "16.0.0"
+    implementation "com.google.android.gms:play-services-auth:$play_service_auth"
 
-    // Easy permission
-    implementation "pub.devrel:easypermissions:$project.easyPermission"
+    def play_service_maps = "15.0.1"
+    implementation "com.google.android.gms:play-services-maps:$play_service_maps"
 
-    // Timber
-    implementation "com.jakewharton.timber:timber:$project.timber"
+    def play_service_location = "15.0.1"
+    implementation "com.google.android.gms:play-services-location:$play_service_location"
 
-    // Image helpers
-    implementation "com.theartofdev.edmodo:android-image-cropper:$project.imageCropper"
-    implementation "com.squareup.picasso:picasso:$project.picasso"
+    def play_service_places = "15.0.1"
+    implementation "com.google.android.gms:play-services-places:$play_service_places"
+
+    def firebase_auth = "16.0.3"
+    implementation "com.google.firebase:firebase-auth:$firebase_auth"
+
+    def firebase_messaging = "17.3.2"
+    implementation "com.google.firebase:firebase-messaging:$firebase_messaging"
+
+    def firebase_firestore = "17.1.0"
+    implementation "com.google.firebase:firebase-firestore:$firebase_firestore"
+
+    def reactive_location_version = "2.1@aar"
+    implementation "pl.charmas.android:android-reactive-location2:$reactive_location_version"
+
+    def rx_kotlin_version = "2.3.0"
+    implementation "io.reactivex.rxjava2:rxkotlin:$rx_kotlin_version"
+
+    def rx_android_version = "2.0.2"
+    implementation "io.reactivex.rxjava2:rxandroid:$rx_android_version"
+
+    def rx_binding_version = "2.1.1"
+    implementation "com.jakewharton.rxbinding2:rxbinding-kotlin:$rx_binding_version"
+
+    def dagger_version = "2.14.1"
+    implementation "com.google.dagger:dagger:$dagger_version"
+    implementation "com.google.dagger:dagger-android:$dagger_version"
+    implementation "com.google.dagger:dagger-android-support:$dagger_version"
+    kapt "com.google.dagger:dagger-compiler:$dagger_version"
+    kapt "com.google.dagger:dagger-android-processor:$dagger_version"
+    kapt "com.google.dagger:dagger-android-support:$dagger_version"
+
+    def easy_permission_version = "1.3.0"
+    implementation "pub.devrel:easypermissions:$easy_permission_version"
+
+    def timber_version = "4.7.1"
+    implementation "com.jakewharton.timber:timber:$timber_version"
+
+    def image_cropper_version = "2.6.0"
+    implementation "com.theartofdev.edmodo:android-image-cropper:$image_cropper_version"
+
+    def picasso_version = "2.71828"
+    implementation "com.squareup.picasso:picasso:$picasso_version"
 }
 
 apply plugin: 'com.google.gms.google-services'

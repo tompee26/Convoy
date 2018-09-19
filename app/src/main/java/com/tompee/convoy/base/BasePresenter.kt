@@ -3,7 +3,7 @@ package com.tompee.convoy.base
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 
-abstract class BasePresenter<T : MvpView> {
+abstract class BasePresenter<T : BaseView> {
     private val compositeDisposable = CompositeDisposable()
     protected var view: T? = null
         private set

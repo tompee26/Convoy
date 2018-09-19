@@ -20,7 +20,7 @@ class FriendListPresenter(private val context: Context,
     }
 
     private fun setupFriendList(view: FriendListMvpView) {
-        Observable.combineLatest(
+        val disposable = Observable.combineLatest(
                 userInteractor.getFriendsListPersistent(view.getEmail()),
                 userInteractor.getIncomingRequestPersistent(view.getEmail()),
                 userInteractor.getOutgoingRequestPersistent(view.getEmail()),
@@ -51,6 +51,7 @@ class FriendListPresenter(private val context: Context,
                     sectionedAdapter.setSections(sectionList.toTypedArray())
                     view.setList(sectionedAdapter)
                 })
+        addSubscription(disposable)
     }
 
     override fun onDetachView() {

@@ -1,10 +1,10 @@
 package com.tompee.convoy.feature.login
 
-import com.tompee.convoy.base.MvpView
+import com.tompee.convoy.base.BaseView
 import com.tompee.convoy.interactor.model.User
 import io.reactivex.Observable
 
-interface LoginActivityMvpView : MvpView {
+interface LoginActivityMvpView : BaseView {
     fun loginEmail(): Observable<String>
     fun saveUser(): Observable<User>
 

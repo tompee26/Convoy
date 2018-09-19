@@ -21,6 +21,7 @@ import javax.inject.Inject
 class SearchActivity : BaseActivity(), SearchMvpView {
     companion object {
         const val EMAIL = "email"
+        private lateinit var view : SearchMvpView
     }
 
     @Inject
