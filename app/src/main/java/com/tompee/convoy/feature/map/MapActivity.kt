@@ -108,7 +108,7 @@ class MapActivity : BaseActivity(), MapMvpView, OnMapReadyCallback, EasyPermissi
     @AfterPermissionGranted(RC_LOCATION_PERM)
     private fun checkAndRequestPermission() {
         if (!EasyPermissions.hasPermissions(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
-            EasyPermissions.requestPermissions(this, getString(R.string.rationale_location),
+            EasyPermissions.requestPermissions(this, getString(R.string.rationale_location_request),
                     RC_LOCATION_PERM, Manifest.permission.ACCESS_FINE_LOCATION)
         } else {
             permissionSubject.onComplete()

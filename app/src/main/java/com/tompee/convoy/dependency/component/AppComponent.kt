@@ -9,7 +9,6 @@ import com.tompee.convoy.dependency.module.AppModule
 import com.tompee.convoy.dependency.module.AuthModule
 import com.tompee.convoy.dependency.module.SchedulerModule
 import com.tompee.convoy.dependency.module.UserModule
-import com.tompee.convoy.interactor.auth.AuthInteractor
 import com.tompee.convoy.interactor.user.UserInteractor
 import com.tompee.convoy.model.SchedulerPool
 import dagger.Component
@@ -32,8 +31,6 @@ interface AppComponent {
     fun userRepository(): UserRepository
 
     // region Interactors
-    fun authInteractor(): AuthInteractor
-
     fun userInteractor(): UserInteractor
     // endregion
 

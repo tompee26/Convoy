@@ -15,11 +15,9 @@ abstract class BaseDialogFragment : DialogFragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(layoutId(), container, false)
+        dialog.setCanceledOnTouchOutside(false)
+        return super.onCreateView(inflater, container, savedInstanceState)
     }
-
-    @LayoutRes
-    abstract fun layoutId(): Int
 
     abstract fun setupComponent()
 }

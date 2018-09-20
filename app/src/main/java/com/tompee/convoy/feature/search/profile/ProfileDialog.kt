@@ -46,8 +46,6 @@ class ProfileDialog : BaseDialogFragment(), ProfileDialogMvpView {
         presenter.detachView()
     }
 
-    override fun layoutId(): Int = R.layout.view_profile
-
     override fun setupComponent() {
         val component = DaggerSearchComponent.builder()
                 .appComponent(ConvoyApplication[activity!!].component)

@@ -1,6 +1,10 @@
 package com.tompee.convoy.core.auth.firebase
 
+import com.facebook.AccessToken
+import com.google.android.gms.auth.api.signin.GoogleSignInResult
+import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
 import com.tompee.convoy.core.auth.Authenticator
 import io.reactivex.Completable
 import io.reactivex.Single
@@ -58,4 +62,33 @@ class FirebaseAuthenticator(private val firebaseAuth: FirebaseAuth) : Authentica
         }
     }
 
+    override fun loginWithFacebook(accessToken: AccessToken): Single<String> {
+        return Single.create<String> { emitter ->
+            val credential = FacebookAuthProvider.getCredential(accessToken.token)
+            firebaseAuth.signInWithCredential(credential).addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    emitter.onSuccess(firebaseAuth.currentUser?.email!!)
+                } else {
+                    emitter.onError(Throwable(task.exception?.message))
+                }
+            }
+        }
+    }
+
+    override fun loginWithGoogle(result: GoogleSignInResult): Single<String> {
+        return Single.create<String> { emitter ->
+            if (result.isSuccess) {
+                val credential = GoogleAuthProvider.getCredential(result.signInAccount?.idToken, null)
+                firebaseAuth.signInWithCredential(credential).addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        emitter.onSuccess(firebaseAuth.currentUser?.email!!)
+                    } else {
+                        emitter.onError(Throwable(task.exception?.message))
+                    }
+                }
+            } else {
+                emitter.onError(Throwable("Login failed"))
+            }
+        }
+    }
 }

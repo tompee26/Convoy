@@ -25,7 +25,7 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class ProfileFragment : BaseFragment(), ProfileFragmentMvpView {
-    @Inject
+
     lateinit var presenter: ProfileFragmentPresenter
 
     private lateinit var listener: ProfileFragment.ProfileFragmentListener

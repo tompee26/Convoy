@@ -26,4 +26,10 @@
         <item name="windowFixedWidthMajor">90%</item>
         <item name="windowFixedWidthMinor">90%</item>
     </style>
+
+    <style name="DialogStyle" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="colorAccent">@color/colorDark</item>
+    </style>
 </resources>
