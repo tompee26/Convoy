@@ -22,7 +22,7 @@ class GoogleAuthHandler(private val activity: Activity,
         return loginSubject
     }
 
-    fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    fun onActivityResult(requestCode: Int, @Suppress("UNUSED_PARAMETER") resultCode: Int, data: Intent?) {
         if (RC_SIGN_IN == requestCode) {
             loginSubject.onSuccess(Auth.GoogleSignInApi.getSignInResultFromIntent(data))
         }

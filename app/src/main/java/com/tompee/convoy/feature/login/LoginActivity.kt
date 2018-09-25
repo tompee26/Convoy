@@ -25,7 +25,7 @@ class LoginActivity : BaseActivity(), ViewPager.PageTransformer,
     lateinit var loginPagerAdapter: LoginPagerAdapter
     lateinit var component: LoginComponent
 
-    //region CompanionObject
+    //region companion object
     companion object {
         operator fun get(activity: Activity): LoginActivity {
             return activity as LoginActivity

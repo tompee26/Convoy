@@ -3,6 +3,8 @@ package com.tompee.convoy.feature.splash
 import com.tompee.convoy.base.BasePresenterTyped
 import com.tompee.convoy.core.navigator.Navigator
 import com.tompee.convoy.feature.login.LoginActivity
+import com.tompee.convoy.feature.map.MapActivity
+import com.tompee.convoy.feature.profilesetup.ProfileSetupActivity
 import com.tompee.convoy.interactor.SplashInteractor
 import com.tompee.convoy.model.SchedulerPool
 import timber.log.Timber
@@ -20,8 +22,8 @@ class SplashPresenter(splashInteractor: SplashInteractor,
                 .flatMap { email ->
                     interactor.getUserInfo(email)
                             .observeOn(schedulerPool.main)
-                            .doOnSuccess { /*view.moveToTimelineScreen()*/ }
-                            .doOnError { /*view.moveToProfileScreen()*/ }
+                            .doOnSuccess { navigator.moveToScreen(MapActivity::class.java) }
+                            .doOnError { navigator.moveToScreen(ProfileSetupActivity::class.java) }
                             .subscribeOn(schedulerPool.io)
                 }
                 .subscribeOn(schedulerPool.io)

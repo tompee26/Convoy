@@ -9,7 +9,7 @@ import com.tompee.convoy.dependency.component.DaggerAppComponent
 import com.tompee.convoy.dependency.module.AppModule
 import com.tompee.convoy.dependency.module.AuthModule
 import com.tompee.convoy.dependency.module.SchedulerModule
-import com.tompee.convoy.dependency.module.UserModule
+import com.tompee.convoy.dependency.module.RepoModule
 import timber.log.Timber
 
 class ConvoyApplication : MultiDexApplication() {
@@ -18,7 +18,7 @@ class ConvoyApplication : MultiDexApplication() {
         DaggerAppComponent.builder()
                 .appModule(AppModule(this))
                 .authModule(AuthModule())
-                .userModule(UserModule())
+                .repoModule(RepoModule())
                 .schedulerModule(SchedulerModule())
                 .build()
     }

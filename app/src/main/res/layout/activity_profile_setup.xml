@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/setupLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:text="@string/title_profile_setup"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/colorPrimary"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/profileImage"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
+        tools:text="@string/title_profile_setup" />
+
+    <com.tompee.convoy.feature.widget.CircularImageView
+        android:id="@+id/profileImage"
+        android:layout_width="92dp"
+        android:layout_height="92dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:contentDescription="@string/content_description"
+        app:civ_border_width="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/cardView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/setupLabel"
+        app:srcCompat="@drawable/ic_account_circle_primary" />
+
+    <TextView
+        android:id="@+id/imageUpload"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:clickable="true"
+        android:drawableStart="@drawable/ic_upload"
+        android:focusable="true"
+        android:text="@string/label_upload_profileImage"
+        app:layout_constraintBottom_toBottomOf="@+id/profileImage"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.2"
+        app:layout_constraintStart_toEndOf="@+id/profileImage"
+        app:layout_constraintTop_toTopOf="@+id/profileImage"
+        tools:text="@string/label_upload_profileImage" />
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        app:cardCornerRadius="5dp"
+        app:layout_constraintBottom_toTopOf="@+id/saveButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profileImage">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp">
+
+            <TextView
+                android:id="@+id/firstNameLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:labelFor="@id/firstName"
+                android:text="@string/profile_label_first_name"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="@color/colorPrimary"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="@string/profile_label_first_name" />
+
+            <AutoCompleteTextView
+                android:id="@+id/firstName"
+                android:layout_width="0dp"
+                android:layout_height="28dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginTop="8dp"
+                android:background="@android:color/transparent"
+                android:imeOptions="actionNext"
+                android:inputType="textPersonName"
+                android:textColor="@color/colorPrimary"
+                android:textCursorDrawable="@null"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/firstNameLabel"
+                app:layout_constraintTop_toBottomOf="@+id/firstNameLabel" />
+
+            <View
+                android:id="@+id/firstNameLine"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="4dp"
+                android:background="@color/colorPrimary"
+                app:layout_constraintLeft_toLeftOf="@+id/firstName"
+                app:layout_constraintRight_toRightOf="@+id/firstName"
+                app:layout_constraintTop_toBottomOf="@+id/firstName" />
+
+            <TextView
+                android:id="@+id/lastNameLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:labelFor="@id/lastName"
+                android:text="@string/profile_label_last_name"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="@color/colorPrimary"
+                app:layout_constraintStart_toStartOf="@+id/firstNameLabel"
+                app:layout_constraintTop_toBottomOf="@+id/firstNameLine" />
+
+            <AutoCompleteTextView
+                android:id="@+id/lastName"
+                android:layout_width="0dp"
+                android:layout_height="28dp"
+                android:layout_marginTop="8dp"
+                android:background="@android:color/transparent"
+                android:imeOptions="actionNext"
+                android:inputType="textPersonName"
+                android:textColor="@color/colorPrimary"
+                android:textCursorDrawable="@null"
+                app:layout_constraintEnd_toEndOf="@+id/firstName"
+                app:layout_constraintStart_toStartOf="@+id/firstName"
+                app:layout_constraintTop_toBottomOf="@+id/lastNameLabel" />
+
+            <View
+                android:id="@+id/lastNameLine"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="4dp"
+                android:background="@color/colorPrimary"
+                app:layout_constraintLeft_toLeftOf="@+id/lastName"
+                app:layout_constraintRight_toRightOf="@+id/lastName"
+                app:layout_constraintTop_toBottomOf="@+id/lastName" />
+
+            <TextView
+                android:id="@+id/displayNameLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:labelFor="@id/displayName"
+                android:text="@string/profile_label_display_name"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="@color/colorPrimary"
+                app:layout_constraintStart_toStartOf="@+id/lastNameLabel"
+                app:layout_constraintTop_toBottomOf="@+id/lastNameLine" />
+
+            <AutoCompleteTextView
+                android:id="@+id/displayName"
+                android:layout_width="0dp"
+                android:layout_height="28dp"
+                android:layout_marginTop="8dp"
+                android:background="@android:color/transparent"
+                android:imeOptions="actionDone"
+                android:inputType="textPersonName"
+                android:textColor="@color/colorPrimary"
+                android:textCursorDrawable="@null"
+                app:layout_constraintEnd_toEndOf="@+id/lastName"
+                app:layout_constraintStart_toStartOf="@+id/lastName"
+                app:layout_constraintTop_toBottomOf="@+id/displayNameLabel" />
+
+            <View
+                android:id="@+id/displayNameLine"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="4dp"
+                android:background="@color/colorPrimary"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="@+id/displayName"
+                app:layout_constraintRight_toRightOf="@+id/displayName"
+                app:layout_constraintTop_toBottomOf="@+id/displayName" />
+
+        </android.support.constraint.ConstraintLayout>
+
+    </android.support.v7.widget.CardView>
+
+    <Button
+        android:id="@+id/saveButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/background_create_profile"
+        android:padding="16dp"
+        android:text="@string/profile_label_save"
+        android:textAllCaps="true"
+        android:textColor="@color/colorLight"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardView" />
+
+</android.support.constraint.ConstraintLayout>

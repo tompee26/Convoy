@@ -25,10 +25,12 @@ class LoginInteractor(private val authenticator: Authenticator,
 
     fun getUserInfo(email: String): Single<Account> {
         return userRepository.getUser(email)
-                .map { Account(it.email, it.email == email, it.name, it.image) }
+                .map { Account(it.email, it.email == email, it.firstName, it.lastName, it.displayName, it.image) }
                 .doOnSuccess {
                     loggedInUser.apply {
-                        this.name = it.name
+                        this.firstName = it.firstName
+                        this.lastName = it.lastName
+                        this.displayName = it.displayName
                         imageUrl = it.imageUrl
                     }
                 }

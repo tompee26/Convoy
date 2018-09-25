@@ -38,6 +38,10 @@
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation" />
 
         <activity
+            android:name=".feature.profilesetup.ProfileSetupActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation" />
+
+        <activity
             android:name=".feature.login.LoginActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:screenOrientation="portrait" />

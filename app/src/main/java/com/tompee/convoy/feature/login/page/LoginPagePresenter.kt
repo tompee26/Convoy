@@ -5,6 +5,7 @@ import com.tompee.convoy.Constants
 import com.tompee.convoy.base.BasePresenterTyped
 import com.tompee.convoy.core.navigator.Navigator
 import com.tompee.convoy.feature.map.MapActivity
+import com.tompee.convoy.feature.profilesetup.ProfileSetupActivity
 import com.tompee.convoy.interactor.LoginInteractor
 import com.tompee.convoy.model.Account
 import com.tompee.convoy.model.SchedulerPool
@@ -108,13 +109,11 @@ class LoginPagePresenter(loginInteractor: LoginInteractor,
                 .flatMap { email ->
                     interactor.getUserInfo(email)
                             .observeOn(schedulerPool.main)
-                            .doOnSuccess {
-                                //view.moveToTimelineScreen() //TODO: set to proper screen target
-                            }
-                            .doOnError { navigator.moveToScreen(MapActivity::class.java) } //TODO: set to proper screen target
+                            .doOnSuccess { navigator.moveToScreen(MapActivity::class.java) }
+                            .doOnError { navigator.moveToScreen(ProfileSetupActivity::class.java) }
                             .subscribeOn(schedulerPool.io)
                 }
-                .onErrorResumeNext(Single.just(Account("", false, "", "")))
+                .onErrorResumeNext(Single.just(Account("", false, "", "", "", "")))
                 .subscribeOn(schedulerPool.io)
     }
 

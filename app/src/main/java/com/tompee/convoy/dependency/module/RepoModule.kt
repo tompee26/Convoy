@@ -2,7 +2,10 @@ package com.tompee.convoy.dependency.module
 
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
+import com.google.firebase.storage.FirebaseStorage
+import com.tompee.convoy.core.repo.ProfileImageRepo
 import com.tompee.convoy.core.repo.UserRepository
+import com.tompee.convoy.core.repo.firebase.FirebaseProfileImageRepo
 import com.tompee.convoy.core.repo.firebase.FirebaseUserRepository
 import com.tompee.convoy.interactor.user.UserInteractor
 import com.tompee.convoy.interactor.user.UserInteractorImpl
@@ -12,7 +15,7 @@ import javax.inject.Singleton
 
 @Singleton
 @Module
-class UserModule {
+class RepoModule {
     @Provides
     @Singleton
     fun provideUserRepository(firebaseUserRepository: FirebaseUserRepository): UserRepository = firebaseUserRepository
@@ -20,6 +23,14 @@ class UserModule {
     @Provides
     @Singleton
     fun provideFirebaseUserRepository(): FirebaseUserRepository = FirebaseUserRepository(FirebaseFirestore.getInstance())
+
+    @Provides
+    @Singleton
+    fun provideProfileImageRepository(firebaseProfileImageRepo: FirebaseProfileImageRepo): ProfileImageRepo = firebaseProfileImageRepo
+
+    @Provides
+    @Singleton
+    fun provideFirebaseProfileImageRepository(): FirebaseProfileImageRepo = FirebaseProfileImageRepo(FirebaseStorage.getInstance())
 
     // old
     @Provides

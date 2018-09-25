@@ -11,24 +11,27 @@
     <string name="label_positive_button">OK</string>
     <string name="label_login_new_account">Create a new account</string>
     <string name="label_login_registered">Login now</string>
+    <string name="label_upload_profileImage">Upload Profile Image</string>
     <string name="label_login_option">or login with</string>
 
     <!--Progress messages-->
     <string name="progress_login_register">Registering account…</string>
     <string name="progress_login_authenticate">Authenticating…</string>
+    <string name="progress_save_profile">Creating profile…</string>
 
     <!--Rationales-->
     <string name="rationale_location_request">This app needs access to your location to know where you are.</string>
+    <string name="rationale_storage_request">This app needs access to your storage to be able to upload profile images.</string>
     <string name="rationale_email_verification">A message was sent to your email. Please verify and login afterwards.</string>
 
     <!--Titles and headers-->
+    <string name="title_profile_setup">Tell us about you!</string>
 
 
     <!-- Login screen -->
     <string name="signup_successful_title">Registration successful</string>
 
     <!-- Profile -->
-    <string name="profile_label_setup">Setup your profile!</string>
     <string name="profile_label_first_name">First Name</string>
     <string name="profile_label_last_name">Last Name</string>
     <string name="profile_label_display_name">Display Name</string>

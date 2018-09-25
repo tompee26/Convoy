@@ -71,6 +71,9 @@ dependencies {
     def firebase_auth = "16.0.3"
     implementation "com.google.firebase:firebase-auth:$firebase_auth"
 
+    def firebase_storage = "16.0.1"
+    implementation "com.google.firebase:firebase-storage:$firebase_storage"
+
     def firebase_messaging = "17.3.2"
     implementation "com.google.firebase:firebase-messaging:$firebase_messaging"
 

@@ -4,7 +4,6 @@ import com.tompee.convoy.dependency.module.LoginModule
 import com.tompee.convoy.dependency.scopes.LoginScope
 import com.tompee.convoy.feature.login.LoginActivity
 import com.tompee.convoy.feature.login.page.LoginFragment
-import com.tompee.convoy.feature.login.profile.ProfileFragment
 import dagger.Component
 
 @LoginScope
@@ -13,5 +12,4 @@ import dagger.Component
 interface LoginComponent {
     fun inject(loginActivity: LoginActivity)
     fun inject(loginFragment: LoginFragment)
-    fun inject(profileFragment: ProfileFragment)
 }

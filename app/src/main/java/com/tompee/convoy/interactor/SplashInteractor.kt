@@ -23,10 +23,12 @@ class SplashInteractor(private val authenticator: Authenticator,
 
     fun getUserInfo(email: String): Single<Account> {
         return userRepository.getUser(email)
-                .map { Account(it.email, loggedInUser.email == it.email, it.name, it.image) }
+                .map { Account(it.email, loggedInUser.email == it.email, it.firstName, it.lastName, it.displayName, it.image) }
                 .doOnSuccess {
                     loggedInUser.apply {
-                        name = it.name
+                        firstName = it.firstName
+                        lastName = it.lastName
+                        displayName = it.displayName
                         imageUrl = it.imageUrl
                     }
                 }
