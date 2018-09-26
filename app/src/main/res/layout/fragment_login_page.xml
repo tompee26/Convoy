@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/separator"
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        app:layout_constraintGuide_percent="0.3"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="199dp" />
+
+    <TextView
+        android:id="@+id/tv_user_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:labelFor="@id/userView"
+        android:text="@string/label_login_name"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="@color/colorLight"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/separator" />
+
+    <AutoCompleteTextView
+        android:id="@+id/userView"
+        android:layout_width="0dp"
+        android:layout_height="28dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="4dp"
+        android:background="@android:color/transparent"
+        android:inputType="textEmailAddress"
+        android:textColor="@color/colorLight"
+        android:textCursorDrawable="@null"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="@+id/tv_user_label"
+        app:layout_constraintRight_toLeftOf="@+id/profileImage"
+        app:layout_constraintTop_toBottomOf="@+id/tv_user_label" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/profileImage"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_marginEnd="16dp"
+        android:contentDescription="@string/content_description"
+        android:tint="@color/colorLight"
+        app:layout_constraintBottom_toBottomOf="@+id/userView"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/userView"
+        app:srcCompat="@drawable/ic_account_circle_white" />
+
+    <View
+        android:id="@+id/view_user_underline"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="4dp"
+        android:background="@color/colorLight"
+        app:layout_constraintLeft_toLeftOf="@+id/userView"
+        app:layout_constraintRight_toRightOf="@+id/profileImage"
+        app:layout_constraintTop_toBottomOf="@+id/userView" />
+
+    <TextView
+        android:id="@+id/tv_pass_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:labelFor="@id/passView"
+        android:text="@string/label_login_pass"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="@color/colorLight"
+        app:layout_constraintLeft_toLeftOf="@+id/view_user_underline"
+        app:layout_constraintTop_toBottomOf="@+id/view_user_underline" />
+
+    <AutoCompleteTextView
+        android:id="@+id/passView"
+        android:layout_width="0dp"
+        android:layout_height="28dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="4dp"
+        android:background="@android:color/transparent"
+        android:inputType="textWebPassword"
+        android:textColor="@color/colorLight"
+        android:textCursorDrawable="@null"
+        app:layout_constraintLeft_toLeftOf="@+id/tv_pass_label"
+        app:layout_constraintRight_toLeftOf="@+id/iv_pass_icon"
+        app:layout_constraintTop_toBottomOf="@+id/tv_pass_label" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/iv_pass_icon"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:contentDescription="@string/content_description"
+        android:tint="@color/colorLight"
+        app:layout_constraintRight_toRightOf="@+id/view_user_underline"
+        app:layout_constraintTop_toTopOf="@+id/passView"
+        app:srcCompat="@drawable/ic_lock_outline" />
+
+    <View
+        android:id="@+id/view_pass_underline"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="4dp"
+        android:background="@color/colorLight"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="@+id/passView"
+        app:layout_constraintRight_toRightOf="@+id/iv_pass_icon"
+        app:layout_constraintTop_toBottomOf="@+id/passView" />
+
+    <Button
+        android:id="@+id/commandButton"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="24dp"
+        android:textAllCaps="true"
+        android:textColor="@color/colorLight"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="@+id/passView"
+        app:layout_constraintRight_toRightOf="@+id/iv_pass_icon"
+        app:layout_constraintTop_toBottomOf="@+id/view_pass_underline" />
+
+    <Button
+        android:id="@+id/switchButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:layout_marginTop="8dp"
+        android:background="@android:color/transparent"
+        android:textAllCaps="true"
+        android:textColor="@color/colorLight"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="@+id/commandButton"
+        app:layout_constraintRight_toRightOf="@+id/commandButton"
+        app:layout_constraintTop_toBottomOf="@+id/commandButton"
+        app:layout_constraintVertical_bias="0.034" />
+
+    <TextView
+        android:id="@+id/tv_app_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/app_name"
+        android:textAllCaps="true"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/colorLight"
+        app:layout_constraintBottom_toTopOf="@+id/separator"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_app_subtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/app_subtitle"
+        android:textAppearance="?android:attr/textAppearanceListItem"
+        android:textColor="@color/colorLight"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_app_name" />
+
+    <com.facebook.login.widget.LoginButton
+        android:id="@+id/facebookButton"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="4dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="4dp"
+        android:paddingBottom="11dp"
+        android:paddingTop="11dp"
+        app:com_facebook_login_text="Facebook"
+        app:layout_constraintBottom_toBottomOf="@+id/googleButton"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/guideline2"
+        app:layout_constraintTop_toTopOf="@+id/googleButton"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
+
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/googleButton"
+        android:layout_width="170dp"
+        android:layout_height="47dp"
+        android:layout_marginBottom="24dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="@+id/guideline2"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <TextView
+        android:id="@+id/optionTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/label_login_option"
+        android:textAllCaps="true"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="@color/colorLight"
+        app:layout_constraintBottom_toTopOf="@+id/googleButton"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/switchButton"
+        app:layout_constraintVertical_bias="0.948" />
+
+    <View
+        android:id="@+id/leftLineView"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginBottom="0dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="0dp"
+        android:background="@color/colorLight"
+        app:layout_constraintBottom_toBottomOf="@+id/optionTextView"
+        app:layout_constraintLeft_toRightOf="@+id/optionTextView"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/optionTextView" />
+
+    <View
+        android:id="@+id/rightLineView"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/colorLight"
+        app:layout_constraintBottom_toBottomOf="@+id/optionTextView"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/optionTextView"
+        app:layout_constraintTop_toTopOf="@+id/optionTextView"
+        app:layout_constraintVertical_bias="1.0" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

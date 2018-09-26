@@ -3,9 +3,9 @@ package com.tompee.convoy.feature.login.page
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import androidx.appcompat.app.AlertDialog
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import androidx.appcompat.app.AlertDialog
 import com.facebook.AccessToken
 import com.google.android.gms.auth.api.signin.GoogleSignInResult
 import com.google.android.material.snackbar.Snackbar
@@ -15,14 +15,14 @@ import com.tompee.convoy.R
 import com.tompee.convoy.base.BaseFragment
 import com.tompee.convoy.core.auth.FacebookAuthHandler
 import com.tompee.convoy.core.auth.GoogleAuthHandler
-import com.tompee.convoy.feature.login.LoginActivity
+import com.tompee.convoy.feature.login.LoginFragment
 import com.tompee.convoy.feature.widget.ProgressDialog
 import io.reactivex.Observable
 import io.reactivex.Single
-import kotlinx.android.synthetic.main.fragment_login.*
+import kotlinx.android.synthetic.main.fragment_login_page.*
 import javax.inject.Inject
 
-class LoginFragment : BaseFragment(), LoginPageView {
+class LoginPageFragment : BaseFragment(), LoginPageView {
 
     @Inject
     lateinit var loginPagePresenter: LoginPagePresenter
@@ -40,8 +40,8 @@ class LoginFragment : BaseFragment(), LoginPageView {
         const val SIGN_UP = 1
         private const val TYPE_TAG = "type"
 
-        fun newInstance(type: Int): LoginFragment {
-            val loginFragment = LoginFragment()
+        fun newInstance(type: Int): LoginPageFragment {
+            val loginFragment = LoginPageFragment()
             val bundle = Bundle()
             bundle.putInt(TYPE_TAG, type)
             loginFragment.arguments = bundle
@@ -51,14 +51,14 @@ class LoginFragment : BaseFragment(), LoginPageView {
     //endregion
 
     // region BaseFragment
-    override fun layoutId(): Int = R.layout.fragment_login
+    override fun layoutId(): Int = R.layout.fragment_login_page
 
     override fun setupComponent() {
-        LoginActivity[activity!!].component.inject(this)
+        LoginFragment[parentFragment!!].component.inject(this)
     }
     //endregion
 
-    //region LoginFragment
+    //region LoginPageFragment
     override fun onAttach(context: Context?) {
         super.onAttach(context)
         if (context is PageSwitchListener) {

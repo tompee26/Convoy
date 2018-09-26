@@ -1,23 +1,25 @@
 package com.tompee.convoy.core.cropper
 
 import android.app.Activity.RESULT_OK
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import androidx.core.content.ContextCompat
 import android.widget.ImageView
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 import com.tompee.convoy.Constants
 import com.tompee.convoy.R
-import com.tompee.convoy.base.BaseActivity
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 
-class ImageCropper(private val activity: BaseActivity) {
+class ImageCropper(private val fragment: Fragment,
+                   private val context: Context) {
     private val uriSubject = PublishSubject.create<Uri>()
-    private lateinit var imageView : ImageView
+    private lateinit var imageView: ImageView
 
-    fun startImageCropper(imageView : ImageView): Observable<Uri> {
+    fun startImageCropper(imageView: ImageView): Observable<Uri> {
         CropImage.activity()
                 .setGuidelines(CropImageView.Guidelines.ON)
                 .setCropShape(CropImageView.CropShape.OVAL)
@@ -25,10 +27,10 @@ class ImageCropper(private val activity: BaseActivity) {
                 .setRequestedSize(Constants.IMAGE_SIZE, Constants.IMAGE_SIZE,
                         CropImageView.RequestSizeOptions.RESIZE_INSIDE)
                 .setAspectRatio(1, 1)
-                .setActivityMenuIconColor(ContextCompat.getColor(activity, R.color.colorLight))
+                .setActivityMenuIconColor(ContextCompat.getColor(context, R.color.colorLight))
                 .setAllowFlipping(false)
-                .setActivityTitle(activity.getString(R.string.profile_label_picture))
-                .start(activity)
+                .setActivityTitle(context.getString(R.string.profile_label_picture))
+                .start(context, fragment)
         this.imageView = imageView
         return uriSubject
     }

@@ -26,7 +26,7 @@
             android:value="@string/facebook_app_id" />
 
         <activity
-            android:name=".feature.map.MapActivity"
+            android:name=".feature.map.MapFragment"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation" />
 
         <activity
@@ -38,16 +38,7 @@
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation" />
 
         <activity
-            android:name=".feature.profilesetup.ProfileSetupActivity"
-            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation" />
-
-        <activity
-            android:name=".feature.login.LoginActivity"
-            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-            android:screenOrientation="portrait" />
-
-        <activity
-            android:name=".feature.splash.SplashActivity"
+            android:name=".feature.navhost.NavigationHostActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:screenOrientation="portrait">
             <intent-filter>

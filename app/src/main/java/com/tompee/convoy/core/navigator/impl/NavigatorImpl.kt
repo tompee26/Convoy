@@ -1,15 +1,23 @@
 package com.tompee.convoy.core.navigator.impl
 
-import android.content.Intent
-import com.tompee.convoy.base.BaseActivity
+import androidx.annotation.IdRes
+import androidx.navigation.NavController
+import androidx.navigation.NavOptions
 import com.tompee.convoy.core.navigator.Navigator
 
-class NavigatorImpl(private val activity: BaseActivity) : Navigator {
+class NavigatorImpl(private val navController: NavController) : Navigator {
+    override fun navigate(id: Int) {
+        navController.navigate(id)
+    }
 
-    override fun <T> moveToScreen(clazz: Class<T>) {
-        val intent = Intent(activity, clazz)
-        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-        activity.startActivity(intent)
-        activity.finish()
+    override fun popUp(@IdRes action: Int, @IdRes id : Int) {
+        val options = NavOptions.Builder()
+                .setPopUpTo(id, true)
+                .build()
+        navController.navigate(action, null, options)
+    }
+
+    override fun popBackStack() {
+        navController.popBackStack()
     }
 }

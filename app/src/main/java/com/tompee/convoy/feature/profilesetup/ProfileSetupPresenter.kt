@@ -1,8 +1,8 @@
 package com.tompee.convoy.feature.profilesetup
 
+import com.tompee.convoy.R
 import com.tompee.convoy.base.BasePresenterTyped
 import com.tompee.convoy.core.navigator.Navigator
-import com.tompee.convoy.feature.map.MapActivity
 import com.tompee.convoy.interactor.ProfileInteractor
 import com.tompee.convoy.model.Account
 import com.tompee.convoy.model.SchedulerPool
@@ -50,7 +50,7 @@ class ProfileSetupPresenter(profileInteractor: ProfileInteractor,
                 .flatMapCompletable { account ->
                     interactor.saveAccount(account)
                             .observeOn(schedulerPool.main)
-                            .doOnComplete { navigator.moveToScreen(MapActivity::class.java) }
+                            .doOnComplete { navigator.popUp(R.id.action_profileSetupFragment_to_mapFragment, R.id.profileSetupFragment) }
                             .doOnError { view.showError(it.message ?: "Error saving profile") }
                             .onErrorComplete()
                             .doOnComplete { view.dismissProgress() }

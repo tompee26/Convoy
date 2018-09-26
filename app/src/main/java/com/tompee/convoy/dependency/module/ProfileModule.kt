@@ -1,6 +1,7 @@
 package com.tompee.convoy.dependency.module
 
-import com.tompee.convoy.base.BaseActivity
+import android.content.Context
+import androidx.fragment.app.Fragment
 import com.tompee.convoy.core.cropper.ImageCropper
 import com.tompee.convoy.core.model.MutableAccount
 import com.tompee.convoy.core.navigator.Navigator
@@ -14,7 +15,8 @@ import dagger.Module
 import dagger.Provides
 
 @Module
-class ProfileModule(private val activity: BaseActivity) {
+class ProfileModule(private val fragment: Fragment,
+                    private val context: Context) {
     @Provides
     @ProfileScope
     fun provideProfileInteractor(userRepository: UserRepository,
@@ -30,5 +32,5 @@ class ProfileModule(private val activity: BaseActivity) {
 
     @ProfileScope
     @Provides
-    fun provideImageCropper(): ImageCropper = ImageCropper(activity)
+    fun provideImageCropper(): ImageCropper = ImageCropper(fragment, context)
 }

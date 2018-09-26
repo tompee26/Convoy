@@ -2,10 +2,9 @@ package com.tompee.convoy.feature.login.page
 
 import android.util.Patterns
 import com.tompee.convoy.Constants
+import com.tompee.convoy.R
 import com.tompee.convoy.base.BasePresenterTyped
 import com.tompee.convoy.core.navigator.Navigator
-import com.tompee.convoy.feature.map.MapActivity
-import com.tompee.convoy.feature.profilesetup.ProfileSetupActivity
 import com.tompee.convoy.interactor.LoginInteractor
 import com.tompee.convoy.model.Account
 import com.tompee.convoy.model.SchedulerPool
@@ -85,7 +84,7 @@ class LoginPagePresenter(loginInteractor: LoginInteractor,
                 .filter { it == InputError.BOTH_OK }
                 .doOnNext { view.showProgressDialog() }
                 .withLatestFrom(view.getEmail(), view.getPassword()) { _, email, pass -> Pair(email, pass) }
-        if (view.getViewType() == LoginFragment.SIGN_UP) {
+        if (view.getViewType() == LoginPageFragment.SIGN_UP) {
             addSubscription(command.flatMapCompletable { pair ->
                 interactor.signup(pair.first, pair.second)
                         .observeOn(schedulerPool.main)
@@ -109,8 +108,8 @@ class LoginPagePresenter(loginInteractor: LoginInteractor,
                 .flatMap { email ->
                     interactor.getUserInfo(email)
                             .observeOn(schedulerPool.main)
-                            .doOnSuccess { navigator.moveToScreen(MapActivity::class.java) }
-                            .doOnError { navigator.moveToScreen(ProfileSetupActivity::class.java) }
+                            .doOnSuccess { navigator.popUp(R.id.action_loginFragment_to_mapFragment, R.id.mapFragment) }
+                            .doOnError { navigator.popUp(R.id.action_loginFragment_to_profileSetupFragment, R.id.loginFragment) }
                             .subscribeOn(schedulerPool.io)
                 }
                 .onErrorResumeNext(Single.just(Account("", false, "", "", "", "")))

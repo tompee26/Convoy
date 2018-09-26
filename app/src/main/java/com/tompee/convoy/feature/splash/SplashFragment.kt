@@ -3,23 +3,23 @@ package com.tompee.convoy.feature.splash
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.os.Bundle
+import android.view.View
 import com.tompee.convoy.ConvoyApplication
 import com.tompee.convoy.R
-import com.tompee.convoy.base.BaseActivity
-import com.tompee.convoy.dependency.component.DaggerNavigatorComponent
+import com.tompee.convoy.base.BaseFragment
 import com.tompee.convoy.dependency.component.DaggerSplashComponent
-import com.tompee.convoy.dependency.module.NavigatorModule
-import kotlinx.android.synthetic.main.activity_splash.*
+import com.tompee.convoy.feature.navhost.NavigationHostActivity
+import kotlinx.android.synthetic.main.fragment_splash.*
 import javax.inject.Inject
 
-class SplashActivity : BaseActivity(), SplashView {
+class SplashFragment : BaseFragment(), SplashView {
 
     @Inject
     lateinit var splashPresenter: SplashPresenter
 
-    //region SplashActivity
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    //region SplashFragment
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         progress.indeterminateDrawable.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_IN)
         splashPresenter.attachView(this)
     }
@@ -30,16 +30,13 @@ class SplashActivity : BaseActivity(), SplashView {
     }
     //endregion
 
-    // region BaseActivity
-    override fun layoutId() = R.layout.activity_splash
+    // region BaseFragment
+    override fun layoutId() = R.layout.fragment_splash
 
     override fun setupComponent() {
-        val navigatorComponent = DaggerNavigatorComponent.builder()
-                .navigatorModule(NavigatorModule(this))
-                .build()
         DaggerSplashComponent.builder()
-                .appComponent(ConvoyApplication[this].component)
-                .navigatorComponent(navigatorComponent)
+                .appComponent(ConvoyApplication[activity!!].component)
+                .navigatorComponent(NavigationHostActivity[activity!!].component)
                 .build()
                 .inject(this)
     }

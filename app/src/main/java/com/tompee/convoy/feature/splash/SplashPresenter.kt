@@ -1,10 +1,8 @@
 package com.tompee.convoy.feature.splash
 
+import com.tompee.convoy.R
 import com.tompee.convoy.base.BasePresenterTyped
 import com.tompee.convoy.core.navigator.Navigator
-import com.tompee.convoy.feature.login.LoginActivity
-import com.tompee.convoy.feature.map.MapActivity
-import com.tompee.convoy.feature.profilesetup.ProfileSetupActivity
 import com.tompee.convoy.interactor.SplashInteractor
 import com.tompee.convoy.model.SchedulerPool
 import timber.log.Timber
@@ -17,13 +15,13 @@ class SplashPresenter(splashInteractor: SplashInteractor,
     override fun onAttachView(view: SplashView) {
         val subscription = interactor.getCurrentUser()
                 .observeOn(schedulerPool.main)
-                .doOnError { navigator.moveToScreen(LoginActivity::class.java) }
+                .doOnError { navigator.popUp(R.id.action_splashFragment_to_loginFragment, R.id.splashFragment) }
                 .observeOn(schedulerPool.io)
                 .flatMap { email ->
                     interactor.getUserInfo(email)
                             .observeOn(schedulerPool.main)
-                            .doOnSuccess { navigator.moveToScreen(MapActivity::class.java) }
-                            .doOnError { navigator.moveToScreen(ProfileSetupActivity::class.java) }
+                            .doOnSuccess { navigator.popUp(R.id.action_splashFragment_to_mapFragment, R.id.splashFragment) }
+                            .doOnError { navigator.popUp(R.id.action_splashFragment_to_profileSetupFragment, R.id.splashFragment) }
                             .subscribeOn(schedulerPool.io)
                 }
                 .subscribeOn(schedulerPool.io)

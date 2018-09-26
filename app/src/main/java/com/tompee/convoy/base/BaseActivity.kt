@@ -1,9 +1,9 @@
 package com.tompee.convoy.base
 
 import android.os.Bundle
+import android.view.MenuItem
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
-import android.view.MenuItem
 
 abstract class BaseActivity : AppCompatActivity() {
 
@@ -17,7 +17,6 @@ abstract class BaseActivity : AppCompatActivity() {
     abstract fun layoutId(): Int
 
     abstract fun setupComponent()
-
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         android.R.id.home -> {

@@ -1,24 +1,23 @@
 package com.tompee.convoy.feature.login
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import androidx.viewpager.widget.ViewPager
 import android.view.View
+import androidx.fragment.app.Fragment
+import androidx.viewpager.widget.ViewPager
 import com.tompee.convoy.ConvoyApplication
 import com.tompee.convoy.R
-import com.tompee.convoy.base.BaseActivity
+import com.tompee.convoy.base.BaseFragment
 import com.tompee.convoy.dependency.component.DaggerLoginComponent
-import com.tompee.convoy.dependency.component.DaggerNavigatorComponent
 import com.tompee.convoy.dependency.component.LoginComponent
 import com.tompee.convoy.dependency.module.LoginModule
-import com.tompee.convoy.dependency.module.NavigatorModule
-import com.tompee.convoy.feature.login.page.LoginFragment
+import com.tompee.convoy.feature.login.page.LoginPageFragment
 import com.tompee.convoy.feature.login.page.PageSwitchListener
-import kotlinx.android.synthetic.main.activity_login.*
+import com.tompee.convoy.feature.navhost.NavigationHostActivity
+import kotlinx.android.synthetic.main.fragment_login.*
 import javax.inject.Inject
 
-class LoginActivity : BaseActivity(), ViewPager.PageTransformer,
+class LoginFragment : BaseFragment(), ViewPager.PageTransformer,
         ViewPager.OnPageChangeListener, PageSwitchListener {
 
     @Inject
@@ -27,15 +26,15 @@ class LoginActivity : BaseActivity(), ViewPager.PageTransformer,
 
     //region companion object
     companion object {
-        operator fun get(activity: Activity): LoginActivity {
-            return activity as LoginActivity
+        operator fun get(fragment: Fragment): LoginFragment {
+            return fragment as LoginFragment
         }
     }
     //endregion
 
     // region LoginActivity
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         viewpager.addOnPageChangeListener(this)
         viewpager.setPageTransformer(false, this)
         viewpager.adapter = loginPagerAdapter
@@ -48,17 +47,14 @@ class LoginActivity : BaseActivity(), ViewPager.PageTransformer,
     }
     //endregion
 
-    //region BaseActivity
-    override fun layoutId(): Int = R.layout.activity_login
+    //region BaseFragment
+    override fun layoutId(): Int = R.layout.fragment_login
 
     override fun setupComponent() {
-        val navComponent = DaggerNavigatorComponent.builder()
-                .navigatorModule(NavigatorModule(this))
-                .build()
         component = DaggerLoginComponent.builder()
-                .loginModule(LoginModule(this))
-                .navigatorComponent(navComponent)
-                .appComponent(ConvoyApplication[this].component)
+                .loginModule(LoginModule(this, childFragmentManager))
+                .appComponent(ConvoyApplication[activity!!].component)
+                .navigatorComponent(NavigationHostActivity[activity!!].component)
                 .build()
         component.inject(this)
     }
@@ -110,7 +106,7 @@ class LoginActivity : BaseActivity(), ViewPager.PageTransformer,
 
     //region PageSwitchListener
     override fun onPageSwitch(type: Int) {
-        if (type == LoginFragment.LOGIN) {
+        if (type == LoginPageFragment.LOGIN) {
             viewpager.currentItem = 1
         } else {
             viewpager.currentItem = 0

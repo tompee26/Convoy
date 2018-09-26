@@ -1,6 +1,7 @@
 package com.tompee.convoy.dependency.module
 
 import android.content.Context
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import com.facebook.CallbackManager
@@ -16,7 +17,7 @@ import com.tompee.convoy.core.navigator.Navigator
 import com.tompee.convoy.core.repo.UserRepository
 import com.tompee.convoy.dependency.scopes.LoginScope
 import com.tompee.convoy.feature.login.LoginPagerAdapter
-import com.tompee.convoy.feature.login.page.LoginFragment
+import com.tompee.convoy.feature.login.page.LoginPageFragment
 import com.tompee.convoy.feature.login.page.LoginPagePresenter
 import com.tompee.convoy.interactor.LoginInteractor
 import com.tompee.convoy.model.SchedulerPool
@@ -25,24 +26,22 @@ import dagger.Provides
 import javax.inject.Named
 
 @Module
-class LoginModule(private val fragmentActivity: FragmentActivity) {
-
-    @Provides
-    fun provideFragmentManager(): FragmentManager = fragmentActivity.supportFragmentManager
+class LoginModule(private val fragment: Fragment,
+                  private val fragmentManager: FragmentManager) {
 
     @Provides
     @Named("login")
-    fun provideLoginFragment(): LoginFragment = LoginFragment.newInstance(LoginFragment.LOGIN)
+    fun provideLoginFragment(): LoginPageFragment = LoginPageFragment.newInstance(LoginPageFragment.LOGIN)
 
     @Provides
     @Named("signup")
-    fun provideSignUpFragment(): LoginFragment = LoginFragment.newInstance(LoginFragment.SIGN_UP)
+    fun provideSignUpFragment(): LoginPageFragment = LoginPageFragment.newInstance(LoginPageFragment.SIGN_UP)
 
     @LoginScope
     @Provides
-    fun provideLoginPagerAdapter(@Named("login") loginFragment: LoginFragment,
-                                 @Named("signup") signupFragment: LoginFragment) =
-            LoginPagerAdapter(fragmentActivity.supportFragmentManager, loginFragment, signupFragment)
+    fun provideLoginPagerAdapter(@Named("login") loginFragment: LoginPageFragment,
+                                 @Named("signup") signupFragment: LoginPageFragment) =
+            LoginPagerAdapter(fragmentManager, loginFragment, signupFragment)
 
     @Provides
     fun provideLoginPagePresenter(loginInteractor: LoginInteractor,
@@ -63,7 +62,7 @@ class LoginModule(private val fragmentActivity: FragmentActivity) {
 
     @LoginScope
     @Provides
-    fun provideGoogleAuthHandler(api: GoogleApiClient): GoogleAuthHandler = GoogleAuthHandler(fragmentActivity, api)
+    fun provideGoogleAuthHandler(api: GoogleApiClient): GoogleAuthHandler = GoogleAuthHandler(fragment, api)
 
     @Provides
     @LoginScope

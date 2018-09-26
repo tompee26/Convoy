@@ -2,6 +2,8 @@
   <dictionary name="prnsoft">
     <words>
       <w>multidex</w>
+      <w>navhost</w>
+      <w>profilesetup</w>
     </words>
   </dictionary>
 </component>
