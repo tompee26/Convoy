@@ -3,7 +3,7 @@ package com.tompee.convoy.core.cropper
 import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.net.Uri
-import android.support.v4.content.ContextCompat
+import androidx.core.content.ContextCompat
 import android.widget.ImageView
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView

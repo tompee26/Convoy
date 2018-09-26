@@ -1,9 +1,10 @@
 package com.tompee.convoy.feature.search
 
 import android.os.Bundle
-import android.support.v7.widget.DividerItemDecoration
-import android.support.v7.widget.LinearLayoutManager
 import android.view.View
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.jakewharton.rxbinding2.widget.RxTextView
 import com.tompee.convoy.ConvoyApplication
 import com.tompee.convoy.R
@@ -21,7 +22,7 @@ import javax.inject.Inject
 class SearchActivity : BaseActivity(), SearchMvpView {
     companion object {
         const val EMAIL = "email"
-        private lateinit var view : SearchMvpView
+        private lateinit var view: SearchMvpView
     }
 
     @Inject
@@ -35,7 +36,7 @@ class SearchActivity : BaseActivity(), SearchMvpView {
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_home)
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
-        val layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        val layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
         recyclerView.layoutManager = layoutManager
         recyclerView.setHasFixedSize(true)
         val divider = DividerItemDecoration(this, layoutManager.orientation)

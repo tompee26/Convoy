@@ -1,12 +1,12 @@
 package com.tompee.convoy.feature.friend.adapter
 
 import android.graphics.BitmapFactory
-import android.support.v7.widget.RecyclerView
 import android.util.Base64
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
 import com.tompee.convoy.R
 import com.tompee.convoy.feature.widget.CircularImageView
 import com.tompee.convoy.interactor.model.User

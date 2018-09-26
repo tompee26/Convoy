@@ -1,9 +1,9 @@
 package com.tompee.convoy.feature.search.profile
 
-import android.app.DialogFragment
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.DialogFragment
 import com.jakewharton.rxbinding2.view.RxView
 import com.tompee.convoy.ConvoyApplication
 import com.tompee.convoy.R

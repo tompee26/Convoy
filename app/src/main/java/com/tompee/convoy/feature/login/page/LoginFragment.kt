@@ -3,12 +3,12 @@ package com.tompee.convoy.feature.login.page
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.design.widget.Snackbar
-import android.support.v7.app.AlertDialog
+import androidx.appcompat.app.AlertDialog
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import com.facebook.AccessToken
 import com.google.android.gms.auth.api.signin.GoogleSignInResult
+import com.google.android.material.snackbar.Snackbar
 import com.jakewharton.rxbinding2.view.RxView
 import com.jakewharton.rxbinding2.widget.RxTextView
 import com.tompee.convoy.R

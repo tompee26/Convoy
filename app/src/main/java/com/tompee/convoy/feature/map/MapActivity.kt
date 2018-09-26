@@ -2,9 +2,8 @@ package com.tompee.convoy.feature.map
 
 import android.Manifest
 import android.content.Intent
-import android.graphics.Bitmap
 import android.os.Bundle
-import android.support.v4.view.GravityCompat
+import androidx.core.view.GravityCompat
 import android.view.MenuItem
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -14,34 +13,29 @@ import com.tompee.convoy.ConvoyApplication
 import com.tompee.convoy.R
 import com.tompee.convoy.base.BaseActivity
 import com.tompee.convoy.dependency.component.DaggerMapComponent
+import com.tompee.convoy.dependency.component.DaggerNavigatorComponent
 import com.tompee.convoy.dependency.module.MapModule
+import com.tompee.convoy.dependency.module.NavigatorModule
 import com.tompee.convoy.feature.friend.FriendListActivity
-import com.tompee.convoy.feature.search.SearchActivity
-import com.tompee.convoy.interactor.model.User
-import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
-import io.reactivex.subjects.CompletableSubject
 import kotlinx.android.synthetic.main.activity_map.*
-import kotlinx.android.synthetic.main.drawer_header.*
 import kotlinx.android.synthetic.main.toolbar_main.*
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions
 import javax.inject.Inject
 
-class MapActivity : BaseActivity(), MapMvpView, OnMapReadyCallback, EasyPermissions.PermissionCallbacks {
+class MapActivity : BaseActivity(), MapView, OnMapReadyCallback, EasyPermissions.PermissionCallbacks {
     companion object {
-        const val EMAIL = "email"
         private const val RC_LOCATION_PERM = 124
     }
 
     @Inject
     lateinit var presenter: MapPresenter
     private val mapSubject = BehaviorSubject.create<GoogleMap>()
-    private val permissionSubject = CompletableSubject.create()
 
-    // region View/Presenter setup
+    // region MapActivity
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setSupportActionBar(toolbar)
@@ -49,15 +43,15 @@ class MapActivity : BaseActivity(), MapMvpView, OnMapReadyCallback, EasyPermissi
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_menu)
         supportActionBar?.setDisplayShowTitleEnabled(false)
         presenter.attachView(this)
-        RxView.clicks(search).subscribe({
-            val intent = Intent(this, SearchActivity::class.java)
-            intent.putExtra(SearchActivity.EMAIL, this@MapActivity.intent.getStringExtra(EMAIL))
-            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-            startActivity(intent)
-        })
         navigationView.setNavigationItemSelectedListener { handleNavigationItemClick(it) }
-        val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
-        mapFragment.getMapAsync(this)
+
+//        RxView.clicks(search).subscribe({
+//            val intent = Intent(this, SearchActivity::class.java)
+//            intent.putExtra(SearchActivity.EMAIL, this@MapActivity.intent.getStringExtra(EMAIL))
+//            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+//            startActivity(intent)
+//        })
+        checkAndRequestPermission()
     }
 
     private fun handleNavigationItemClick(item: MenuItem): Boolean {
@@ -65,7 +59,6 @@ class MapActivity : BaseActivity(), MapMvpView, OnMapReadyCallback, EasyPermissi
         when (item.itemId) {
             R.id.friend_list -> {
                 val intent = Intent(this, FriendListActivity::class.java)
-                intent.putExtra(FriendListActivity.EMAIL, this@MapActivity.intent.getStringExtra(EMAIL))
                 intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
                 startActivity(intent)
             }
@@ -75,7 +68,6 @@ class MapActivity : BaseActivity(), MapMvpView, OnMapReadyCallback, EasyPermissi
 
     override fun onMapReady(googleMap: GoogleMap) {
         mapSubject.onNext(googleMap)
-        checkAndRequestPermission()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -86,32 +78,22 @@ class MapActivity : BaseActivity(), MapMvpView, OnMapReadyCallback, EasyPermissi
         return super.onOptionsItemSelected(item)
     }
 
-    override fun layoutId(): Int = R.layout.activity_map
-
-    override fun setupComponent() {
-        val mapComponent = DaggerMapComponent.builder()
-                .appComponent(ConvoyApplication[this].component)
-                .mapModule(MapModule()).build()
-        mapComponent.inject(this)
-    }
-
     override fun onDestroy() {
         super.onDestroy()
         presenter.detachView()
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this)
-    }
+    // endregion
 
+    //region Permissions
     @AfterPermissionGranted(RC_LOCATION_PERM)
     private fun checkAndRequestPermission() {
         if (!EasyPermissions.hasPermissions(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
             EasyPermissions.requestPermissions(this, getString(R.string.rationale_location_request),
                     RC_LOCATION_PERM, Manifest.permission.ACCESS_FINE_LOCATION)
         } else {
-            permissionSubject.onComplete()
+            val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
+            mapFragment.getMapAsync(this)
         }
     }
 
@@ -124,29 +106,33 @@ class MapActivity : BaseActivity(), MapMvpView, OnMapReadyCallback, EasyPermissi
 
     override fun onPermissionsGranted(requestCode: Int, perms: MutableList<String>) {
     }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this)
+    }
+    //endregion
+
+    //region BaseActivity
+    override fun layoutId(): Int = R.layout.activity_map
+
+    override fun setupComponent() {
+        val navComponent = DaggerNavigatorComponent.builder()
+                .navigatorModule(NavigatorModule(this))
+                .build()
+        val mapComponent = DaggerMapComponent.builder()
+                .navigatorComponent(navComponent)
+                .appComponent(ConvoyApplication[this].component)
+                .mapModule(MapModule()).build()
+        mapComponent.inject(this)
+    }
+    //endregion
+
+    // region MapView
+
+    override fun getGoogleMap(): Observable<GoogleMap> = mapSubject
+
+    override fun locationRequest(): Observable<Any> = RxView.clicks(myLocation)
+
     // endregion
-
-    // region Observables
-    override fun getEmail(): String {
-        return intent.getStringExtra(EMAIL)
-    }
-
-    override fun getGoogleMap(): Observable<GoogleMap> {
-        return mapSubject
-    }
-
-    override fun goToMyLocationRequest(): Observable<Any> {
-        return RxView.clicks(myLocation)
-    }
-
-    override fun permissionChange(): Completable {
-        return permissionSubject
-    }
-    // endregion
-
-    override fun setupProfile(user: User, bitmap: Bitmap) {
-        emailView.text = user.email
-        displayNameView.text = user.display
-        portrait.setImageBitmap(bitmap)
-    }
 }

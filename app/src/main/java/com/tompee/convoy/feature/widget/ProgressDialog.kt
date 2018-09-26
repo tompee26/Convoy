@@ -6,7 +6,7 @@ import android.app.DialogFragment
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.os.Bundle
-import android.support.v4.content.ContextCompat
+import androidx.core.content.ContextCompat
 import com.tompee.convoy.R
 import com.tompee.convoy.base.BaseDialogFragment
 import kotlinx.android.synthetic.main.dialog_progress.view.*

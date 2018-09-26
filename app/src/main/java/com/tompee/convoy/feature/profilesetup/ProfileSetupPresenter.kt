@@ -32,12 +32,12 @@ class ProfileSetupPresenter(profileInteractor: ProfileInteractor,
                     .filter { it.isEmpty() }
                     .observeOn(schedulerPool.main)
         }
-        decorateObservable(view.getFirstName())
-                .subscribe { view.showEmptyFirstNameError() }
-        decorateObservable(view.getLastName())
-                .subscribe { view.showEmptyLastNameError() }
-        decorateObservable(view.getDisplayName())
-                .subscribe { view.showEmptyDisplayNameError() }
+        addSubscription(decorateObservable(view.getFirstName())
+                .subscribe { view.showEmptyFirstNameError() })
+        addSubscription(decorateObservable(view.getLastName())
+                .subscribe { view.showEmptyLastNameError() })
+        addSubscription(decorateObservable(view.getDisplayName())
+                .subscribe { view.showEmptyDisplayNameError() })
     }
 
     private fun setupSave() {
