@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/ConvoyRepo.iml" filepath="$PROJECT_DIR$/ConvoyRepo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Convoy.iml" filepath="$PROJECT_DIR$/Convoy.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
