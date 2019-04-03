@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <!-- Toolbar dimensions -->
-    <dimen name="toolbar_print_title_left_padding">0dp</dimen>
-    <dimen name="toolbar_print_title_right_padding">16dp</dimen>
-    <dimen name="toolbar_print_title_top_padding">0dp</dimen>
-    <dimen name="toolbar_print_title_bottom_padding">0dp</dimen>
-</resources>
