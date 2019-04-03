@@ -9,6 +9,7 @@ import com.tompee.convoy.R
 import com.tompee.convoy.databinding.FragmentFriendListBinding
 import com.tompee.convoy.presentation.base.BaseFragment
 import com.tompee.convoy.presentation.common.SectionAdapter
+import com.tompee.convoy.presentation.friends.profile.ProfileDialog
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
 
@@ -43,6 +44,10 @@ class FriendListFragment : BaseFragment<FragmentFriendListBinding>() {
         })
         vm.sectionList.observe(this, Observer {
             sectionAdapter.setSections(it)
+        })
+        friendListAdapter.onClick.observe(this, Observer {
+            val dialog = ProfileDialog.newInstance(it)
+            dialog.show(fragmentManager!!, "profile")
         })
         val navigation = findNavController()
         binding.toolbar.search.setOnClickListener {
