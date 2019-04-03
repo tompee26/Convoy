@@ -1,44 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="180dp"
-    android:background="@drawable/background_drawer_header">
+<layout>
 
-    <com.tompee.convoy.feature.widget.CircularImageView
-        android:id="@+id/portrait"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:contentDescription="@string/content_description"
-        app:civ_border_width="2dp"
-        app:layout_constraintBottom_toTopOf="@+id/displayNameView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_account_circle_white" />
+    <data>
 
-    <TextView
-        android:id="@+id/displayNameView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp"
-        android:layout_marginStart="16dp"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="@color/colorLight"
-        app:layout_constraintBottom_toTopOf="@+id/emailView"
-        app:layout_constraintStart_toStartOf="parent" />
+        <variable
+            name="viewModel"
+            type="com.tompee.convoy.presentation.map.MapViewModel" />
+    </data>
 
-    <TextView
-        android:id="@+id/emailView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:layout_marginStart="16dp"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="@color/colorLightAlpha"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:background="@drawable/background_drawer_header">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <com.tompee.convoy.presentation.common.CircularImageView
+            android:id="@+id/portrait"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:contentDescription="@string/content_description"
+            app:civ_border_width="2dp"
+            app:image="@{viewModel.imageUrl}"
+            app:layout_constraintBottom_toTopOf="@+id/displayNameView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_account_circle_white" />
+
+        <TextView
+            android:id="@+id/displayNameView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="4dp"
+            android:text="@{viewModel.displayName}"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/colorLight"
+            app:layout_constraintBottom_toTopOf="@+id/emailView"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/emailView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="16dp"
+            android:text="@{viewModel.email}"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/colorLightAlpha"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

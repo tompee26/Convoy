@@ -1,5 +1,37 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowBackground">@color/colorBackground</item>
+        <item name="windowActionModeOverlay">true</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <!-- Branded Launch Theme -->
+    <style name="AppTheme.BrandedLaunch">
+        <item name="android:windowBackground">@drawable/launcher_bg</item>
+        <item name="android:windowFullscreen">true</item>
+    </style>
+
+    <style name="FragmentDialog" parent="Base.Theme.AppCompat.Light.Dialog.Alert">
+        <item name="windowFixedWidthMajor">90%</item>
+        <item name="windowFixedWidthMinor">90%</item>
+    </style>
+
+    <style name="DialogStyle" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="colorAccent">@color/colorDark</item>
+    </style>
+
+    <style name="ImageCropTheme" parent="@style/Theme.AppCompat">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="titleTextColor">@color/colorLight</item>
+        <item name="actionMenuTextColor">@color/colorLight</item>
+        <item name="android:textColorPrimary">@color/colorLight</item>
+    </style>
+
     <!-- Base Toolbar Style -->
     <style name="ToolBarStyle">
         <item name="android:layout_height">?attr/actionBarSize</item>
@@ -16,20 +48,14 @@
         <item name="android:singleLine">true</item>
         <item name="android:ellipsize">end</item>
         <item name="android:textColor">@color/colorLight</item>
-        <item name="android:paddingLeft">@dimen/toolbar_print_title_left_padding</item>
-        <item name="android:paddingRight">@dimen/toolbar_print_title_right_padding</item>
-        <item name="android:paddingTop">@dimen/toolbar_print_title_top_padding</item>
-        <item name="android:paddingBottom">@dimen/toolbar_print_title_bottom_padding</item>
+        <item name="android:paddingLeft">0dp</item>
+        <item name="android:paddingRight">16dp</item>
+        <item name="android:paddingTop">0dp</item>
+        <item name="android:paddingBottom">0dp</item>
     </style>
 
-    <style name="FragmentDialog" parent="Base.Theme.AppCompat.Light.Dialog.Alert">
-        <item name="windowFixedWidthMajor">90%</item>
-        <item name="windowFixedWidthMinor">90%</item>
+    <style name="AddUserDialog">
+        <item name="colorAccent">@color/colorPrimary</item>
     </style>
 
-    <style name="DialogStyle" parent="Theme.AppCompat.Light.Dialog">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="colorAccent">@color/colorDark</item>
-    </style>
 </resources>

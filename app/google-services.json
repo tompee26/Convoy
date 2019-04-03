@@ -1,0 +1,63 @@
+{
+  "project_info": {
+    "project_number": "100581148505",
+    "firebase_url": "https://convoy-1521703046551.firebaseio.com",
+    "project_id": "convoy-1521703046551",
+    "storage_bucket": "convoy-1521703046551.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:100581148505:android:4ed2d0dd6a56dd92",
+        "android_client_info": {
+          "package_name": "com.tompee.convoy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "100581148505-14rfmhb6g7sopqld1bqa9k7r2kqnpbr4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tompee.convoy",
+            "certificate_hash": "60fc4186bb9fa2416149f19ebb5ed9cbd2aea9f9"
+          }
+        },
+        {
+          "client_id": "100581148505-5n1oj9hvf2gglqo12vgh7mha3mc4h8ch.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tompee.convoy",
+            "certificate_hash": "da2230c889da72919ed93e149364fbc1f222da75"
+          }
+        },
+        {
+          "client_id": "100581148505-rh8qrbokce4mtrgnoshroc1ursntvovh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDEdYKMn8IEnCmEqfUGk5_zvkYYuyILg8c"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "100581148505-rh8qrbokce4mtrgnoshroc1ursntvovh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

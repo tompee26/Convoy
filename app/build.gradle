@@ -1,7 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
-apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion 28
@@ -20,16 +19,11 @@ android {
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-
-    androidExtensions {
-        experimental = true
-    }
-
-    dexOptions {
-        preDexLibraries = false
+    dataBinding {
+        enabled = true
     }
 }
 
@@ -37,64 +31,20 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
-    def support_library_version = "1.0.0"
-    implementation "androidx.cardview:cardview:$support_library_version"
-    implementation "androidx.appcompat:appcompat:$support_library_version"
-    implementation "com.google.android.material:material:$support_library_version"
+    def appcompat_version = "1.1.0-alpha03"
+    implementation "androidx.appcompat:appcompat:$appcompat_version"
 
     def constraint_layout_version = "1.1.3"
     implementation "androidx.constraintlayout:constraintlayout:$constraint_layout_version"
 
-    def multidex_version = "2.0.0"
-    implementation "androidx.multidex:multidex:$multidex_version"
+    def nav_version = "2.0.0"
+    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
+    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
 
-    def nav_version = "1.0.0-alpha06"
-    implementation "android.arch.navigation:navigation-fragment-ktx:$nav_version"
-    implementation "android.arch.navigation:navigation-ui-ktx:$nav_version"
+    def lifecycle_version = "2.0.0"
+    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
 
-    def facebook_version = "4.30.0"
-    implementation "com.facebook.android:facebook-login:$facebook_version"
-
-    def play_service_auth = "16.0.0"
-    implementation "com.google.android.gms:play-services-auth:$play_service_auth"
-
-    def play_service_maps = "15.0.1"
-    implementation "com.google.android.gms:play-services-maps:$play_service_maps"
-
-    def play_service_location = "15.0.1"
-    implementation "com.google.android.gms:play-services-location:$play_service_location"
-
-    def play_service_places = "15.0.1"
-    implementation "com.google.android.gms:play-services-places:$play_service_places"
-
-    def firebase_core = "16.0.3"
-    implementation "com.google.firebase:firebase-core:$firebase_core"
-
-    def firebase_auth = "16.0.3"
-    implementation "com.google.firebase:firebase-auth:$firebase_auth"
-
-    def firebase_storage = "16.0.2"
-    implementation "com.google.firebase:firebase-storage:$firebase_storage"
-
-    def firebase_messaging = "17.3.2"
-    implementation "com.google.firebase:firebase-messaging:$firebase_messaging"
-
-    def firebase_firestore = "17.1.0"
-    implementation "com.google.firebase:firebase-firestore:$firebase_firestore"
-
-    def reactive_location_version = "2.1@aar"
-    implementation "pl.charmas.android:android-reactive-location2:$reactive_location_version"
-
-    def rx_kotlin_version = "2.3.0"
-    implementation "io.reactivex.rxjava2:rxkotlin:$rx_kotlin_version"
-
-    def rx_android_version = "2.0.2"
-    implementation "io.reactivex.rxjava2:rxandroid:$rx_android_version"
-
-    def rx_binding_version = "2.1.1"
-    implementation "com.jakewharton.rxbinding2:rxbinding-kotlin:$rx_binding_version"
-
-    def dagger_version = "2.15"
+    def dagger_version = "2.21"
     implementation "com.google.dagger:dagger:$dagger_version"
     implementation "com.google.dagger:dagger-android:$dagger_version"
     implementation "com.google.dagger:dagger-android-support:$dagger_version"
@@ -102,17 +52,49 @@ dependencies {
     kapt "com.google.dagger:dagger-android-processor:$dagger_version"
     kapt "com.google.dagger:dagger-android-support:$dagger_version"
 
-    def easy_permission_version = "1.3.0"
-    implementation "pub.devrel:easypermissions:$easy_permission_version"
+    def rxKotlin = "2.3.0"
+    implementation "io.reactivex.rxjava2:rxkotlin:$rxKotlin"
 
     def timber_version = "4.7.1"
     implementation "com.jakewharton.timber:timber:$timber_version"
 
-    def image_cropper_version = "2.7.0"
+    def multidex_version = "2.0.1"
+    implementation "androidx.multidex:multidex:$multidex_version"
+
+    def facebook_version = "4.41.0"
+    implementation "com.facebook.android:facebook-login:$facebook_version"
+
+    def play_service_auth = "16.0.1"
+    implementation "com.google.android.gms:play-services-auth:$play_service_auth"
+
+    def play_service_maps = "16.1.0"
+    implementation "com.google.android.gms:play-services-maps:$play_service_maps"
+
+    def play_service_location = "16.0.0"
+    implementation "com.google.android.gms:play-services-location:$play_service_location"
+
+    def play_service_places = "16.0.0"
+    implementation "com.google.android.gms:play-services-places:$play_service_places"
+
+    def firebase_core = "16.0.8"
+    implementation "com.google.firebase:firebase-core:$firebase_core"
+
+    def firebase_auth = "16.2.0"
+    implementation "com.google.firebase:firebase-auth:$firebase_auth"
+
+    def firebase_firestore = "18.1.0"
+    implementation "com.google.firebase:firebase-firestore:$firebase_firestore"
+
+    def firebase_storage = "16.1.0"
+    implementation "com.google.firebase:firebase-storage:$firebase_storage"
+
+    def image_cropper_version = "2.8.0"
     implementation "com.theartofdev.edmodo:android-image-cropper:$image_cropper_version"
 
-    def picasso_version = "2.71828"
-    implementation "com.squareup.picasso:picasso:$picasso_version"
+    def glide_version = "4.9.0"
+    implementation "com.github.bumptech.glide:glide:$glide_version"
+
+    testImplementation 'junit:junit:4.12'
 }
 
 apply plugin: 'com.google.gms.google-services'

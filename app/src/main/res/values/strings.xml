@@ -3,33 +3,24 @@
     <string name="app_subtitle">Explore the world together</string>
     <string name="content_description" translatable="false">Content Description</string>
 
-    <!--Widget labels-->
+    <string name="facebook_app_id">167254463898044</string>
+    <string name="fb_login_protocol_scheme">fb167254463898044</string>
+
     <string name="label_login_name">Email</string>
     <string name="label_login_pass">Password</string>
+    <string name="label_login_option">or login with</string>
+    <string name="label_login_new_account">Create a new account</string>
+    <string name="label_login_registered">Login now</string>
     <string name="label_login_button">Login</string>
     <string name="label_login_sign_up">Sign up</string>
     <string name="label_positive_button">OK</string>
-    <string name="label_login_new_account">Create a new account</string>
-    <string name="label_login_registered">Login now</string>
+    <string name="label_register_successful_title">Registration successful</string>
+    <string name="label_profile_setup">Tell us about you!</string>
     <string name="label_upload_profileImage">Upload Profile Image</string>
-    <string name="label_login_option">or login with</string>
-
-    <!--Progress messages-->
-    <string name="progress_login_register">Registering account…</string>
-    <string name="progress_login_authenticate">Authenticating…</string>
-    <string name="progress_save_profile">Creating profile…</string>
-
-    <!--Rationales-->
-    <string name="rationale_location_request">This app needs access to your location to know where you are.</string>
-    <string name="rationale_storage_request">This app needs access to your storage to be able to upload profile images.</string>
-    <string name="rationale_email_verification">A message was sent to your email. Please verify and login afterwards.</string>
-
-    <!--Titles and headers-->
-    <string name="title_profile_setup">Tell us about you!</string>
-
-
-    <!-- Login screen -->
-    <string name="signup_successful_title">Registration successful</string>
+    <string name="label_search">Search</string>
+    <string name="label_search_text">Search friends here…</string>
+    <string name="label_friends">Friends</string>
+    <string name="label_search_empty">No users found.</string>
 
     <!-- Profile -->
     <string name="profile_label_first_name">First Name</string>
@@ -43,6 +34,16 @@
     <string name="profile_label_accept">Accept Friend Request</string>
     <string name="profile_label_friends">Already Friends!</string>
 
+    <!--Rationales-->
+    <string name="rationale_location_request">This app needs access to your location to know where you are.</string>
+    <string name="rationale_storage_request">This app needs access to your storage to be able to upload profile images.</string>
+    <string name="rationale_email_verification">A message was sent to your email. Please verify and login afterwards.</string>
+
+    <!--Progress messages-->
+    <string name="progress_login_register">Registering account…</string>
+    <string name="progress_login_authenticate">Authenticating…</string>
+    <string name="progress_save_profile">Creating profile…</string>
+
     <!-- Error -->
     <string name="error_field_required">This field is required</string>
     <string name="error_invalid_email">Invalid email format</string>
@@ -53,17 +54,8 @@
     <string name="menu_profile">Profile</string>
     <string name="menu_log_out">Log out</string>
 
-    <!-- Map -->
-    <string name="map_label_search">Search</string>
-
     <!-- Friends -->
     <string name="friends_label">Friends</string>
     <string name="friends_pending_sent">Friend request sent</string>
     <string name="friends_pending_received">Friend request received</string>
-
-    <!-- Search -->
-    <string name="search_empty">No users found.</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

@@ -1,9 +1,11 @@
 <component name="ProjectDictionaryState">
   <dictionary name="prnsoft">
     <words>
+      <w>firebase</w>
+      <w>firestore</w>
+      <w>interactor</w>
       <w>multidex</w>
-      <w>navhost</w>
-      <w>profilesetup</w>
+      <w>tompee</w>
     </words>
   </dictionary>
 </component>

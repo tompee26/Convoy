@@ -2,47 +2,78 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
     app:startDestination="@id/splashFragment">
 
     <fragment
         android:id="@+id/splashFragment"
-        android:name="com.tompee.convoy.feature.splash.SplashFragment"
+        android:name="com.tompee.convoy.presentation.splash.SplashFragment"
         android:label="SplashFragment"
         tools:layout="@layout/fragment_splash">
         <action
             android:id="@+id/action_splashFragment_to_loginFragment"
-            app:destination="@id/loginFragment" />
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/splashFragment"
+            app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_splashFragment_to_profileSetupFragment"
-            app:destination="@id/profileSetupFragment" />
+            app:destination="@id/profileSetupFragment"
+            app:popUpTo="@id/splashFragment"
+            app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_splashFragment_to_mapFragment"
-            app:destination="@id/mapFragment" />
+            app:destination="@id/mapFragment"
+            app:popUpTo="@id/splashFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.tompee.convoy.feature.login.LoginFragment"
+        android:name="com.tompee.convoy.presentation.login.LoginFragment"
         android:label="LoginFragment"
         tools:layout="@layout/fragment_login">
         <action
             android:id="@+id/action_loginFragment_to_profileSetupFragment"
-            app:destination="@id/profileSetupFragment" />
+            app:destination="@id/profileSetupFragment"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_loginFragment_to_mapFragment"
-            app:destination="@id/mapFragment" />
+            app:destination="@id/mapFragment"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/profileSetupFragment"
-        android:name="com.tompee.convoy.feature.profilesetup.ProfileSetupFragment"
+        android:name="com.tompee.convoy.presentation.profile.ProfileSetupFragment"
         android:label="ProfileSetupFragment"
         tools:layout="@layout/fragment_profile_setup">
         <action
             android:id="@+id/action_profileSetupFragment_to_mapFragment"
-            app:destination="@id/mapFragment" />
+            app:destination="@id/mapFragment"
+            app:popUpTo="@id/profileSetupFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/mapFragment"
-        android:name="com.tompee.convoy.feature.map.MapFragment"
+        android:name="com.tompee.convoy.presentation.map.MapFragment"
         android:label="MapFragment"
-        tools:layout="@layout/fragment_map" />
+        tools:layout="@layout/fragment_map">
+        <action
+            android:id="@+id/action_mapFragment_to_friendListFragment"
+            app:destination="@id/friendListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/friendListFragment"
+        android:name="com.tompee.convoy.presentation.friends.FriendListFragment"
+        android:label="FriendListFragment"
+        tools:layout="@layout/fragment_friend_list">
+        <action
+            android:id="@+id/action_friendListFragment_to_friendSearchFragment"
+            app:destination="@id/friendSearchFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/friendSearchFragment"
+        android:name="com.tompee.convoy.presentation.friends.search.FriendSearchFragment"
+        android:label="FriendSearchFragment"
+        tools:layout="@layout/fragment_friend_search" />
 </navigation>

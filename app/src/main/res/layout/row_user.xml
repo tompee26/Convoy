@@ -1,60 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="80dp"
-    android:background="?attr/selectableItemBackground"
-    android:clickable="true"
-    android:focusable="true">
+<layout>
 
-    <com.tompee.convoy.feature.widget.CircularImageView
-        android:id="@+id/rowImage"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        app:civ_border_width="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_account_circle_primary" />
+    <data>
 
-    <TextView
-        android:id="@+id/displayName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="@color/colorDarkAlpha"
-        android:textStyle="italic"
-        app:layout_constraintBottom_toBottomOf="@+id/fullName"
-        app:layout_constraintStart_toEndOf="@+id/fullName"
-        app:layout_constraintTop_toTopOf="@+id/fullName"
-        tools:text="display" />
+        <variable
+            name="user"
+            type="com.tompee.convoy.domain.entities.User" />
+    </data>
 
-    <TextView
-        android:id="@+id/fullName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="12dp"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@color/colorPrimary"
-        app:layout_constraintStart_toEndOf="@+id/rowImage"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="full name" />
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true">
 
-    <TextView
-        android:id="@+id/status"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="4dp"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="@color/colorPrimary"
-        app:layout_constraintStart_toEndOf="@+id/rowImage"
-        app:layout_constraintTop_toBottomOf="@+id/fullName"
-        tools:text="status" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <com.tompee.convoy.presentation.common.CircularImageView
+            android:id="@+id/rowImage"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            app:civ_border_width="0dp"
+            app:image="@{user.image}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_account_circle_primary" />
+
+        <TextView
+            android:id="@+id/displayName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@{user.displayName}"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/colorDarkAlpha"
+            android:textStyle="italic"
+            app:layout_constraintBottom_toBottomOf="@+id/fullName"
+            app:layout_constraintStart_toEndOf="@+id/fullName"
+            app:layout_constraintTop_toTopOf="@+id/fullName"
+            tools:text="display" />
+
+        <TextView
+            android:id="@+id/fullName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="12dp"
+            android:text="@{user.firstName}"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/colorPrimary"
+            app:layout_constraintStart_toEndOf="@+id/rowImage"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="full name" />
+
+        <TextView
+            android:id="@+id/status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="4dp"
+            android:text="@{user.email}"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/colorPrimary"
+            app:layout_constraintStart_toEndOf="@+id/rowImage"
+            app:layout_constraintTop_toBottomOf="@+id/fullName"
+            tools:text="status" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
