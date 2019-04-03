@@ -1,5 +1,6 @@
 package com.tompee.convoy.presentation.map
 
+import android.view.Gravity
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.tompee.convoy.R
@@ -25,6 +26,10 @@ class MapFragment : BaseFragment<FragmentMapBinding>() {
         val headerBinding = DrawerHeaderBinding.bind(binding.navigationView.getHeaderView(0))
         headerBinding.lifecycleOwner = this
         headerBinding.viewModel = vm
+
+        binding.toolbar.menu.setOnClickListener {
+            binding.drawerLayout.openDrawer(Gravity.LEFT)
+        }
 
         binding.navigationView.setNavigationItemSelectedListener {
             binding.drawerLayout.closeDrawers()

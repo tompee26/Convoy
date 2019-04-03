@@ -20,7 +20,9 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <include layout="@layout/toolbar_main" />
+            <include
+                android:id="@+id/toolbar"
+                layout="@layout/toolbar_main" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
