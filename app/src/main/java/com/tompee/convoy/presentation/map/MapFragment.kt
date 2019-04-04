@@ -2,8 +2,13 @@ package com.tompee.convoy.presentation.map
 
 import android.Manifest
 import android.view.Gravity
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.MapStyleOptions
+import com.google.android.gms.maps.model.Marker
 import com.tompee.convoy.R
 import com.tompee.convoy.databinding.DrawerHeaderBinding
 import com.tompee.convoy.databinding.FragmentMapBinding
@@ -23,6 +28,9 @@ class MapFragment : BaseFragment<FragmentMapBinding>(), EasyPermissions.Permissi
     @Inject
     lateinit var factory: MapViewModel.Factory
 
+    private lateinit var map: GoogleMap
+    private lateinit var selfMarker: Marker
+
     override val layoutId: Int = R.layout.fragment_map
 
     override fun performInject() {
@@ -38,7 +46,6 @@ class MapFragment : BaseFragment<FragmentMapBinding>(), EasyPermissions.Permissi
         binding.toolbar.menu.setOnClickListener {
             binding.drawerLayout.openDrawer(Gravity.LEFT)
         }
-
         binding.navigationView.setNavigationItemSelectedListener {
             binding.drawerLayout.closeDrawers()
             val navigation = findNavController()
@@ -47,11 +54,25 @@ class MapFragment : BaseFragment<FragmentMapBinding>(), EasyPermissions.Permissi
             }
             return@setNavigationItemSelectedListener true
         }
-    }
+        binding.toolbar.myLocation.setOnClickListener{
+            vm.moveToCurrentLocation()
+        }
 
-    override fun onResume() {
-        super.onResume()
-        checkAndRequestPermission()
+        vm.selfMarker.observe(this, Observer {
+            if (::selfMarker.isInitialized) {
+                selfMarker.remove()
+            }
+            selfMarker = map.addMarker(it)
+        })
+        vm.moveLocation.observe(this, Observer {
+            map.moveCamera(it)
+        })
+
+        val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
+        mapFragment?.getMapAsync {
+            map = it
+            checkAndRequestPermission()
+        }
     }
 
     @AfterPermissionGranted(RC_LOCATION_PERM)
@@ -62,8 +83,13 @@ class MapFragment : BaseFragment<FragmentMapBinding>(), EasyPermissions.Permissi
                 RC_LOCATION_PERM, Manifest.permission.ACCESS_FINE_LOCATION
             )
         } else {
-            val vm = ViewModelProviders.of(this, factory)[MapViewModel::class.java]
-            vm.getLocation()
+            map.apply {
+                setMapStyle(MapStyleOptions.loadRawResourceStyle(activity!!, R.raw.map_style))
+            }
+
+            ViewModelProviders.of(this, factory)[MapViewModel::class.java].apply {
+                getLocation()
+            }
         }
     }
 

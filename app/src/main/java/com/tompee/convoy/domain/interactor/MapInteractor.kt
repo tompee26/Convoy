@@ -16,7 +16,7 @@ class MapInteractor(
         return accountRepository.getAccount()
     }
 
-    fun getCurrentLocation(): Flowable<Location> {
-        return locationProvider.getCurrentLocation()
+    fun getLocation(): Flowable<Location> {
+        return locationProvider.getLocation()
     }
 }

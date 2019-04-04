@@ -4,5 +4,5 @@ import android.location.Location
 import io.reactivex.Flowable
 
 interface LocationProvider {
-    fun getCurrentLocation(): Flowable<Location>
+    fun getLocation(): Flowable<Location>
 }

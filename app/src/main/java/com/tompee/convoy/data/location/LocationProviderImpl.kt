@@ -9,7 +9,7 @@ import pl.charmas.android.reactivelocation2.ReactiveLocationProvider
 
 class LocationProviderImpl(private val provider: ReactiveLocationProvider) : LocationProvider {
 
-    override fun getCurrentLocation(): Flowable<Location> {
+    override fun getLocation(): Flowable<Location> {
         val request = LocationRequest.create()
             .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
             .setInterval(1000)
