@@ -6,8 +6,10 @@ import androidx.lifecycle.ViewModelProvider
 import com.tompee.convoy.domain.interactor.MapInteractor
 import com.tompee.convoy.presentation.base.BaseViewModel
 import io.reactivex.rxkotlin.plusAssign
+import timber.log.Timber
 
 class MapViewModel(private val interactor: MapInteractor) : BaseViewModel() {
+
     class Factory(private val interactor: MapInteractor) :
         ViewModelProvider.Factory {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
@@ -27,5 +29,11 @@ class MapViewModel(private val interactor: MapInteractor) : BaseViewModel() {
             email.postValue(acc.email)
             imageUrl.postValue(acc.imageUrl)
         }
+
+    }
+
+    fun getLocation() {
+        subscriptions += interactor.getCurrentLocation()
+            .subscribe { Timber.d(it.toString()) }
     }
 }

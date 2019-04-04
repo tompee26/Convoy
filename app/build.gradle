@@ -82,7 +82,7 @@ dependencies {
     def firebase_auth = "16.2.0"
     implementation "com.google.firebase:firebase-auth:$firebase_auth"
 
-    def firebase_firestore = "18.1.0"
+    def firebase_firestore = "18.2.0"
     implementation "com.google.firebase:firebase-firestore:$firebase_firestore"
 
     def firebase_storage = "16.1.0"
@@ -93,6 +93,12 @@ dependencies {
 
     def glide_version = "4.9.0"
     implementation "com.github.bumptech.glide:glide:$glide_version"
+
+    def reactive_location_version = "2.1@aar"
+    implementation "pl.charmas.android:android-reactive-location2:$reactive_location_version"
+
+    def easy_permissions_version = "3.0.0"
+    implementation "pub.devrel:easypermissions:$easy_permissions_version"
 
     testImplementation 'junit:junit:4.12'
 }
