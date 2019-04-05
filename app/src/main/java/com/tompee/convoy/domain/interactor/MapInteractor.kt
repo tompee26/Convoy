@@ -1,5 +1,6 @@
 package com.tompee.convoy.domain.interactor
 
+import android.location.Address
 import android.location.Location
 import com.tompee.convoy.domain.entities.Account
 import com.tompee.convoy.domain.location.LocationProvider
@@ -18,5 +19,9 @@ class MapInteractor(
 
     fun getLocation(): Flowable<Location> {
         return locationProvider.getLocation()
+    }
+
+    fun geocode(query: String): Single<List<Address>> {
+        return locationProvider.geocode(query)
     }
 }

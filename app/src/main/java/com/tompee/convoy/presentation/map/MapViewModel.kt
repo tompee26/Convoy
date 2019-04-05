@@ -56,4 +56,13 @@ class MapViewModel(private val interactor: MapInteractor) : BaseViewModel() {
                 Timber::e
             )
     }
+
+    fun geocode(query: String) {
+        subscriptions += interactor.geocode(query)
+            .map { it.first() }
+            .subscribe(
+                { moveLocation.postValue(CameraUpdateFactory.newLatLng(LatLng(it.latitude, it.longitude))) },
+                Timber::e
+            )
+    }
 }

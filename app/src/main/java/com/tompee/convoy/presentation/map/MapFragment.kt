@@ -4,6 +4,8 @@ import android.Manifest
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
+import com.arlib.floatingsearchview.FloatingSearchView
+import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.MapStyleOptions
@@ -39,7 +41,7 @@ class MapFragment : BaseFragment<FragmentMapBinding>(), EasyPermissions.Permissi
     override fun setupBinding(binding: FragmentMapBinding) {
         val vm = ViewModelProviders.of(this, factory)[MapViewModel::class.java]
         val headerBinding = DrawerHeaderBinding.bind(binding.navigationView.getHeaderView(0))
-        headerBinding.lifecycleOwner = this
+        headerBinding.lifecycleOwner = viewLifecycleOwner
         headerBinding.viewModel = vm
 
         binding.navigationView.setNavigationItemSelectedListener {
@@ -53,15 +55,23 @@ class MapFragment : BaseFragment<FragmentMapBinding>(), EasyPermissions.Permissi
         binding.searchView.apply {
             attachNavigationDrawerToMenuButton(binding.drawerLayout)
             setOnMenuItemClickListener { vm.moveToCurrentLocation() }
+            setOnSearchListener(object : FloatingSearchView.OnSearchListener {
+                override fun onSearchAction(currentQuery: String?) {
+                    vm.geocode(currentQuery!!)
+                }
+
+                override fun onSuggestionClicked(searchSuggestion: SearchSuggestion?) {
+                }
+            })
         }
 
-        vm.selfMarker.observe(this, Observer {
+        vm.selfMarker.observe(viewLifecycleOwner, Observer {
             if (::selfMarker.isInitialized) {
                 selfMarker.remove()
             }
             selfMarker = map.addMarker(it)
         })
-        vm.moveLocation.observe(this, Observer {
+        vm.moveLocation.observe(viewLifecycleOwner, Observer {
             map.moveCamera(it)
         })
 
