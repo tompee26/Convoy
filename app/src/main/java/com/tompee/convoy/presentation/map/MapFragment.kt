@@ -1,7 +1,6 @@
 package com.tompee.convoy.presentation.map
 
 import android.Manifest
-import android.view.Gravity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
@@ -43,9 +42,6 @@ class MapFragment : BaseFragment<FragmentMapBinding>(), EasyPermissions.Permissi
         headerBinding.lifecycleOwner = this
         headerBinding.viewModel = vm
 
-        binding.toolbar.menu.setOnClickListener {
-            binding.drawerLayout.openDrawer(Gravity.LEFT)
-        }
         binding.navigationView.setNavigationItemSelectedListener {
             binding.drawerLayout.closeDrawers()
             val navigation = findNavController()
@@ -54,8 +50,9 @@ class MapFragment : BaseFragment<FragmentMapBinding>(), EasyPermissions.Permissi
             }
             return@setNavigationItemSelectedListener true
         }
-        binding.toolbar.myLocation.setOnClickListener{
-            vm.moveToCurrentLocation()
+        binding.searchView.apply {
+            attachNavigationDrawerToMenuButton(binding.drawerLayout)
+            setOnMenuItemClickListener { vm.moveToCurrentLocation() }
         }
 
         vm.selfMarker.observe(this, Observer {

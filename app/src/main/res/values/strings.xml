@@ -21,6 +21,7 @@
     <string name="label_search_text">Search friends here…</string>
     <string name="label_friends">Friends</string>
     <string name="label_search_empty">No users found.</string>
+    <string name="label_location">My Location</string>
 
     <!-- Profile -->
     <string name="profile_label_first_name">First Name</string>
