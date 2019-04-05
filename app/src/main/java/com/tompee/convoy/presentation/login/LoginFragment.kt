@@ -35,21 +35,21 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(), ViewPager.OnPageChan
             setPageTransformer(false, this@LoginFragment)
             adapter = loginPagerAdapter
         }
-        vm.switch.observe(this, Observer {
+        vm.switch.observe(viewLifecycleOwner, Observer {
             if (binding.viewpager.currentItem == 0) {
                 binding.viewpager.currentItem = 1
             } else {
                 binding.viewpager.currentItem = 0
             }
         })
-        vm.message.observe(this, Observer {
+        vm.message.observe(viewLifecycleOwner, Observer {
             Snackbar.make(
                 activity?.findViewById(android.R.id.content)!!,
                 it, Snackbar.LENGTH_LONG
             ).show()
         })
         val navigator = findNavController()
-        vm.profileState.observe(this, Observer {
+        vm.profileState.observe(viewLifecycleOwner, Observer {
             when (it) {
                 LoginViewModel.ProfileState.NO_PROFILE -> {
                     navigator.navigate(R.id.action_loginFragment_to_profileSetupFragment)

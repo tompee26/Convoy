@@ -28,7 +28,7 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>() {
         binding.progress.indeterminateDrawable.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_IN)
 
         val navigator = findNavController()
-        vm.state.observe(this, Observer { state ->
+        vm.state.observe(viewLifecycleOwner, Observer { state ->
             when (state) {
                 SplashViewModel.AuthenticationState.UNAUTHENTICATED ->
                     navigator.navigate(R.id.action_splashFragment_to_loginFragment)

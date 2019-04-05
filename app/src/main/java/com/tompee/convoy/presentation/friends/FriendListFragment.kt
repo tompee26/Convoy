@@ -39,10 +39,10 @@ class FriendListFragment : BaseFragment<FragmentFriendListBinding>() {
         }
 
         val vm = ViewModelProviders.of(this, factory)[FriendListViewModel::class.java]
-        vm.userList.observe(this, Observer {
+        vm.userList.observe(viewLifecycleOwner, Observer {
             friendListAdapter.setData(it)
         })
-        vm.sectionList.observe(this, Observer {
+        vm.sectionList.observe(viewLifecycleOwner, Observer {
             sectionAdapter.setSections(it)
         })
         friendListAdapter.setOnClickListener {

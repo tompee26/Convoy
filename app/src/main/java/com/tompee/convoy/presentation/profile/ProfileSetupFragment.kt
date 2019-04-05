@@ -38,7 +38,7 @@ class ProfileSetupFragment : BaseFragment<FragmentProfileSetupBinding>() {
                 .map { it.toString() }
                 .subscribe { vm.imageUrl.set(it) }
         }
-        vm.inputState.observe(this, Observer {
+        vm.inputState.observe(viewLifecycleOwner, Observer {
             when (it) {
                 ProfileSetupViewModel.InputState.FIRST_NAME_EMPTY ->
                     binding.firstName.error = getString(R.string.error_field_required)
@@ -59,21 +59,21 @@ class ProfileSetupFragment : BaseFragment<FragmentProfileSetupBinding>() {
                 }
             }
         })
-        vm.progressVisible.observe(this, Observer {
+        vm.progressVisible.observe(viewLifecycleOwner, Observer {
             if (it) {
                 progressDialog.show(fragmentManager!!, "progress")
             } else {
                 progressDialog.dismiss()
             }
         })
-        vm.message.observe(this, Observer {
+        vm.message.observe(viewLifecycleOwner, Observer {
             Snackbar.make(
                 activity?.findViewById(android.R.id.content)!!,
                 it, Snackbar.LENGTH_LONG
             ).show()
         })
         val navigator = findNavController()
-        vm.exit.observe(this, Observer {
+        vm.exit.observe(viewLifecycleOwner, Observer {
             navigator.navigate(R.id.action_profileSetupFragment_to_mapFragment)
         })
     }

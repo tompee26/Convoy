@@ -28,7 +28,7 @@ class FriendSearchFragment : BaseFragment<FragmentFriendSearchBinding>() {
         val vm = ViewModelProviders.of(this, factory)[FriendSearchViewModel::class.java]
         binding.viewModel = vm
 
-        userListAdapter.onClick.observe(this, Observer {
+        userListAdapter.onClick.observe(viewLifecycleOwner, Observer {
             val dialog = ProfileDialog.newInstance(it)
             dialog.show(fragmentManager!!, "profile")
         })

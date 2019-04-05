@@ -75,7 +75,7 @@ class LoginPageFragment : BaseFragment<FragmentLoginPageBinding>() {
         }
 
         fun setupBinding(vm: LoginViewModel) {
-            vm.state.observe(this, Observer {
+            vm.state.observe(viewLifecycleOwner, Observer {
                 when (it) {
                     LoginViewModel.InputState.EMAIL_EMPTY -> {
                         binding.userView.error = getString(R.string.error_field_required)
@@ -112,7 +112,7 @@ class LoginPageFragment : BaseFragment<FragmentLoginPageBinding>() {
                     vm.register()
                 }
             }
-            vm.progressVisibility.observe(this, Observer {
+            vm.progressVisibility.observe(viewLifecycleOwner, Observer {
                 if (!userVisibleHint) {
                     return@Observer
                 }
@@ -122,7 +122,7 @@ class LoginPageFragment : BaseFragment<FragmentLoginPageBinding>() {
                     progressDialog.dismiss()
                 }
             })
-            vm.registerSuccessful.observe(this, Observer {
+            vm.registerSuccessful.observe(viewLifecycleOwner, Observer {
                 if (!userVisibleHint) {
                     return@Observer
                 }
