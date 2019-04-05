@@ -3,7 +3,6 @@ package com.tompee.convoy.presentation.friends
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.drivemode.techtestrefactored.presentation.common.BindableAdapter
 import com.tompee.convoy.R
@@ -14,11 +13,15 @@ class FriendListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Binda
 
     private var userList = emptyList<User>()
 
-    val onClick = MutableLiveData<String>()
+    private var onClickListener: ((String) -> Unit)? = null
 
     override fun setData(data: List<User>) {
         userList = data
         notifyDataSetChanged()
+    }
+
+    fun setOnClickListener(listener: (String) -> Unit) {
+        onClickListener = listener
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
@@ -38,13 +41,15 @@ class FriendListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Binda
         (holder as UserViewHolder).bind(userList[position])
     }
 
-    inner class UserViewHolder(private val binding: RowUserBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class UserViewHolder(
+        private val binding: RowUserBinding
+    ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(user: User) {
             binding.user = user
             binding.executePendingBindings()
             binding.root.setOnClickListener {
-                onClick.postValue(user.email)
+                onClickListener?.invoke(user.email)
             }
         }
     }
