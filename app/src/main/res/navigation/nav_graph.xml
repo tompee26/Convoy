@@ -60,7 +60,9 @@
         tools:layout="@layout/fragment_map">
         <action
             android:id="@+id/action_mapFragment_to_friendListFragment"
-            app:destination="@id/friendListFragment" />
+            app:destination="@id/friendListFragment"
+            app:enterAnim="@anim/enter"
+            app:popExitAnim="@anim/exit" />
     </fragment>
     <fragment
         android:id="@+id/friendListFragment"
@@ -69,7 +71,9 @@
         tools:layout="@layout/fragment_friend_list">
         <action
             android:id="@+id/action_friendListFragment_to_friendSearchFragment"
-            app:destination="@id/friendSearchFragment" />
+            app:destination="@id/friendSearchFragment"
+            app:enterAnim="@anim/enter"
+            app:popExitAnim="@anim/exit" />
     </fragment>
     <fragment
         android:id="@+id/friendSearchFragment"

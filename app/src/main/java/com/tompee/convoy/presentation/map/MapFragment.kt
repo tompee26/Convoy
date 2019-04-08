@@ -1,6 +1,7 @@
 package com.tompee.convoy.presentation.map
 
 import android.Manifest
+import android.view.Gravity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
@@ -45,7 +46,7 @@ class MapFragment : BaseFragment<FragmentMapBinding>(), EasyPermissions.Permissi
         headerBinding.viewModel = vm
 
         binding.navigationView.setNavigationItemSelectedListener {
-            binding.drawerLayout.closeDrawers()
+            binding.drawerLayout.closeDrawer(Gravity.START)
             val navigation = findNavController()
             when (it.itemId) {
                 R.id.friend_list -> navigation.navigate(R.id.action_mapFragment_to_friendListFragment)
