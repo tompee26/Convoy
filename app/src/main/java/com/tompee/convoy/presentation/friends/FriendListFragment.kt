@@ -50,8 +50,7 @@ class FriendListFragment : BaseFragment<FragmentFriendListBinding>() {
             dialog.show(fragmentManager!!, "profile")
         }
         val navigation = findNavController()
-        binding.toolbar.search.setOnClickListener {
-            navigation.navigate(R.id.action_friendListFragment_to_friendSearchFragment)
-        }
+        binding.toolbar.back.setOnClickListener { navigation.navigateUp() }
+        binding.toolbar.search.setOnClickListener { navigation.navigate(R.id.action_friendListFragment_to_friendSearchFragment) }
     }
 }

@@ -2,6 +2,7 @@ package com.tompee.convoy.presentation.friends.search
 
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tompee.convoy.R
 import com.tompee.convoy.databinding.FragmentFriendSearchBinding
@@ -32,6 +33,8 @@ class FriendSearchFragment : BaseFragment<FragmentFriendSearchBinding>() {
             val dialog = ProfileDialog.newInstance(it)
             dialog.show(fragmentManager!!, "profile")
         })
+        val navigation = findNavController()
+        binding.toolbar.back.setOnClickListener { navigation.navigateUp() }
         binding.recyclerView.apply {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(activity)
