@@ -39,7 +39,7 @@ class ProfileDialog : BaseDialogFragment() {
         binding.lifecycleOwner = this
         binding.viewModel = vm
 
-        vm.state.observe(viewLifecycleOwner, Observer {
+        vm.state.observe(this, Observer {
             when (it) {
                 ProfileDialogViewModel.RelationshipState.ALREADY_FRIENDS -> {
                     binding.apply {
@@ -77,7 +77,7 @@ class ProfileDialog : BaseDialogFragment() {
                 }
             }
         })
-        vm.progress.observe(viewLifecycleOwner, Observer {
+        vm.progress.observe(this, Observer {
             if (it) {
                 binding.progress.visibility = View.VISIBLE
             }
