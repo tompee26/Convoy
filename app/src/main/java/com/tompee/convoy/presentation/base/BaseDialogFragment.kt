@@ -13,10 +13,5 @@ abstract class BaseDialogFragment : DialogFragment() {
         performInject()
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        dialog?.setCanceledOnTouchOutside(false)
-        return super.onCreateView(inflater, container, savedInstanceState)
-    }
-
     abstract fun performInject()
 }
